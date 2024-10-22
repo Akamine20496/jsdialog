@@ -1,5 +1,5 @@
 
-# Dialog Class
+# DialogJS
 
 The `Dialog` class is a promise-based JavaScript utility that imitates native dialogs in desktop applications. It stops background processes when invoked and provides a user-friendly way to display input dialogs, message dialogs, and confirmation dialogs.
 

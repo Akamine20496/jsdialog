@@ -1,9 +1,9 @@
 
 # JSDialog
 
-The `JSDialog` is a promise-based JavaScript utility that imitates native dialogs in desktop applications. It stops background processes when invoked and provides a user-friendly way to display input dialogs, message dialogs, and confirmation dialogs.
+The `JSDialog` is a promise-based JavaScript utility that imitates native dialogs in desktop applications and provides a user-friendly way to display input dialogs, message dialogs, and confirmation dialogs.
 
-It can still be used without using "await keyword" as long as the dialogs are not consecutive, unless it has "await" excluding Input Dialog and Confirm Dialog
+Message Dialog can be used without the `await` keyword, but not Input Dialog and Confirm Dialog, because they require waiting for user input.
 
 ## CDN Links
 

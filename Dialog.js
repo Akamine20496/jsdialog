@@ -3,8 +3,8 @@
  * native dialogs in desktop where it stops any background processes
  * upon invoking this functions.
  * 
- * It can still be used without using "await keyword" as long as the dialogs
- * are not consecutive, unless it has "await".
+ * It can still be used without using "await keyword" as long as the dialogs are not consecutive, 
+ * unless it has "await" excluding Input Dialog and Confirm Dialog
  */
 class Dialog {
     /**

@@ -55,6 +55,13 @@ if (userChoice === Dialog.YES_OPTION) {
 }
 ```
 
+## Static Variables
+
+- `OK_OPTION`: State of the Input Dialog OK (1).
+- `CANCEL_OPTION`: State of the Input Dialog CANCEL (0).
+- `YES_OPTION`: State of the Confirm Dialog YES (1).
+- `NO_OPTION`: State of the Confirm Dialog NO (0).
+
 ## Methods
 
 - `showInputDialog(dialogTitle, dialogContent)`: Displays an input dialog and returns the user input.

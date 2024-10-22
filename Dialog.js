@@ -25,6 +25,30 @@ class Dialog {
     static NO_OPTION = 0;
 
     /**
+     * Make the static variables immutable
+     */
+    static {
+        Object.defineProperties(this, {
+            OK_OPTION: {
+                writable: false,
+                configurable: false,
+            },
+            CANCEL_OPTION: {
+                writable: false,
+                configurable: false,
+            },
+            YES_OPTION: {
+                writable: false,
+                configurable: false,
+            },
+            NO_OPTION: {
+                writable: false,
+                configurable: false,
+            },
+        });
+    }
+
+    /**
      * method of Dialog Class that allows user input
      * @param {string} dialogTitle Title of the dialog (only plain text)
      * @param {html} dialogContent Content of the dialog for user to see (allows element tags)
@@ -56,12 +80,13 @@ class Dialog {
             dialogForm: dialogForm,
             dialogInputContainer: dialogInputContainer,
             dialogButtonContainer: dialogButtonContainer
-        }, 'input');
+        });
 
         // add attributes
         inputDialog.setAttribute('id', 'inputDialog');
         title.setAttribute('id', 'inputDialogTitle');
         content.setAttribute('id', 'inputDialogContent');
+        content.setAttribute('class', 'scrollableDialogContent');
         input.setAttribute('id', 'inputDialogInput');
         input.type = 'text';
         btnOk.setAttribute('id', 'inputDialogOkButton');
@@ -72,6 +97,7 @@ class Dialog {
 
         dialogHeader.setAttribute('id', 'inputDialogHeader');
         dialogForm.setAttribute('id', 'inputDialogForm');
+        dialogForm.method = 'dialog';
         dialogInputContainer.setAttribute('id', 'inputDialogInputContainer');
         dialogButtonContainer.setAttribute('id', 'inputDialogButtonContainer');
 
@@ -137,30 +163,24 @@ class Dialog {
                     dialogData.outputLength = userInput.length;
                     dialogData.option = 1;
 
-                    // close the dialog
-                    inputDialog.close();
+                    // Resolve the promise to indicate that the modal has been closed
+                    resolve(Object.freeze(dialogData));
 
                     // remove the element    
                     inputDialog.remove();
-
-                    // Resolve the promise to indicate that the modal has been closed
-                    resolve(Object.freeze(dialogData));
 
                     this.#removeScrollbarStyles();
                 });
 
                 btnCancel.addEventListener('click', () => {
-                    // update the data of dialog
-                    dialogData.option = 0;
-
                     // close the dialog
                     inputDialog.close();
 
-                    // remove the element
-                    inputDialog.remove();
-
                     // Resolve the promise to indicate that the modal has been closed
                     resolve(Object.freeze(dialogData));
+
+                    // remove the element
+                    inputDialog.remove();
 
                     this.#removeScrollbarStyles();
                 });
@@ -193,12 +213,13 @@ class Dialog {
         }, { 
             dialogHeader: dialogHeader, 
             dialogButtonContainer: dialogButtonContainer 
-        }, 'message');
+        });
 
         // add attributes
         messageDialog.setAttribute('id', 'messageDialog');
         title.setAttribute('id', 'messageDialogTitle');
         content.setAttribute('id', 'messageDialogContent');
+        content.setAttribute('class', 'scrollableDialogContent');
         btnOk.setAttribute('id', 'messageDialogOkButton');
         btnOk.innerText = 'OK';
 
@@ -229,11 +250,11 @@ class Dialog {
                     // Close the modal
                     messageDialog.close();
 
-                    // remove the element
-                    messageDialog.remove();
-
                     // Resolve the promise to indicate that the modal has been closed
                     resolve();
+
+                    // remove the element
+                    messageDialog.remove();
 
                     this.#removeScrollbarStyles();
                 });
@@ -268,12 +289,13 @@ class Dialog {
         }, { 
             dialogHeader: dialogHeader, 
             dialogButtonContainer: dialogButtonContainer 
-        }, 'confirm');
+        });
 
         // add attributes
         confirmDialog.setAttribute('id', 'confirmDialog');
         title.setAttribute('id', 'confirmDialogTitle');
         content.setAttribute('id', 'confirmDialogContent');
+        content.setAttribute('class', 'scrollableDialogContent');
         btnYes.setAttribute('id', 'confirmDialogOkButton');
         btnYes.innerText = 'Yes';
         btnNo.setAttribute('id', 'confirmDialogCancelButton');
@@ -310,26 +332,24 @@ class Dialog {
                     // Close the modal
                     confirmDialog.close();
 
-                    // remove the element
-                    confirmDialog.remove();
-
                     // Resolve the promise to indicate that the modal has been closed
                     resolve(dialogOption);
+
+                    // remove the element
+                    confirmDialog.remove();
 
                     this.#removeScrollbarStyles();
                 });
 
                 btnNo.addEventListener('click', () => {
-                    dialogOption = 0;
-
                     // Close the modal
                     confirmDialog.close();
 
-                    // remove the element
-                    confirmDialog.remove();
-
                     // Resolve the promise to indicate that the modal has been closed
                     resolve(dialogOption);
+
+                    // remove the element
+                    confirmDialog.remove();
 
                     this.#removeScrollbarStyles();
                 });
@@ -340,22 +360,19 @@ class Dialog {
     /**
      * Adds basic CSS styling for dialogs
      */
-    static #addStyles(dialog, elements = {}, divs = {}, dialogType = '') {
-        if (dialog.open) {
-            document.body.style.cssText = 'overflow-x: hidden;';
-        }
-
+    static #addStyles(dialog, elements = {}, divs = {}) {
         dialog.style.setProperty('border', 'none', 'important');
         dialog.style.setProperty('border-radius', '10px', 'important');
         dialog.style.setProperty('box-shadow', '0 4px 8px rgba(0, 0, 0, 0.2)', 'important');
         dialog.style.setProperty('padding', '15px', 'important');
-        dialog.style.setProperty('max-width', '60vw', 'important');
+        dialog.style.setProperty('max-width', '50vw', 'important');
         dialog.style.setProperty('max-height', '85vh', 'important');
         dialog.style.setProperty('min-width', '300px', 'important');
         dialog.style.setProperty('min-height', '150px', 'important');
         dialog.style.setProperty('box-sizing', 'border-box', 'important');
         dialog.style.setProperty('font-family', 'Arial, sans-serif', 'important');
         dialog.style.setProperty('background-color', '#f9f9f9', 'important');
+        dialog.style.setProperty('overflow-y', 'auto', 'important');
         dialog.style.setProperty('overflow-x', 'hidden', 'important');
     
         if (elements.title) {
@@ -366,8 +383,11 @@ class Dialog {
         }
     
         if (elements.content) {
+            elements.content.style.setProperty('max-height', '300px', 'important');
             elements.content.style.setProperty('margin', '10px 0', 'important');
             elements.content.style.setProperty('color', '#555', 'important');
+            elements.content.style.setProperty('overflow-y', 'auto', 'important');
+            elements.content.style.setProperty('scroll-behavior', 'smooth');
             elements.content.style.setProperty('overflow-wrap', 'break-word', 'important');
         }
     
@@ -461,20 +481,29 @@ class Dialog {
         }
     
         styleTag.textContent = `
-            dialog::-webkit-scrollbar {
+            dialog::-webkit-scrollbar,
+            dialog .scrollableDialogContent::-webkit-scrollbar {
                 width: 5px !important;
             }
-            dialog::-webkit-scrollbar-track {
+
+            dialog::-webkit-scrollbar-track,
+            dialog .scrollableDialogContent::-webkit-scrollbar-track {
                 display: none !important;
             }
-            dialog::-webkit-scrollbar-thumb {
+
+            dialog::-webkit-scrollbar-thumb,
+            dialog .scrollableDialogContent::-webkit-scrollbar-thumb {
                 background-color: #888 !important;
                 border-radius: 10px !important;
             }
-            dialog::-webkit-scrollbar-thumb:hover {
+
+            dialog::-webkit-scrollbar-thumb:hover,
+            dialog .scrollableDialogContent::-webkit-scrollbar-thumb:hover {
                 background-color: #555 !important;
             }
-            dialog::-webkit-scrollbar-button {
+
+            dialog::-webkit-scrollbar-button,
+            dialog .scrollableDialogContent::-webkit-scrollbar-button {
                 display: none !important;
             }
         `;

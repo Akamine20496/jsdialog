@@ -88,23 +88,23 @@ class Dialog {
         });
 
         // add attributes
-        inputDialog.setAttribute('id', 'inputDialog');
-        title.setAttribute('id', 'inputDialogTitle');
-        content.setAttribute('id', 'inputDialogContent');
-        content.setAttribute('class', 'scrollableDialogContent');
-        input.setAttribute('id', 'inputDialogInput');
+        inputDialog.id = 'inputDialog';
+        title.id = 'inputDialogTitle';
+        content.id = 'inputDialogContent';
+        content.className = 'scrollableDialogContent';
+        input.id = 'inputDialogInput';
         input.type = 'text';
-        btnOk.setAttribute('id', 'inputDialogOkButton');
+        btnOk.id = 'inputDialogOkButton';
         btnOk.type = 'submit';
         btnOk.innerText = 'OK';
-        btnCancel.setAttribute('id', 'inputDialogCancelButton');
+        btnCancel.id = 'inputDialogCancelButton';
         btnCancel.innerText = 'Cancel';
 
-        dialogHeader.setAttribute('id', 'inputDialogHeader');
-        dialogForm.setAttribute('id', 'inputDialogForm');
+        dialogHeader.id = 'inputDialogHeader';
+        dialogForm.id = 'inputDialogForm';
         dialogForm.method = 'dialog';
-        dialogInputContainer.setAttribute('id', 'inputDialogInputContainer');
-        dialogButtonContainer.setAttribute('id', 'inputDialogButtonContainer');
+        dialogInputContainer.id = 'inputDialogInputContainer';
+        dialogButtonContainer.id = 'inputDialogButtonContainer';
 
 
         // append the elements
@@ -173,8 +173,6 @@ class Dialog {
 
                     // remove the element    
                     inputDialog.remove();
-
-                    this.#removeScrollbarStyles();
                 });
 
                 btnCancel.addEventListener('click', () => {
@@ -186,8 +184,6 @@ class Dialog {
 
                     // remove the element
                     inputDialog.remove();
-
-                    this.#removeScrollbarStyles();
                 });
             }
         });
@@ -225,15 +221,15 @@ class Dialog {
         });
 
         // add attributes
-        messageDialog.setAttribute('id', 'messageDialog');
-        title.setAttribute('id', 'messageDialogTitle');
-        content.setAttribute('id', 'messageDialogContent');
-        content.setAttribute('class', 'scrollableDialogContent');
-        btnOk.setAttribute('id', 'messageDialogOkButton');
+        messageDialog.id = 'messageDialog';
+        title.id = 'messageDialogTitle';
+        content.id = 'messageDialogContent';
+        content.className = 'scrollableDialogContent';
+        btnOk.id = 'messageDialogOkButton';
         btnOk.innerText = 'OK';
 
-        dialogHeader.setAttribute('id', 'messageDialogHeader');
-        dialogButtonContainer.setAttribute('id', 'messageDialogButtonContainer');
+        dialogHeader.id = 'messageDialogHeader';
+        dialogButtonContainer.id = 'messageDialogButtonContainer';
 
 
         // append the elements
@@ -264,8 +260,6 @@ class Dialog {
 
                     // remove the element
                     messageDialog.remove();
-
-                    this.#removeScrollbarStyles();
                 });
             }
         });
@@ -306,17 +300,17 @@ class Dialog {
         });
 
         // add attributes
-        confirmDialog.setAttribute('id', 'confirmDialog');
-        title.setAttribute('id', 'confirmDialogTitle');
-        content.setAttribute('id', 'confirmDialogContent');
-        content.setAttribute('class', 'scrollableDialogContent');
-        btnYes.setAttribute('id', 'confirmDialogOkButton');
+        confirmDialog.id = 'confirmDialog';
+        title.id = 'confirmDialogTitle';
+        content.id = 'confirmDialogContent';
+        content.className = 'scrollableDialogContent';
+        btnYes.id = 'confirmDialogOkButton';
         btnYes.innerText = 'Yes';
-        btnNo.setAttribute('id', 'confirmDialogCancelButton');
+        btnNo.id = 'confirmDialogCancelButton';
         btnNo.innerText = 'No';
 
-        dialogHeader.setAttribute('id', 'confirmDialogHeader');
-        dialogButtonContainer.setAttribute('id', 'confirmDialogButtonContainer');
+        dialogHeader.id = 'confirmDialogHeader';
+        dialogButtonContainer.id = 'confirmDialogButtonContainer';
 
 
         // append the elements
@@ -351,8 +345,6 @@ class Dialog {
 
                     // remove the element
                     confirmDialog.remove();
-
-                    this.#removeScrollbarStyles();
                 });
 
                 btnNo.addEventListener('click', () => {
@@ -364,15 +356,214 @@ class Dialog {
 
                     // remove the element
                     confirmDialog.remove();
-
-                    this.#removeScrollbarStyles();
                 });
             }
         });
     }
 
     /**
-     * Adds basic CSS styling for dialogs
+     * method of Dialog Class that shows information message and this is customizable
+     * @param {html} dialogContent Content of the dialog for user to see (allows element tags)
+     * @param {object} dialogStyle Custom style for the Plain Dialog. These are the only keys accepted `backdrop, dialog, content, button, dialogCloseButtonContainer`. For the CSS Part, follow this template. 
+     * @example { key: {'property': 'value', ...} }
+     * @returns nothing, it is only for displaying messages
+     */
+    static async showPlainDialog(dialogContent, dialogStyle = {}) {
+        // create elements
+        const plainDialogBackdrop = document.createElement('div');
+        const plainDialog = document.createElement('div');
+        const btnClose = document.createElement('span');
+        const content = document.createElement('div');
+
+        // divs
+        const dialogCloseButtonContainer = document.createElement('div');
+
+        // set attributes
+        plainDialogBackdrop.id = 'plainDialogBackdrop';
+        plainDialog.id = 'plainDialog';
+        btnClose.id = 'btnClose';
+        btnClose.role = 'button';
+        btnClose.tabIndex = '0';
+        btnClose.innerHTML = '&times;';
+        content.id = 'plainDialogContent';
+        content.className = 'scrollableDialogContent';
+        
+        dialogCloseButtonContainer.id = 'plainDialogCloseButtonContainer';
+
+        dialogCloseButtonContainer.appendChild(btnClose);
+        plainDialog.append(dialogCloseButtonContainer, content);
+        plainDialogBackdrop.appendChild(plainDialog);
+        document.body.prepend(plainDialogBackdrop);
+
+        // add the styles
+        this.#addPlainDialogStyle({
+            backdrop: plainDialogBackdrop,
+            dialog: plainDialog,
+            button: btnClose,
+            content: content,
+            dialogCloseButtonContainer: dialogCloseButtonContainer
+        }, dialogStyle);
+
+        function openPlainDialog() {
+            plainDialog.classList.add('fade-in');
+            plainDialog.classList.remove('fade-out');
+            plainDialogBackdrop.style.display = 'flex';
+        }
+
+        function closePlainDialog() {
+            plainDialog.classList.add('fade-out');
+            plainDialog.classList.remove('fade-in');
+
+            setTimeout(() => {
+                plainDialogBackdrop.style.display = 'none';
+                plainDialogBackdrop.remove();
+            }, 300);
+        }
+
+        return new Promise((resolve) => {
+            if (plainDialogBackdrop.style.display === 'none') {
+                // show dialog
+                openPlainDialog();
+
+                // show the message
+                content.innerHTML = dialogContent;
+
+                function handleOnClose(e) {
+                    const { target } = e;
+
+                    if (target === btnClose || target === plainDialogBackdrop) {
+                        resolve();
+                        closePlainDialog();
+
+                        document.removeEventListener('click', handleOnClose);
+                    }
+                }
+
+                document.addEventListener('click', handleOnClose);
+            }
+        });
+    }
+
+    /**
+     * Responsible for styling Plain Dialog
+     * @param {object} elements { backdrop, dialog, content, button, dialogCloseButtonContainer }
+     * @param {object} customStyles just like normal css 'property': 'value'
+     * @returns early return if elements object is empty
+     */
+    static async #addPlainDialogStyle(elements = {}, customStyles = {}) {
+        if (!elements) return;
+        
+        const { backdrop, dialog, content, button, dialogCloseButtonContainer } = elements;
+
+        if (backdrop) {
+            backdrop.style.setProperty('display', 'none');
+            backdrop.style.setProperty('position', 'fixed', 'important');
+            backdrop.style.setProperty('top', '0', 'important');
+            backdrop.style.setProperty('left', '0', 'important');
+            backdrop.style.setProperty('width', '100vw', 'important');
+            backdrop.style.setProperty('height', '100vh', 'important');
+            backdrop.style.setProperty('background-color', 'rgba(0, 0, 0, 0.1)', 'important');
+            backdrop.style.setProperty('z-index', '9999', 'important');
+            backdrop.style.setProperty('overflow-y', 'auto', 'important');
+            backdrop.style.setProperty('margin', '0', 'important');
+            backdrop.style.setProperty('padding', '0', 'important');
+        }
+
+        if (dialog) {
+            dialog.style.setProperty('margin', 'auto', 'important');
+            dialog.style.setProperty('border-radius', '10px', 'important');
+            dialog.style.setProperty('box-shadow', '0 4px 8px rgba(0, 0, 0, 0.2)', 'important');
+            dialog.style.setProperty('padding', '0', 'important');
+            dialog.style.setProperty('max-width', '50vw', 'important');
+            dialog.style.setProperty('max-height', '85vh', 'important');
+            dialog.style.setProperty('min-width', '300px', 'important');
+            dialog.style.setProperty('min-height', '150px', 'important');
+            dialog.style.setProperty('box-sizing', 'border-box', 'important');
+            dialog.style.setProperty('overflow-y', 'auto', 'important');
+            dialog.style.setProperty('font-family', 'Arial, sans-serif', 'important');
+            dialog.style.setProperty('background-color', '#f9f9f9', 'important');
+            dialog.style.setProperty('display', 'flex', 'important');
+            dialog.style.setProperty('flex-direction', 'column', 'important');
+            dialog.style.setProperty('opacity', '0');
+        }
+
+        if (content) {
+            content.style.setProperty('border-radius', '8px', 'important');
+            content.style.setProperty('flex', '1 1 auto', 'important');
+            content.style.setProperty('max-height', 'calc(100% - 20%)', 'important');
+            content.style.setProperty('overflow-y', 'auto', 'important');
+            content.style.setProperty('padding', '0 10px', 'important');
+            content.style.setProperty('margin', '10px', 'important');
+            content.style.setProperty('color', '#555', 'important');
+            content.style.setProperty('overflow-y', 'auto', 'important');
+            content.style.setProperty('scroll-behavior', 'smooth');
+            content.style.setProperty('overflow-wrap', 'break-word', 'important');
+        }
+
+        if (button) {
+            button.addEventListener('mouseover', () => {
+                button.style.setProperty('background-color', '#495057', 'important');
+                button.style.setProperty('outline', '1px solid rgba(173, 181, 189, 0.5)', 'important');
+                button.style.setProperty('box-shadow', '0 4px 8px rgba(0, 0, 0, 0.2)', 'important');
+            });
+        
+            button.addEventListener('mouseout', () => {
+                button.style.setProperty('background-color', '#adb5bd', 'important');
+                button.style.removeProperty('outline');
+                button.style.removeProperty('box-shadow');
+            });
+
+            button.addEventListener('focus', () => {
+                button.style.setProperty('outline', '1px solid rgba(173, 181, 189, 0.5)', 'important');
+                button.style.setProperty('box-shadow', '0 4px 8px rgba(0, 0, 0, 0.2)', 'important');
+            });
+
+            button.addEventListener('blur', () => {
+                button.style.removeProperty('outline');
+                button.style.removeProperty('box-shadow');
+            });
+
+            button.style.setProperty('width', '1.250rem', 'important');
+            button.style.setProperty('font-size', '1.250rem', 'important');
+            button.style.setProperty('text-align', 'center', 'important');
+            button.style.setProperty('background-color', '#adb5bd', 'important');
+            button.style.setProperty('margin', '0', 'important');
+            button.style.setProperty('padding', '8px 16px', 'important');
+            button.style.setProperty('border', 'none', 'important');
+            button.style.setProperty('border-radius', '4px', 'important');
+            button.style.setProperty('color', '#fff', 'important');
+            button.style.setProperty('cursor', 'pointer', 'important');
+            button.style.setProperty('transition', 'background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out', 'important');
+        }
+
+        if (dialogCloseButtonContainer) {
+            dialogCloseButtonContainer.style.setProperty('flex', '0 0 20%', 'important');
+            dialogCloseButtonContainer.style.setProperty('display', 'flex', 'important');
+            dialogCloseButtonContainer.style.setProperty('align-items', 'center', 'important');
+            dialogCloseButtonContainer.style.setProperty('justify-content', 'flex-end', 'important');
+        }
+
+        this.#addScrollbarStyles();
+        this.#addDialogAnimationStyle();
+
+        const definedKeys = [ 'backdrop', 'dialog', 'content', 'button', 'dialogCloseButtonContainer' ];
+
+        for (const key in customStyles) {
+            if (definedKeys.includes(key)) {
+                const currElement = elements[key];
+                for (const [property, value] of Object.entries(customStyles[key])) {
+                    currElement.style.setProperty(property, value , 'important');
+                }
+            } else {
+                await this.showMessageDialog('Invalid Key!', `This key => ${key} is not valid.`);
+            }
+        }
+    }
+
+    /**
+     * Responsible for styling Input Dialog, Message Dialog, and Confirm Dialog
+     * @param {object} elements just like normal css 'property': 'value'
+     * @returns early return if elements object is empty
      */
     static #addStyles(elements = {}) {
         if (!elements) return;
@@ -394,6 +585,8 @@ class Dialog {
             dialog.style.setProperty('background-color', '#f9f9f9', 'important');
             dialog.style.setProperty('overflow-y', 'auto', 'important');
             dialog.style.setProperty('overflow-x', 'hidden', 'important');
+            dialog.style.setProperty('animation', 'fade-in 0.3s ease', 'important');
+            dialog.style.setProperty('animation-fill-mode', 'forwards', 'important');
         }
 
         if (title) {
@@ -404,6 +597,7 @@ class Dialog {
         }
     
         if (content) {
+            content.style.setProperty('border-radius', '8px', 'important');
             content.style.setProperty('max-height', '300px', 'important');
             content.style.setProperty('margin', '10px 0', 'important');
             content.style.setProperty('color', '#555', 'important');
@@ -492,11 +686,16 @@ class Dialog {
         }
     
         this.#addScrollbarStyles();
+        this.#addDialogAnimationStyle();
     }    
     
+    /**
+     * Responsible for styling scrollbar
+     */
     static #addScrollbarStyles() {
         // Inject a <style> tag for pseudo-element rules
         let styleTag = document.getElementById('dialog-scrollbar-style');
+
         if (!styleTag) {
             styleTag = document.createElement('style');
             styleTag.id = 'dialog-scrollbar-style';
@@ -505,34 +704,69 @@ class Dialog {
     
         styleTag.textContent = `
             dialog::-webkit-scrollbar,
-            dialog .scrollableDialogContent::-webkit-scrollbar {
+            dialog .scrollableDialogContent::-webkit-scrollbar,
+            #plainDialog  .scrollableDialogContent::-webkit-scrollbar {
                 width: 5px !important;
             }
 
             dialog::-webkit-scrollbar-track,
-            dialog .scrollableDialogContent::-webkit-scrollbar-track {
+            dialog .scrollableDialogContent::-webkit-scrollbar-track,
+            #plainDialog  .scrollableDialogContent::-webkit-scrollbar-track {
                 display: none !important;
             }
 
             dialog::-webkit-scrollbar-thumb,
-            dialog .scrollableDialogContent::-webkit-scrollbar-thumb {
+            dialog .scrollableDialogContent::-webkit-scrollbar-thumb,
+            #plainDialog  .scrollableDialogContent::-webkit-scrollbar-thumb {
                 background-color: #888 !important;
                 border-radius: 10px !important;
             }
 
             dialog::-webkit-scrollbar-thumb:hover,
-            dialog .scrollableDialogContent::-webkit-scrollbar-thumb:hover {
+            dialog .scrollableDialogContent::-webkit-scrollbar-thumb:hover,
+            #plainDialog  .scrollableDialogContent::-webkit-scrollbar-thumb:hover {
                 background-color: #555 !important;
             }
 
             dialog::-webkit-scrollbar-button,
-            dialog .scrollableDialogContent::-webkit-scrollbar-button {
+            dialog .scrollableDialogContent::-webkit-scrollbar-button,
+            #plainDialog .scrollableDialogContent::-webkit-scrollbar-button {
                 display: none !important;
             }
         `;
     }
 
-    static #removeScrollbarStyles() {
-        document.getElementById('dialog-scrollbar-style').remove();
+    /**
+     * Responsible for styling animations
+     */
+    static #addDialogAnimationStyle() {
+        // Inject a <style> tag for pseudo-element rules
+        let styleTag = document.getElementById('dialog-animation-style');
+
+        if (!styleTag) {
+            styleTag = document.createElement('style');
+            styleTag.id = 'dialog-animation-style';
+            document.head.appendChild(styleTag);
+        }
+    
+        styleTag.textContent = `
+            #plainDialog.fade-in {
+                animation: fade-in 0.3s ease forwards;
+            }
+
+            #plainDialog.fade-out {
+                animation: fade-out 0.3s ease forwards;
+            }
+            
+            @keyframes fade-in {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            @keyframes fade-out {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `;
     }
 }

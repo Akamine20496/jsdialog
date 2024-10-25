@@ -55,6 +55,18 @@ if (userChoice === Dialog.YES_OPTION) {
 }
 ```
 
+### Plain Dialog
+
+The `showPlainDialog` method displays a customizable information dialog to the user.
+
+```javascript
+await Dialog.showPlainDialog('This is a plain dialog', {
+    backdrop: { 'background-color': 'rgba(0, 0, 0, 1)' },
+    dialog: { 'width': '400px', 'background-color': '#fff' },
+    button: { 'color': 'red' }
+});
+```
+
 ## Static Variables
 
 - `OK_OPTION`: State of the Input Dialog OK (1).
@@ -67,6 +79,7 @@ if (userChoice === Dialog.YES_OPTION) {
 - `showInputDialog(dialogTitle, dialogContent)`: Displays an input dialog and returns the user input.
 - `showMessageDialog(dialogTitle, dialogContent)`: Displays a message dialog.
 - `showConfirmDialog(dialogTitle, dialogContent)`: Displays a confirmation dialog and returns the user's choice.
+- `showPlainDialog(dialogContent, dialogStyle)`: Displays a plain dialog and can be customized by passing an object as 2nd parameter. These are keys that are only accepted `backdrop, dialog, content, button, dialogCloseButtonContainer`
 
 ### Options
 
@@ -95,6 +108,12 @@ async function showDialogs() {
     } else {
         console.log("User cancelled.");
     }
+
+    await Dialog.showPlainDialog('This is a plain dialog', {
+        backdrop: { 'background-color': 'rgba(0, 0, 0, 1)' },
+        dialog: { 'width': '400px', 'background-color': '#fff' },
+        button: { 'color': 'red', 'background-color': '#fefefe' }
+    });
 }
 
 showDialogs();

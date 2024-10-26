@@ -1,9 +1,9 @@
 /**
  * This is a class with `promise-based` function where it imitates
  * native dialogs in desktop and they require waiting for user 
- * input upon invoking this functions (excluding Message Dialog).
+ * input upon invoking this functions (excluding Message Dialog and Plain Dialog).
  * 
- * Message Dialog can be used without the `await` keyword, 
+ * Message Dialog and Plain Dialog can be used without the `await` keyword, 
  * but not Input Dialog and Confirm Dialog, because they require waiting for user input.
  */
 class Dialog {
@@ -51,7 +51,7 @@ class Dialog {
     /**
      * method of Dialog Class that allows user input
      * @param {string} dialogTitle Title of the dialog (only plain text)
-     * @param {html} dialogContent Content of the dialog for user to see (allows element tags)
+     * @param {string} dialogContent Content of the dialog for user to see (allows element tags)
      * @returns data of dialog upon resolve().
      */
     static async showInputDialog(dialogTitle, dialogContent) {
@@ -136,15 +136,8 @@ class Dialog {
          * @returns sanitized string
          */
         function sanitizeInput(string) {
-            // Regular expression to check for HTML tags
-            const htmlTagPattern = /<[^>]*>/;
-        
-            // Check if the string contains any HTML tags
-            if (htmlTagPattern.test(string)) {
-                return string.replace(/<[^>]*>/g, '');
-            }
-    
-            return string;
+            // remove HTML Tags to the string
+            return string.replace(/<[^>]*>/g, '');
         }
 
         return new Promise((resolve) => {
@@ -154,7 +147,7 @@ class Dialog {
 
                 // show the message
                 title.innerText = dialogTitle;
-                content.innerHTML = dialogContent;
+                content[this.#hasHTMLTag(dialogContent) ? 'innerHTML' : 'innerText'] = dialogContent;
 
                 // focus on the text field
                 input.focus();
@@ -192,7 +185,7 @@ class Dialog {
     /**
      * method of Dialog Class that shows information message
      * @param {string} dialogTitle Title of the dialog (only plain text)
-     * @param {html} dialogContent Content of the dialog for user to see (allows element tags)
+     * @param {string} dialogContent Content of the dialog for user to see (allows element tags)
      * @returns nothing, it is only for displaying messages
      */
     static async showMessageDialog(dialogTitle, dialogContent) {
@@ -245,7 +238,7 @@ class Dialog {
 
                 // show the message
                 title.innerText = dialogTitle;
-                content.innerHTML = dialogContent;
+                content[this.#hasHTMLTag(dialogContent) ? 'innerHTML' : 'innerText'] = dialogContent;
 
                 // focus on the button
                 btnOk.focus();
@@ -268,7 +261,7 @@ class Dialog {
     /**
      * method of Dialog Class that asks for YES or NO answer
      * @param {string} dialogTitle Title of the dialog (only plain text)
-     * @param {html} dialogContent Content of the dialog for user to see (allows element tags)
+     * @param {string} dialogContent Content of the dialog for user to see (allows element tags)
      * @returns operation of the dialog upon resolve()
      */
     static async showConfirmDialog(dialogTitle, dialogContent) {
@@ -329,7 +322,7 @@ class Dialog {
 
                 // show the message
                 title.innerText = dialogTitle;
-                content.innerHTML = dialogContent;
+                content[this.#hasHTMLTag(dialogContent) ? 'innerHTML' : 'innerText'] = dialogContent;
 
                 // focus on the button
                 btnYes.focus();
@@ -363,7 +356,7 @@ class Dialog {
 
     /**
      * method of Dialog Class that shows information message and this is customizable
-     * @param {html} dialogContent Content of the dialog for user to see (allows element tags)
+     * @param {string} dialogContent Content of the dialog for user to see (allows element tags)
      * @param {object} dialogStyle Custom style for the Plain Dialog. These are the only keys accepted `backdrop, dialog, content, button, dialogCloseButtonContainer`. For the CSS Part, follow this template. 
      * @example { key: {'property': 'value', ...} }
      * @returns nothing, it is only for displaying messages
@@ -395,23 +388,28 @@ class Dialog {
         plainDialogBackdrop.appendChild(plainDialog);
         document.body.prepend(plainDialogBackdrop);
 
-        // add the styles
+        // add the style
         this.#addPlainDialogStyle({
             backdrop: plainDialogBackdrop,
             dialog: plainDialog,
             button: btnClose,
             content: content,
             dialogCloseButtonContainer: dialogCloseButtonContainer
-        }, dialogStyle);
+        }, arguments.length === 2 ? dialogStyle : null);
 
         function openPlainDialog() {
+            plainDialogBackdrop.classList.add('fade-in');
             plainDialog.classList.add('fade-in');
+            plainDialogBackdrop.classList.remove('fade-out');
             plainDialog.classList.remove('fade-out');
+
             plainDialogBackdrop.style.display = 'flex';
         }
 
         function closePlainDialog() {
+            plainDialogBackdrop.classList.add('fade-out');
             plainDialog.classList.add('fade-out');
+            plainDialogBackdrop.classList.remove('fade-in');
             plainDialog.classList.remove('fade-in');
 
             setTimeout(() => {
@@ -426,12 +424,22 @@ class Dialog {
                 openPlainDialog();
 
                 // show the message
-                content.innerHTML = dialogContent;
+                content[this.#hasHTMLTag(dialogContent) ? 'innerHTML' : 'innerText'] = dialogContent;
+
+                // focus to the button
+                btnClose.focus();
 
                 function handleOnClose(e) {
-                    const { target } = e;
+                    const { target, type, key } = e;
 
-                    if (target === btnClose || target === plainDialogBackdrop) {
+                    if (type === 'keydown' && key === 'Enter') {
+                        resolve();
+                        closePlainDialog();
+
+                        document.removeEventListener('click', handleOnClose);
+                    }
+                    
+                    if (type === 'click' && (target === btnClose || target === plainDialogBackdrop)) {
                         resolve();
                         closePlainDialog();
 
@@ -439,6 +447,7 @@ class Dialog {
                     }
                 }
 
+                btnClose.addEventListener('keydown', handleOnClose);
                 document.addEventListener('click', handleOnClose);
             }
         });
@@ -452,7 +461,7 @@ class Dialog {
      */
     static async #addPlainDialogStyle(elements = {}, customStyles = {}) {
         if (!elements) return;
-        
+
         const { backdrop, dialog, content, button, dialogCloseButtonContainer } = elements;
 
         if (backdrop) {
@@ -467,6 +476,7 @@ class Dialog {
             backdrop.style.setProperty('overflow-y', 'auto', 'important');
             backdrop.style.setProperty('margin', '0', 'important');
             backdrop.style.setProperty('padding', '0', 'important');
+            backdrop.style.setProperty('opacity', '0');
         }
 
         if (dialog) {
@@ -543,21 +553,40 @@ class Dialog {
             dialogCloseButtonContainer.style.setProperty('justify-content', 'flex-end', 'important');
         }
 
-        this.#addScrollbarStyles();
-        this.#addDialogAnimationStyle();
+        if (customStyles && Object.entries(customStyles).length > 0) {
+            const definedKeys = Object.keys(elements);
 
-        const definedKeys = [ 'backdrop', 'dialog', 'content', 'button', 'dialogCloseButtonContainer' ];
-
-        for (const key in customStyles) {
-            if (definedKeys.includes(key)) {
-                const currElement = elements[key];
-                for (const [property, value] of Object.entries(customStyles[key])) {
-                    currElement.style.setProperty(property, value , 'important');
+            for (const key in customStyles) {
+                if (definedKeys.includes(key)) {
+                    for (const [property, value] of Object.entries(customStyles[key])) {
+                        elements[key].style.setProperty(property, value , 'important');
+                    }
+                } else {
+                    await this.showMessageDialog('Invalid Key!', `This key => ${key} is not valid.`);
                 }
-            } else {
-                await this.showMessageDialog('Invalid Key!', `This key => ${key} is not valid.`);
             }
         }
+
+        this.#addScrollbarStyles();
+        this.#addDialogAnimationStyle();
+    }
+
+    /**
+     * Checks if the dialogContent has HTML tags
+     * @param {string} dialogContent 
+     * @returns Returns true if HTML tags are present, otherwise false.
+     */
+    static #hasHTMLTag(dialogContent) {
+        // Regular expression to check for HTML tags
+        const htmlTagPattern = /<[^>]*>/g;
+        let hasHTMLTag = false;
+    
+        // Check if the string contains any HTML tags
+        if (htmlTagPattern.test(dialogContent)) {
+            hasHTMLTag = true;
+        }
+
+        return hasHTMLTag;
     }
 
     /**
@@ -750,11 +779,11 @@ class Dialog {
         }
     
         styleTag.textContent = `
-            #plainDialog.fade-in {
+            #plainDialogBackdrop.fade-in, #plainDialog.fade-in {
                 animation: fade-in 0.3s ease forwards;
             }
 
-            #plainDialog.fade-out {
+            #plainDialogBackdrop.fade-out, #plainDialog.fade-out {
                 animation: fade-out 0.3s ease forwards;
             }
             

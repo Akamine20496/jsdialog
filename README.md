@@ -25,7 +25,7 @@ You can include the Dialog class in your project by either downloading the JavaS
 
 ## Usage
 
-### Input Dialog
+## Input Dialog
 
 To create an input dialog, use the `showInputDialog` method. This method returns a promise that resolves with the user input.
 
@@ -34,7 +34,7 @@ const result = await Dialog.showInputDialog("Enter your name", "Please provide y
 console.log("User input:", result.output);
 ```
 
-### Message Dialog
+## Message Dialog
 
 To show a message dialog, use the `showMessageDialog` method. This method displays a message to the user.
 
@@ -42,7 +42,7 @@ To show a message dialog, use the `showMessageDialog` method. This method displa
 await Dialog.showMessageDialog("Information", "This is a message dialog.");
 ```
 
-### Confirmation Dialog
+## Confirmation Dialog
 
 To ask the user for a Yes or No answer, use the `showConfirmDialog` method. This method returns a promise that resolves with the user's choice.
 
@@ -55,7 +55,7 @@ if (userChoice === Dialog.YES_OPTION) {
 }
 ```
 
-### Plain Dialog
+## Plain Dialog
 
 The `showPlainDialog` method displays a customizable information dialog to the user.
 
@@ -90,6 +90,50 @@ await Dialog.showPlainDialog('This is a plain dialog', {
 
 - **Confirm Dialog**: Returns:
   - `1` for Yes, `0` for No.
+
+## IDs and Classes
+
+If you want to override manually, please refer to the IDs and Classes below. ID is denoted by `#`, and Class is denoted by `.`
+
+**Input Dialog**
+- dialog                -> #inputDialog
+- title                 -> #inputDialogTitle
+- content               -> #inputDialogContent, .scrollableDialogContent
+- input                 -> #inputDialogInput
+- btnOk                 -> #inputDialogOkButton
+- btnCancel             -> #inputDialogCancelButton
+
+- dialogHeader          -> #inputDialogHeader
+- dialogForm            -> #inputDialogForm
+- dialogInputContainer  -> #inputDialogInputContainer
+- dialogButtonContainer -> #inputDialogButtonContainer
+
+**Message Dialog**
+- dialog                -> #messageDialog
+- title                 -> #messageDialogTitle
+- content               -> #messageDialogContent, .scrollableDialogContent
+- btnOk                 -> #messageDialogOkButton
+
+- dialogHeader          -> #messageDialogHeader
+- dialogButtonContainer -> #messageDialogButtonContainer
+
+**Confirm Dialog**
+- dialog                -> #confirmDialog
+- title                 -> #confirmDialogTitle
+- content               -> #confirmDialogContent, .scrollableDialogContent
+- btnYes                -> #confirmDialogOkButton
+- btnNo                 -> #confirmDialogCancelButton
+
+- dialogHeader          -> #confirmDialogHeader
+- dialogButtonContainer -> #confirmDialogButtonContainer
+
+**Plain Dialog**
+- backdrop                      -> #plainDialogBackdrop
+- dialog                        -> #plainDialog
+- button                        -> #btnClose
+- content                       -> #plainDialogContent, .scrollableDialogContent
+
+- dialogCloseButtonContainer    -> #plainDialogCloseButtonContainer
 
 ## Example
 

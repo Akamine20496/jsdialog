@@ -1,7 +1,7 @@
 
 # JSDialog
 
-The `JSDialog` is a promise-based JavaScript utility that imitates native dialogs in desktop applications and provides a user-friendly way to display input dialogs, message dialogs, and confirmation dialogs.
+The `JSDialog` is a promise-based JavaScript utility that imitates native dialogs in desktop applications and provides a user-friendly way to display input dialogs, message dialogs, plain dialogs, and confirmation dialogs.
 
 Message Dialog and Plain Dialog can be used without the `await` keyword, but not Input Dialog and Confirm Dialog, because they require waiting for user input.
 
@@ -79,7 +79,7 @@ await Dialog.showPlainDialog('This is a plain dialog', {
 - `showInputDialog(dialogTitle, dialogContent)`: Displays an input dialog and returns the user input.
 - `showMessageDialog(dialogTitle, dialogContent)`: Displays a message dialog.
 - `showConfirmDialog(dialogTitle, dialogContent)`: Displays a confirmation dialog and returns the user's choice.
-- `showPlainDialog(dialogContent, dialogStyle)`: Displays a plain dialog and can be customized by passing an object as 2nd parameter. These are keys that are only accepted `backdrop, dialog, content, button, dialogCloseButtonContainer`
+- `showPlainDialog(dialogContent, dialogStyle)`: Displays a plain dialog and can be customized by passing an object as 2nd argument. These are the keys that are only accepted `backdrop, dialog, content, button, dialogCloseButtonContainer`.
 
 ### Options
 

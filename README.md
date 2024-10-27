@@ -64,7 +64,53 @@ await Dialog.showPlainDialog('This is a plain dialog', {
     backdrop: { 'background-color': 'rgba(0, 0, 0, 1)' },
     dialog: { 'width': '400px', 'background-color': '#fff' },
     button: { 'color': 'red' }
+}, {
+    mouseover: { 'background-color': 'green' },
+    mouseout: { 'background-color': 'yellow' }
 });
+```
+
+customDialogStyle Object structure
+```javascript
+{
+    backdrop: { 'property': 'value', ... },
+    dialog: { 'property': 'value', ... },
+    button: { 'property': 'value', ... },
+    content: { 'property': 'value', ... },
+    dialogCloseButtonContainer: { 'property': 'value', ... },
+    eventStyles: {
+        backdrop: {
+            mouseover: { 'property': 'value', ... },
+            mouseout: { 'property': 'value', ... },
+            focus: { 'property': 'value', ... },
+            blur: { 'property': 'value', ... }
+        },
+        dialog: {
+            mouseover: { 'property': 'value', ... },
+            mouseout: { 'property': 'value', ... },
+            focus: { 'property': 'value', ... },
+            blur: { 'property': 'value', ... }
+        },
+        button: {
+            mouseover: { 'property': 'value', ... },
+            mouseout: { 'property': 'value', ... },
+            focus: { 'property': 'value', ... },
+            blur: { 'property': 'value', ... }
+        },
+        content: {
+            mouseover: { 'property': 'value', ... },
+            mouseout: { 'property': 'value', ... },
+            focus: { 'property': 'value', ... },
+            blur: { 'property': 'value', ... }
+        },
+        dialogCloseButtonContainer: {
+            mouseover: { 'property': 'value', ... },
+            mouseout: { 'property': 'value', ... },
+            focus: { 'property': 'value', ... },
+            blur: { 'property': 'value', ... }
+        }
+    }
+}
 ```
 
 ## Static Variables
@@ -79,7 +125,7 @@ await Dialog.showPlainDialog('This is a plain dialog', {
 - `showInputDialog(dialogTitle, dialogContent)`: Displays an input dialog and returns the user input.
 - `showMessageDialog(dialogTitle, dialogContent)`: Displays a message dialog.
 - `showConfirmDialog(dialogTitle, dialogContent)`: Displays a confirmation dialog and returns the user's choice.
-- `showPlainDialog(dialogContent, dialogStyle)`: Displays a plain dialog and can be customized by passing an object as 2nd argument. These are the keys that are only accepted `backdrop, dialog, content, button, dialogCloseButtonContainer`.
+- `showPlainDialog(dialogContent, customDialogStyle)`: Displays a plain dialog and can be customized. For the 2nd parameter, these are the keys that are only accepted `backdrop, dialog, content, button, dialogCloseButtonContainer, eventStyles`. For the eventStyles, these are the events that are only accepted `mouseover, mouseout, focus, blur`.
 
 ### Options
 

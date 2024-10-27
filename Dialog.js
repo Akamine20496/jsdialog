@@ -357,11 +357,13 @@ class Dialog {
     /**
      * method of Dialog Class that shows information message and this is customizable
      * @param {string} dialogContent Content of the dialog for user to see (allows element tags)
-     * @param {object} dialogStyle Custom style for the Plain Dialog. These are the only keys accepted `backdrop, dialog, content, button, dialogCloseButtonContainer`. For the CSS Part, follow this template. 
+     * @param {object} customDialogStyle Custom style for the Plain Dialog. These are the only keys accepted `backdrop, dialog, content, button, dialogCloseButtonContainer, eventStyles`. As for the eventStyles of the keys, these are the only events accepted `mouseover, mouseout, focus, blur`.
+     * @description For the CSS Part, follow this template. 
      * @example { key: {'property': 'value', ...} }
+     * @description If you want to put empty an value, simply put empty string `''`.
      * @returns nothing, it is only for displaying messages
      */
-    static async showPlainDialog(dialogContent, dialogStyle = {}) {
+    static async showPlainDialog(dialogContent, customDialogStyle) {
         // create elements
         const plainDialogBackdrop = document.createElement('div');
         const plainDialog = document.createElement('div');
@@ -394,8 +396,30 @@ class Dialog {
             dialog: plainDialog,
             button: btnClose,
             content: content,
-            dialogCloseButtonContainer: dialogCloseButtonContainer
-        }, arguments.length === 2 ? dialogStyle : null);
+            dialogCloseButtonContainer: dialogCloseButtonContainer,
+            eventStyles: {
+                button: {
+                    mouseover: {
+                        'background-color': '#495057',
+                        'outline': '1px solid rgba(173, 181, 189, 0.5)',
+                        'box-shadow': '0 4px 8px rgba(0, 0, 0, 0.2)'
+                    },
+                    mouseout: {
+                        'background-color': '#adb5bd',
+                        'outline': '',
+                        'box-shadow': ''
+                    },
+                    focus: {
+                        'outline': '1px solid rgba(173, 181, 189, 0.5)',
+                        'box-shadow': '0 4px 8px rgba(0, 0, 0, 0.2)'
+                    },
+                    blur: {
+                        'outline': '',
+                        'box-shadow': ''
+                    }
+                }
+            }
+        }, customDialogStyle || {});
 
         function openPlainDialog() {
             plainDialogBackdrop.classList.add('fade-in');
@@ -455,17 +479,21 @@ class Dialog {
 
     /**
      * Responsible for styling Plain Dialog
-     * @param {object} elements { backdrop, dialog, content, button, dialogCloseButtonContainer }
-     * @param {object} customStyles just like normal css 'property': 'value'
+     * @param {object} defaultDialogStyle { backdrop, dialog, content, button, dialogCloseButtonContainer, buttonEventStyles }
+     * @param {object} customDialogStyle just like normal css 'property': 'value'
      * @returns early return if elements object is empty
      */
-    static async #addPlainDialogStyle(elements = {}, customStyles = {}) {
-        if (!elements) return;
+    static async #addPlainDialogStyle(defaultDialogStyle, customDialogStyle) {
+        if (!defaultDialogStyle && Object.entries(defaultDialogStyle).length <= 0) return;
 
-        const { backdrop, dialog, content, button, dialogCloseButtonContainer } = elements;
+        const { backdrop, dialog, content, button, dialogCloseButtonContainer } = defaultDialogStyle;
+        const definedDialogKeys = [ 'backdrop', 'dialog', 'content', 'button', 'dialogCloseButtonContainer' ];
+        const definedEventKeys = [ 'mouseover', 'mouseout', 'focus', 'blur' ];
 
         if (backdrop) {
             backdrop.style.setProperty('display', 'none');
+            backdrop.style.setProperty('justify-self', 'center', 'important');
+            backdrop.style.setProperty('align-self', 'center', 'important');
             backdrop.style.setProperty('position', 'fixed', 'important');
             backdrop.style.setProperty('top', '0', 'important');
             backdrop.style.setProperty('left', '0', 'important');
@@ -474,22 +502,29 @@ class Dialog {
             backdrop.style.setProperty('background-color', 'rgba(0, 0, 0, 0.1)', 'important');
             backdrop.style.setProperty('z-index', '9999', 'important');
             backdrop.style.setProperty('overflow-y', 'auto', 'important');
+            backdrop.style.setProperty('overflow-x', 'hidden', 'important');
             backdrop.style.setProperty('margin', '0', 'important');
             backdrop.style.setProperty('padding', '0', 'important');
+            backdrop.style.setProperty('box-sizing', 'border-box', 'important');
             backdrop.style.setProperty('opacity', '0');
         }
 
         if (dialog) {
             dialog.style.setProperty('margin', 'auto', 'important');
+            dialog.style.setProperty('justify-self', 'center', 'important');
+            dialog.style.setProperty('align-self', 'center', 'important');
             dialog.style.setProperty('border-radius', '10px', 'important');
             dialog.style.setProperty('box-shadow', '0 4px 8px rgba(0, 0, 0, 0.2)', 'important');
             dialog.style.setProperty('padding', '0', 'important');
+            dialog.style.setProperty('width', 'auto', 'important');
+            dialog.style.setProperty('height', 'auto', 'important');
             dialog.style.setProperty('max-width', '50vw', 'important');
             dialog.style.setProperty('max-height', '85vh', 'important');
             dialog.style.setProperty('min-width', '300px', 'important');
             dialog.style.setProperty('min-height', '150px', 'important');
             dialog.style.setProperty('box-sizing', 'border-box', 'important');
             dialog.style.setProperty('overflow-y', 'auto', 'important');
+            dialog.style.setProperty('overflow-x', 'hidden', 'important');
             dialog.style.setProperty('font-family', 'Arial, sans-serif', 'important');
             dialog.style.setProperty('background-color', '#f9f9f9', 'important');
             dialog.style.setProperty('display', 'flex', 'important');
@@ -498,6 +533,8 @@ class Dialog {
         }
 
         if (content) {
+            content.style.setProperty('width', 'auto', 'important');
+            content.style.setProperty('height', 'auto', 'important');
             content.style.setProperty('border-radius', '8px', 'important');
             content.style.setProperty('flex', '1 1 auto', 'important');
             content.style.setProperty('max-height', 'calc(100% - 20%)', 'important');
@@ -507,33 +544,16 @@ class Dialog {
             content.style.setProperty('color', '#555', 'important');
             content.style.setProperty('overflow-y', 'auto', 'important');
             content.style.setProperty('scroll-behavior', 'smooth');
+            content.style.setProperty('box-sizing', 'unset', 'important');
             content.style.setProperty('overflow-wrap', 'break-word', 'important');
         }
 
         if (button) {
-            button.addEventListener('mouseover', () => {
-                button.style.setProperty('background-color', '#495057', 'important');
-                button.style.setProperty('outline', '1px solid rgba(173, 181, 189, 0.5)', 'important');
-                button.style.setProperty('box-shadow', '0 4px 8px rgba(0, 0, 0, 0.2)', 'important');
-            });
-        
-            button.addEventListener('mouseout', () => {
-                button.style.setProperty('background-color', '#adb5bd', 'important');
-                button.style.removeProperty('outline');
-                button.style.removeProperty('box-shadow');
-            });
-
-            button.addEventListener('focus', () => {
-                button.style.setProperty('outline', '1px solid rgba(173, 181, 189, 0.5)', 'important');
-                button.style.setProperty('box-shadow', '0 4px 8px rgba(0, 0, 0, 0.2)', 'important');
-            });
-
-            button.addEventListener('blur', () => {
-                button.style.removeProperty('outline');
-                button.style.removeProperty('box-shadow');
-            });
-
-            button.style.setProperty('width', '1.250rem', 'important');
+            button.style.setProperty('user-select', 'none', 'important');
+            button.style.setProperty('font-family', 'Arial, sans-serif', 'important');
+            button.style.setProperty('width', '20px', 'important');
+            button.style.setProperty('height', 'auto', 'important');
+            button.style.setProperty('box-sizing', 'unset', 'important');
             button.style.setProperty('font-size', '1.250rem', 'important');
             button.style.setProperty('text-align', 'center', 'important');
             button.style.setProperty('background-color', '#adb5bd', 'important');
@@ -547,28 +567,78 @@ class Dialog {
         }
 
         if (dialogCloseButtonContainer) {
+            dialogCloseButtonContainer.style.setProperty('width', 'auto', 'important');
+            dialogCloseButtonContainer.style.setProperty('height', 'auto', 'important');
+            dialogCloseButtonContainer.style.setProperty('box-sizing', 'unset', 'important');
+            dialogCloseButtonContainer.style.setProperty('padding', '0', 'important');
+            dialogCloseButtonContainer.style.setProperty('margin', '0', 'important');
             dialogCloseButtonContainer.style.setProperty('flex', '0 0 20%', 'important');
             dialogCloseButtonContainer.style.setProperty('display', 'flex', 'important');
             dialogCloseButtonContainer.style.setProperty('align-items', 'center', 'important');
             dialogCloseButtonContainer.style.setProperty('justify-content', 'flex-end', 'important');
         }
 
-        if (customStyles && Object.entries(customStyles).length > 0) {
-            const definedKeys = Object.keys(elements);
+        // default eventStyles
+        for (const key in defaultDialogStyle.eventStyles) {
+            if (definedDialogKeys.includes(key)) {
+                validateAndApplyEventStyles(defaultDialogStyle[key], {}, defaultDialogStyle.eventStyles[key]);
+            } else {
+                await this.showMessageDialog('Invalid Default Dialog Style Key!', `This key => ${key} is not valid.`);
+            }
+        }
 
-            for (const key in customStyles) {
-                if (definedKeys.includes(key)) {
-                    for (const [property, value] of Object.entries(customStyles[key])) {
-                        elements[key].style.setProperty(property, value , 'important');
+        // override default eventStyles
+        if (customDialogStyle && Object.entries(customDialogStyle).length > 0) {
+            for (const key in customDialogStyle) {
+                if (definedDialogKeys.includes(key)) {
+                    for (const [property, value] of Object.entries(customDialogStyle[key])) {
+                        defaultDialogStyle[key].style.setProperty(property, value , 'important');
+                    }
+                } else if (key === 'eventStyles') {
+                    for (const dialogKey in customDialogStyle.eventStyles) {
+                        if (definedDialogKeys.includes(dialogKey)) {
+                            validateAndApplyEventStyles(defaultDialogStyle[dialogKey], customDialogStyle.eventStyles[dialogKey], defaultDialogStyle.eventStyles[dialogKey] || {});
+                        } else {
+                            await this.showMessageDialog('Invalid Custom Event Style Key!', `This key => ${dialogKey} is not valid.`);
+                        }
                     }
                 } else {
-                    await this.showMessageDialog('Invalid Key!', `This key => ${key} is not valid.`);
+                    await this.showMessageDialog('Invalid Custom Dialog Style Key!', `This key => ${key} is not valid.`);
                 }
             }
         }
 
         this.#addScrollbarStyles();
         this.#addDialogAnimationStyle();
+
+        async function validateAndApplyEventStyles(element, customEventStyles, defaultEventStyles) {
+            for (const eventKey in defaultEventStyles) {
+                if (!definedEventKeys.includes(eventKey)) {
+                    await Dialog.showMessageDialog('Invalid Default Event Style Key!', `This key => ${eventKey} is not valid.`);
+                }
+            }
+
+            for (const eventKey in customEventStyles) {
+                if (!definedEventKeys.includes(eventKey)) {
+                    await Dialog.showMessageDialog('Invalid Custom Event Style Key!', `This key => ${eventKey} is not valid.`);
+                }
+            }
+        
+            // Merge and apply styles for each event
+            for (const event of definedEventKeys) {
+                const eventStyles = { ...defaultEventStyles[event], ...customEventStyles[event]};
+                
+                element.addEventListener(event, () => {
+                    for (const [property, value] of Object.entries(eventStyles)) {
+                        if (value) {
+                            element.style.setProperty(property, value, 'important');
+                        } else {
+                            element.style.removeProperty(property);
+                        }
+                    }
+                });
+            }
+        }
     }
 
     /**
@@ -594,21 +664,26 @@ class Dialog {
      * @param {object} elements just like normal css 'property': 'value'
      * @returns early return if elements object is empty
      */
-    static #addStyles(elements = {}) {
-        if (!elements) return;
+    static #addStyles(elements) {
+        if (!elements && Object.entries(elements).length <= 0) return;
 
         const { dialog, title, content, input, buttons, divs } = elements;
 
         if (dialog) {
             dialog.style.setProperty('display', 'block', 'important');
+            dialog.style.setProperty('justify-self', 'center', 'important');
+            dialog.style.setProperty('align-self', 'center', 'important');
             dialog.style.setProperty('border', 'none', 'important');
             dialog.style.setProperty('border-radius', '10px', 'important');
             dialog.style.setProperty('box-shadow', '0 4px 8px rgba(0, 0, 0, 0.2)', 'important');
+            dialog.style.setProperty('margin', 'auto', 'important');
             dialog.style.setProperty('padding', '15px', 'important');
-            dialog.style.setProperty('max-width', '50vw', 'important');
-            dialog.style.setProperty('max-height', '85vh', 'important');
+            dialog.style.setProperty('width', 'auto', 'important');
+            dialog.style.setProperty('height', 'auto', 'important');
             dialog.style.setProperty('min-width', '300px', 'important');
             dialog.style.setProperty('min-height', '150px', 'important');
+            dialog.style.setProperty('max-width', '50vw', 'important');
+            dialog.style.setProperty('max-height', '85vh', 'important');
             dialog.style.setProperty('box-sizing', 'border-box', 'important');
             dialog.style.setProperty('font-family', 'Arial, sans-serif', 'important');
             dialog.style.setProperty('background-color', '#f9f9f9', 'important');
@@ -619,6 +694,10 @@ class Dialog {
         }
 
         if (title) {
+            title.style.setProperty('width', 'auto', 'important');
+            title.style.setProperty('height', 'auto', 'important');
+            title.style.setProperty('box-sizing', 'unset', 'important');
+            title.style.setProperty('padding', '0', 'important');
             title.style.setProperty('margin', '0 0 20px 0', 'important');
             title.style.setProperty('font-size', '1.5em', 'important');
             title.style.setProperty('color', '#333', 'important');
@@ -626,8 +705,12 @@ class Dialog {
         }
     
         if (content) {
+            content.style.setProperty('width', 'auto', 'important');
+            content.style.setProperty('height', 'auto', 'important');
+            content.style.setProperty('box-sizing', 'unset', 'important');
             content.style.setProperty('border-radius', '8px', 'important');
             content.style.setProperty('max-height', '300px', 'important');
+            content.style.setProperty('padding', '0', 'important');
             content.style.setProperty('margin', '10px 0', 'important');
             content.style.setProperty('color', '#555', 'important');
             content.style.setProperty('overflow-y', 'auto', 'important');
@@ -647,14 +730,32 @@ class Dialog {
             });
 
             input.style.setProperty('width', '100%', 'important');
+            input.style.setProperty('height', 'auto', 'important');
+            input.style.setProperty('font-family', 'Arial, sans-serif', 'important');
+            input.style.setProperty('box-sizing', 'unset', 'important');
             input.style.setProperty('padding', '8px', 'important');
             input.style.setProperty('margin', '0', 'important');
+            input.style.setProperty('font-size', 'small', 'important');
             input.style.setProperty('border', '1px solid #ccc', 'important');
             input.style.setProperty('border-radius', '4px', 'important');
         }
         
         if (buttons) {
             for (const button of Object.values(buttons)) {
+                button.style.setProperty('user-select', 'none', 'important');
+                button.style.setProperty('background-color', '#adb5bd', 'important');
+                button.style.setProperty('width', '100%', 'important');
+                button.style.setProperty('height', 'auto', 'important');
+                button.style.setProperty('box-sizing', 'unset', 'important');
+                button.style.setProperty('padding', '8px 16px', 'important');
+                button.style.setProperty('margin', '0', 'important');
+                button.style.setProperty('font-size', 'small', 'important');
+                button.style.setProperty('border', 'none', 'important');
+                button.style.setProperty('border-radius', '4px', 'important');
+                button.style.setProperty('color', '#fff', 'important');
+                button.style.setProperty('cursor', 'pointer', 'important');
+                button.style.setProperty('transition', 'background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out', 'important');
+
                 button.addEventListener('mouseover', () => {
                     button.style.setProperty('background-color', '#495057', 'important');
                     button.style.setProperty('outline', '1px solid rgba(173, 181, 189, 0.5)', 'important');
@@ -676,15 +777,6 @@ class Dialog {
                     button.style.removeProperty('outline');
                     button.style.removeProperty('box-shadow');
                 });
-
-                button.style.setProperty('background-color', '#adb5bd', 'important');
-                button.style.setProperty('width', '100%', 'important');
-                button.style.setProperty('padding', '8px 16px', 'important');
-                button.style.setProperty('border', 'none', 'important');
-                button.style.setProperty('border-radius', '4px', 'important');
-                button.style.setProperty('color', '#fff', 'important');
-                button.style.setProperty('cursor', 'pointer', 'important');
-                button.style.setProperty('transition', 'background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out', 'important');
             }
         }
     
@@ -692,16 +784,28 @@ class Dialog {
 
         if (dialogHeader) {
             dialogHeader.style.setProperty('width', '100%', 'important');
+            dialogHeader.style.setProperty('height', 'auto', 'important');
+            dialogHeader.style.setProperty('box-sizing', 'unset', 'important');
+            dialogHeader.style.setProperty('padding', '0', 'important');
+            dialogHeader.style.setProperty('margin', '0', 'important');
             dialogHeader.style.setProperty('border-bottom', '1px solid #ccc', 'important');
             dialogHeader.style.setProperty('margin-bottom', '20px', 'important');
         }
     
         if (dialogForm) {
             dialogForm.style.setProperty('width', '100%', 'important');
+            dialogForm.style.setProperty('height', 'auto', 'important');
+            dialogForm.style.setProperty('box-sizing', 'unset', 'important');
+            dialogForm.style.setProperty('padding', '0', 'important');
+            dialogForm.style.setProperty('margin', '0', 'important');
         }
     
         if (dialogInputContainer) {
             dialogInputContainer.style.setProperty('width', '100%', 'important');
+            dialogInputContainer.style.setProperty('height', 'auto', 'important');
+            dialogInputContainer.style.setProperty('box-sizing', 'unset', 'important');
+            dialogInputContainer.style.setProperty('padding', '0', 'important');
+            dialogInputContainer.style.setProperty('margin', '0', 'important');
             dialogInputContainer.style.setProperty('display', 'flex', 'important');
             dialogInputContainer.style.setProperty('justify-content', 'center', 'important');
             dialogInputContainer.style.setProperty('margin-bottom', '20px', 'important');
@@ -709,6 +813,10 @@ class Dialog {
 
         if (dialogButtonContainer) {
             dialogButtonContainer.style.setProperty('width', '100%', 'important');
+            dialogButtonContainer.style.setProperty('height', 'auto', 'important');
+            dialogButtonContainer.style.setProperty('box-sizing', 'unset', 'important');
+            dialogButtonContainer.style.setProperty('padding', '0', 'important');
+            dialogButtonContainer.style.setProperty('margin', '0', 'important');
             dialogButtonContainer.style.setProperty('display', 'flex', 'important');
             dialogButtonContainer.style.setProperty('justify-content', 'space-between', 'important');
             dialogButtonContainer.style.setProperty('gap', '4px', 'important');

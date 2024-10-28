@@ -63,10 +63,14 @@ The `showPlainDialog` method displays a customizable information dialog to the u
 await Dialog.showPlainDialog('This is a plain dialog', {
     backdrop: { 'background-color': 'rgba(0, 0, 0, 1)' },
     dialog: { 'width': '400px', 'background-color': '#fff' },
-    button: { 'color': 'red' }
-}, {
-    mouseover: { 'background-color': 'green' },
-    mouseout: { 'background-color': 'yellow' }
+    button: { 'color': 'red' },
+    eventStyles: {
+        button: {
+            mouseover: { 'background-color': 'green' },
+            mouseout: { 
+                'color': 'violet'
+        }
+    }
 });
 ```
 

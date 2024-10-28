@@ -67,8 +67,10 @@ await Dialog.showPlainDialog('This is a plain dialog', {
     eventStyles: {
         button: {
             mouseover: { 'background-color': 'green' },
-            mouseout: { 
-                'color': 'violet'
+            mouseout: {
+                'color': 'violet',
+                'background-color': 'lightgray'
+            }
         }
     }
 });

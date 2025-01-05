@@ -516,8 +516,6 @@ class Dialog {
             dialog.style.setProperty('border-radius', '10px', 'important');
             dialog.style.setProperty('box-shadow', '0 4px 8px rgba(0, 0, 0, 0.2)', 'important');
             dialog.style.setProperty('padding', '0', 'important');
-            dialog.style.setProperty('width', 'auto', 'important');
-            dialog.style.setProperty('height', 'auto', 'important');
             dialog.style.setProperty('max-width', '50vw', 'important');
             dialog.style.setProperty('max-height', '85vh', 'important');
             dialog.style.setProperty('min-width', '300px', 'important');
@@ -678,8 +676,6 @@ class Dialog {
             dialog.style.setProperty('box-shadow', '0 4px 8px rgba(0, 0, 0, 0.2)', 'important');
             dialog.style.setProperty('margin', 'auto', 'important');
             dialog.style.setProperty('padding', '15px', 'important');
-            dialog.style.setProperty('width', 'auto', 'important');
-            dialog.style.setProperty('height', 'auto', 'important');
             dialog.style.setProperty('min-width', '300px', 'important');
             dialog.style.setProperty('min-height', '150px', 'important');
             dialog.style.setProperty('max-width', '50vw', 'important');
@@ -837,6 +833,8 @@ class Dialog {
             styleTag = document.createElement('style');
             styleTag.id = 'dialog-scrollbar-style';
             document.head.appendChild(styleTag);
+        } else {
+            return;
         }
     
         styleTag.textContent = `
@@ -884,6 +882,8 @@ class Dialog {
             styleTag = document.createElement('style');
             styleTag.id = 'dialog-animation-style';
             document.head.appendChild(styleTag);
+        } else {
+            return;
         }
     
         styleTag.textContent = `

@@ -10,19 +10,19 @@
  */
 class Dialog {
     /**
-     * State of the Input Dialog OK (0)
+     * State of OK (0)
      */
     static OK_OPTION = 0;
     /**
-     * State of the Input Dialog CANCEL (1)
+     * State of CANCEL (1)
      */
     static CANCEL_OPTION = 1;
     /**
-     * State of the Confirm Dialog YES (2)
+     * State of YES (2)
      */
     static YES_OPTION = 2;
     /**
-     * State of the Confirm Dialog NO (3)
+     * State of NO (3)
      */
     static NO_OPTION = 3;
 
@@ -851,7 +851,7 @@ class Dialog {
         const showFn = this.#buildDialogWrapper(config, true);
         
         this.#dialogQueue = showFn();
-        
+
         return await this.#dialogQueue;
     }
 

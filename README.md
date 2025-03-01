@@ -133,10 +133,10 @@ customDialogStyle Object structure
 
 ## Static Variables
 
-- `OK_OPTION`: State of the Input Dialog OK (0).
-- `CANCEL_OPTION`: State of the Input Dialog CANCEL (1).
-- `YES_OPTION`: State of the Confirm Dialog YES (2).
-- `NO_OPTION`: State of the Confirm Dialog NO (3).
+- `OK_OPTION`: State of OK (0).
+- `CANCEL_OPTION`: State of CANCEL (1).
+- `YES_OPTION`: State of YES (2).
+- `NO_OPTION`: State of NO (3).
 
 ## Methods
 

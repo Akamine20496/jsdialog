@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="Dialog.min.js"></script>
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>JSDialogs Preview</h1>
+        <script>
+            (async () => {
+                const name = await Dialog.showInputDialog("Name Input", "Please enter your name:");
+                console.log("Name entered:", name.output);
+                
+                await Dialog.showMessageDialog("Welcome", `Hello, ${name.output}!`);
+                
+                const confirmed = await Dialog.showConfirmDialog("Confirmation", "Do you want to continue?");
+                if (confirmed.option === Dialog.YES_OPTION) {
+                    console.log("User confirmed.");
+                } else {
+                    console.log("User cancelled.");
+                }
+
+                await Dialog.showPlainDialog('This is a plain dialog', {
+                    backdrop: { 'background-color': 'rgba(0, 0, 0, 1)' },
+                    dialog: { 'width': '400px', 'background-color': '#fff' },
+                    button: { 'color': 'red', 'background-color': '#fefefe' }
+                });
+
+                const contents = [
+                    'Page 1',
+                    `Page 2 <b>This is a bold text, using b element tag</b>`,
+                    'Page 3'
+                ];
+
+                await Dialog.showInstructionDialog('Instruction Dialog', contents, {
+                    btnPrev: { 'background-color': 'green' },
+                    eventStyles: {
+                        '#btnPrev': {
+                            mouseover: {
+                                'background-color': 'yellow'
+                            },
+                            mouseout: {
+                                'background-color': 'blue'
+                            }
+                        }
+                    }
+                })
+            })()
+        </script>
+    </body>
+</html>

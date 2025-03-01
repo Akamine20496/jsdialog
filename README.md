@@ -3,7 +3,7 @@
 
 The `JSDialog` is a promise-based JavaScript utility that imitates native dialogs in desktop applications and provides a user-friendly way to display input dialogs, message dialogs, plain dialogs, and confirmation dialogs.
 
-Message Dialog and Plain Dialog can be used without the `await` keyword, but not Input Dialog and Confirm Dialog, because they require waiting for user input.
+Message Dialog and Plain Dialog can be used without the `await` keyword, and for Dialog and Confirm Dialog, since they require waiting for user input, `await` must be used or use `then()` to get the input data. Not using `await` will make all dialog appear at once.
 
 ## CDN Links
 
@@ -31,7 +31,7 @@ To create an input dialog, use the `showInputDialog` method. This method returns
 
 ```javascript
 const result = await Dialog.showInputDialog("Enter your name", "Please provide your name:");
-console.log("User input:", result.output);
+console.log("User input:", result.output, "Option used:", result.option);
 ```
 
 ## Message Dialog
@@ -48,7 +48,7 @@ To ask the user for a Yes or No answer, use the `showConfirmDialog` method. This
 
 ```javascript
 const userChoice = await Dialog.showConfirmDialog("Confirm Action", "Are you sure you want to proceed?");
-if (userChoice === Dialog.YES_OPTION) {
+if (userChoice.option === Dialog.YES_OPTION) {
     console.log("User chose Yes");
 } else {
     console.log("User chose No");
@@ -81,9 +81,15 @@ customDialogStyle Object structure
 {
     backdrop: { 'property': 'value', ... },
     dialog: { 'property': 'value', ... },
-    button: { 'property': 'value', ... },
+    header: { 'property': 'value', ... },
     content: { 'property': 'value', ... },
-    dialogCloseButtonContainer: { 'property': 'value', ... },
+    footer: { 'property': 'value', ... },
+    btnOk: { 'property': 'value', ... },
+    btnCancel: { 'property': 'value', ... },
+    btnYes: { 'property': 'value', ... },
+    btnNo: { 'property': 'value', ... },
+    btnPrev: { 'property': 'value', ... },
+    btnNext: { 'property': 'value', ... },
     eventStyles: {
         backdrop: {
             mouseover: { 'property': 'value', ... },
@@ -97,19 +103,25 @@ customDialogStyle Object structure
             focus: { 'property': 'value', ... },
             blur: { 'property': 'value', ... }
         },
-        button: {
-            mouseover: { 'property': 'value', ... },
-            mouseout: { 'property': 'value', ... },
-            focus: { 'property': 'value', ... },
-            blur: { 'property': 'value', ... }
-        },
         content: {
             mouseover: { 'property': 'value', ... },
             mouseout: { 'property': 'value', ... },
             focus: { 'property': 'value', ... },
             blur: { 'property': 'value', ... }
         },
-        dialogCloseButtonContainer: {
+        footer: {
+            mouseover: { 'property': 'value', ... },
+            mouseout: { 'property': 'value', ... },
+            focus: { 'property': 'value', ... },
+            blur: { 'property': 'value', ... }
+        },
+        button: {
+            mouseover: { 'property': 'value', ... },
+            mouseout: { 'property': 'value', ... },
+            focus: { 'property': 'value', ... },
+            blur: { 'property': 'value', ... }
+        },
+        '<button-element-id>': {
             mouseover: { 'property': 'value', ... },
             mouseout: { 'property': 'value', ... },
             focus: { 'property': 'value', ... },
@@ -121,85 +133,90 @@ customDialogStyle Object structure
 
 ## Static Variables
 
-- `OK_OPTION`: State of the Input Dialog OK (1).
-- `CANCEL_OPTION`: State of the Input Dialog CANCEL (0).
-- `YES_OPTION`: State of the Confirm Dialog YES (1).
-- `NO_OPTION`: State of the Confirm Dialog NO (0).
+- `OK_OPTION`: State of the Input Dialog OK (0).
+- `CANCEL_OPTION`: State of the Input Dialog CANCEL (1).
+- `YES_OPTION`: State of the Confirm Dialog YES (2).
+- `NO_OPTION`: State of the Confirm Dialog NO (3).
 
 ## Methods
 
-- `showInputDialog(dialogTitle, dialogContent)`: Displays an input dialog and returns the user input.
-- `showMessageDialog(dialogTitle, dialogContent)`: Displays a message dialog.
-- `showConfirmDialog(dialogTitle, dialogContent)`: Displays a confirmation dialog and returns the user's choice.
-- `showPlainDialog(dialogContent, customDialogStyle)`: Displays a plain dialog and can be customized. For the 2nd parameter, these are the keys that are only accepted `backdrop, dialog, content, button, dialogCloseButtonContainer, eventStyles`. For the eventStyles, these are the events that are only accepted `mouseover, mouseout, focus, blur`.
+- `showInputDialog(dialogTitle, dialogContent, customDialogStyle)`: Displays an input dialog and returns the user input.
+- `showMessageDialog(dialogTitle, dialogContent, customDialogStyle)`: Displays a message dialog.
+- `showConfirmDialog(dialogTitle, dialogContent, customDialogStyle)`: Displays a confirmation dialog and returns the user's choice.
+- `showPlainDialog(dialogContent, customDialogStyle)`: Displays a plain dialog and can be customized.
+- `showInstructionDialog(dialogTitle, dialogContents, customDialogStyle)`: Displays a paginated dialog that has a page counter to track the current page. 
 
 ### Options
 
 - **Input Dialog**: Returns an object containing:
   - `output`: User input or `null`.
-  - `outputLength`: Length of the user input.
-  - `option`: `1` for OK, `0` for Cancel.
+  - `option`: `0` for OK, `1` for Cancel.
 
 - **Confirm Dialog**: Returns:
-  - `1` for Yes, `0` for No.
+  - `option`: `2` for Yes, `3` for No.
 
 ## IDs and Classes
 
-If you want to override manually, please refer to the IDs and Classes below. ID is denoted by `#`, and Class is denoted by `.`
+If you want to override manually, please refer to the IDs and Classes below. ID is denoted by `#`, and Class is denoted by `.`.
+Be sure to add `!important` in your css value to override it.
 
 **Input Dialog**
 - dialog                -> #inputDialog
 - title                 -> #inputDialogTitle
+- header                -> #inputDialogHeader
+- footer                -> #inputDialogFooter
 - content               -> #inputDialogContent, .scrollableDialogContent
 - input                 -> #inputDialogInput
-- btnOk                 -> #inputDialogOkButton
-- btnCancel             -> #inputDialogCancelButton
-
-- dialogHeader          -> #inputDialogHeader
-- dialogForm            -> #inputDialogForm
-- dialogInputContainer  -> #inputDialogInputContainer
-- dialogButtonContainer -> #inputDialogButtonContainer
+- btnOk                 -> #btnOk
+- btnCancel             -> #btnCancel
 
 **Message Dialog**
 - dialog                -> #messageDialog
 - title                 -> #messageDialogTitle
+- header                -> #messageDialogHeader
+- footer                -> #messageDialogFooter
 - content               -> #messageDialogContent, .scrollableDialogContent
-- btnOk                 -> #messageDialogOkButton
-
-- dialogHeader          -> #messageDialogHeader
-- dialogButtonContainer -> #messageDialogButtonContainer
+- btnOk                 -> #btnOk
 
 **Confirm Dialog**
 - dialog                -> #confirmDialog
 - title                 -> #confirmDialogTitle
+- header                -> #confirmDialogHeader
+- footer                -> #confirmDialogFooter
 - content               -> #confirmDialogContent, .scrollableDialogContent
-- btnYes                -> #confirmDialogOkButton
-- btnNo                 -> #confirmDialogCancelButton
+- btnYes                -> #btnYes
+- btnNo                 -> #btnNo
 
-- dialogHeader          -> #confirmDialogHeader
-- dialogButtonContainer -> #confirmDialogButtonContainer
+**Instruction Dialog**
+- dialog                -> #instructionDialog
+- title                 -> #instructionDialogTitle
+- header                -> #instructionDialogHeader
+- footer                -> #instructionDialogFooter
+- content               -> #instructionDialogContent
+- btnOk                 -> #btnOk
+- btnPrev               -> #btnPrev
+- btnNext               -> #btnNext
 
 **Plain Dialog**
-- backdrop                      -> #plainDialogBackdrop
-- dialog                        -> #plainDialog
-- button                        -> #btnClose
-- content                       -> #plainDialogContent, .scrollableDialogContent
-
-- dialogCloseButtonContainer    -> #plainDialogCloseButtonContainer
+- backdrop              -> #plainDialogBackdrop
+- dialog                -> #plainDialog
+- button                -> #btnClose
+- header                -> #plainDialogHeader
+- content               -> #plainDialogContent, .scrollableDialogContent
 
 ## Example
 
 Here’s an example that combines the usage of all dialog types:
 
 ```javascript
-async function showDialogs() {
+(async () => {
     const name = await Dialog.showInputDialog("Name Input", "Please enter your name:");
     console.log("Name entered:", name.output);
     
     await Dialog.showMessageDialog("Welcome", `Hello, ${name.output}!`);
     
     const confirmed = await Dialog.showConfirmDialog("Confirmation", "Do you want to continue?");
-    if (confirmed === Dialog.YES_OPTION) {
+    if (confirmed.option === Dialog.YES_OPTION) {
         console.log("User confirmed.");
     } else {
         console.log("User cancelled.");
@@ -210,7 +227,25 @@ async function showDialogs() {
         dialog: { 'width': '400px', 'background-color': '#fff' },
         button: { 'color': 'red', 'background-color': '#fefefe' }
     });
-}
 
-showDialogs();
+    const contents = [
+        'Page 1',
+        `Page 2 <b>This is a bold text, using b element tag</b>`,
+        'Page 3'
+    ];
+
+    await Dialog.showInstructionDialog('Instruction Dialog', contents, {
+        btnPrev: { 'background-color': 'green' },
+        eventStyles: {
+            '#btnPrev': {
+                mouseover: {
+                    'background-color': 'yellow'
+                },
+                mouseout: {
+                    'background-color': 'blue'
+                }
+            }
+        }
+    })
+})()
 ```

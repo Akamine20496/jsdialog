@@ -1,0 +1,144 @@
+Configuration of dialogs (internally)
+
+<< For Message Dialog, Confirm Dialog, Input Dialog, Instruction Dialog >>
+
+{
+    dialog: {
+        id: '',
+        style: ''
+    },
+    header: {
+        tag: '',
+        id: '',
+        style: { property: value, ... },
+        title: {
+            tag: '',
+            id: '',
+            text: '',
+            style: { property: value, ... }
+        }
+    },
+    content: {
+        tag: '',
+        id: '',
+        text: '',
+        style: { property: value, ... }
+    },
+    input: {
+        tag: '',
+        id: '',
+        type: '',
+        style: { property: value, ... }
+    },
+    footer: {
+        tag: '',
+        id: '',
+        text: '',
+        style: { property: value, ... },
+        buttons: [
+            {
+                tag: '',
+                id: '',
+                text: '',
+                style: { property: value, ... },
+                option: null,
+                callback: (e, data) => {}
+            },
+            { ... }
+        ]
+    },
+    eventStyles: {
+        dialog: {
+            mouseover: { property: value, ... },
+            mouseout: { property: value, ... },
+            focus: { property: value, ... },
+            blur: { property: value, ... }
+        },
+        button: {
+            mouseover: { property: value, ... },
+            mouseout: { property: value, ... },
+            focus: { property: value, ... },
+            blur: { property: value, ... }
+        },
+        content: {
+            mouseover: { property: value, ... },
+            mouseout: { property: value, ... },
+            focus: { property: value, ... },
+            blur: { property: value, ... }
+        },
+        input: {
+            mouseover: { property: value, ... },
+            mouseout: { property: value, ... },
+            focus: { property: value, ... },
+            blur: { property: value, ... }
+        }
+        footer: {
+            mouseover: { property: value, ... },
+            mouseout: { property: value, ... },
+            focus: { property: value, ... },
+            blur: { property: value, ... }
+        },
+        '<button-element-id>': {
+            mouseover: { property: value, ... },
+            mouseout: { property: value, ... },
+            focus: { property: value, ... },
+            blur: { property: value, ... }
+        }
+    }
+}
+
+<< For Plain Dialog >>
+
+{
+    backdrop: {
+        id: '',
+        style: ''
+    },
+    dialog: {
+        id: '',
+        style: ''
+    },
+    header: {
+        tag: 'div',
+        id: 'plainDialogHeader',
+        style: { property: value, ... },
+        closeButton: {
+            tag: 'button',
+            id: 'btnClose',
+            text: '×',
+            style: { property: value, ... }
+        }
+    },
+    content: {
+        tag: 'div',
+        id: 'plainDialogContent',
+        text: dialogContent,
+        style: { property: value, ... }
+    },
+    eventStyles: {
+        backdrop: {
+            mouseover: { property: value, ... },
+            mouseout: { property: value, ... },
+            focus: { property: value, ... },
+            blur: { property: value, ... }
+        },
+        dialog: {
+            mouseover: { property: value, ... },
+            mouseout: { property: value, ... },
+            focus: { property: value, ... },
+            blur: { property: value, ... }
+        },
+        content: {
+            mouseover: { property: value, ... },
+            mouseout: { property: value, ... },
+            focus: { property: value, ... },
+            blur: { property: value, ... }
+        },
+        '<button-element-id>': {
+            mouseover: { property: value, ... },
+            mouseout: { property: value, ... },
+            focus: { property: value, ... },
+            blur: { property: value, ... }
+        }
+    }
+}

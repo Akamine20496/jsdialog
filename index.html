@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="Dialog.min.js"></script>
+        <script src="Dialog.js"></script>
         <title>Document</title>
     </head>
     <body>
@@ -25,28 +25,39 @@
                 await Dialog.showPlainDialog('This is a plain dialog', {
                     backdrop: { 'background-color': 'rgba(0, 0, 0, 1)' },
                     dialog: { 'width': '400px', 'background-color': '#fff' },
-                    button: { 'color': 'red', 'background-color': '#fefefe' }
+                    button: { 'color': 'red', 'background-color': '#fefefe' },
+                    eventStyles: {
+                        backdrop: {
+                            mouseover: { 'background': 'rgba(0, 0, 0, 0.5)' },
+                            mouseout: { 'background': 'green' }
+                        }
+                    }
                 });
 
                 const contents = [
-                    'Page 1',
-                    `Page 2 <b>This is a bold text, using b element tag</b>`,
-                    'Page 3'
+                    `Lorem ipsum odor amet, consectetuer adipiscing elit. Conubia vivamus accumsan habitasse ridiculus potenti inceptos ex sit. Sodales sed pharetra magnis euismod dis morbi habitasse euismod efficitur. Lectus nullam etiam malesuada convallis lacinia; est vulputate tincidunt. Sollicitudin id vestibulum turpis rhoncus venenatis aliquet. Netus lacinia nisi in mauris orci conubia. Litora vel tempus volutpat ligula interdum leo.`,
+                    `Lorem ipsum odor amet, consectetuer adipiscing elit. Conubia vivamus accumsan habitasse ridiculus potenti inceptos ex sit. Sodales sed pharetra magnis euismod dis morbi habitasse euismod efficitur. Lectus nullam etiam malesuada convallis lacinia; est vulputate tincidunt. Sollicitudin id vestibulum turpis rhoncus venenatis aliquet. Netus lacinia nisi in mauris orci conubia. Litora vel tempus volutpat ligula interdum leo.`,
+                    `Lorem ipsum odor amet, consectetuer adipiscing elit. Conubia vivamus accumsan habitasse ridiculus potenti inceptos ex sit. Sodales sed pharetra magnis euismod dis morbi habitasse euismod efficitur. Lectus nullam etiam malesuada convallis lacinia; est vulputate tincidunt. Sollicitudin id vestibulum turpis rhoncus venenatis aliquet. Netus lacinia nisi in mauris orci conubia. Litora vel tempus volutpat ligula interdum leo.`,
+                    '<b>This section allows html tags like this bold text</b>',
+                    null,
+                    undefined,
+                    function () { console.log('hello world'); }
                 ];
 
                 await Dialog.showInstructionDialog('Instruction Dialog', contents, {
-                    btnPrev: { 'background-color': 'green' },
+                    btnPrev: { 'background-color': 'red' },
+                    btnNext: { 'background-color': 'green' },
                     eventStyles: {
                         '#btnPrev': {
-                            mouseover: {
-                                'background-color': 'yellow'
-                            },
-                            mouseout: {
-                                'background-color': 'blue'
-                            }
+                            mouseover: { 'background-color': 'maroon' },
+                            mouseout: { 'background-color': 'red' }
+                        },
+                        '#btnNext': {
+                            mouseover: { 'background-color': 'darkgreen' },
+                            mouseout: { 'background-color': 'green' }
                         }
                     }
-                })
+                });
             })()
         </script>
     </body>

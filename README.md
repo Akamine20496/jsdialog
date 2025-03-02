@@ -63,7 +63,6 @@ The `showPlainDialog` method displays a customizable information dialog to the u
 await Dialog.showPlainDialog('This is a plain dialog', {
     backdrop: { 'background-color': 'rgba(0, 0, 0, 1)' },
     dialog: { 'width': '400px', 'background-color': '#fff' },
-    button: { 'color': 'red' },
     eventStyles: {
         button: {
             mouseover: { 'background-color': 'green' },
@@ -74,6 +73,33 @@ await Dialog.showPlainDialog('This is a plain dialog', {
         }
     }
 });
+```
+
+## Instruction Dialog
+
+The `showInstructionDialog` method displays a paginated content that has a page count tracker to the user.
+
+```javascript
+const contents = [
+    'Page 1, start',
+    'Page 2 <b>It allows html tags here</b>',
+    'Page 3, end.'
+];
+
+await Dialog.showInstructionDialog('Instruction Dialog', contents, {
+    btnPrev: { 'background-color': 'red' },
+    btnNext: { 'background-color': 'green' },
+    eventStyles: {
+        '#btnPrev': {
+            mouseover: { 'background-color': 'maroon' },
+            mouseout: { 'background-color': 'red' }
+        },
+        '#btnNext': {
+            mouseover: { 'background-color': 'darkgreen' },
+            mouseout: { 'background-color': 'green' }
+        }
+    }
+})
 ```
 
 customDialogStyle Object structure

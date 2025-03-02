@@ -867,16 +867,39 @@ class Dialog {
      * @returns {Promise} Resolves when the dialog is closed.
      */
     static async showInstructionDialog(dialogTitle, dialogContents, customDialogStyle = {}) {
+        if (!Array.isArray(dialogContents)) {
+            await this.showMessageDialog('Invalid Content', 'The contents must be array of strings.');
+
+            return;
+        }
+
+        function validateContents(dialogContents) {
+            return dialogContents.every(content => typeof content !== 'object' || content === null);
+        }
+
+        let cardHtml = null;
         let currentIndex = 0;
         const total = dialogContents.length;
 
-        // Build card HTML – each message is wrapped in a div;
-        // only the first card is visible.
-        let cardHtml = '<div id="instructionCardContainer">';
-        dialogContents.forEach((msg, i) => {
-            cardHtml += `<div class="instructionCard" style="display:${i === 0 ? 'block' : 'none'};">${msg}</div>`;
-        });
-        cardHtml += '</div>';
+        if (validateContents(dialogContents)) {
+            if (total > 0) {
+                // Build card HTML – each message is wrapped in a div;
+                // only the first card is visible.
+                cardHtml = '<div id="instructionCardContainer">';
+                for (const content of dialogContents) {
+                    cardHtml += `<div class="instructionCard">${content}</div>`;
+                }
+                cardHtml += '</div>';
+            } else {
+                await this.showMessageDialog('Empty content.', 'Please add content at least 1.');
+    
+                return;
+            }
+        } else {
+            await this.showMessageDialog('Invalid content.', 'Include only strings.');
+
+            return;
+        }
 
         const mergedEventStyles = Object.assign({}, this.#defaultEventStyles, customDialogStyle?.eventStyles || {});
 
@@ -928,35 +951,37 @@ class Dialog {
                 id: 'btnPrev',
                 text: '< Previous',
                 style: customDialogStyle?.btnPrev || {},
-                navigation: true,
                 option: null,
+                navigation: true,
                 callback: (e) => {
-                    const dialogElement = e.target.closest('dialog');
-                    const title = dialogElement.querySelector('h4');
+                    e.target.focus();
+
+                    const title = document.getElementById('instructionDialogTitle');
 
                     if (currentIndex > 0) {
                         currentIndex--;
                         updateCards();
-                        updateButtons();
                     }
 
                     title.innerText = dialogTitle + ` (${currentIndex + 1}/${total})`;
                 }
-            }, {
+            }, 
+            {
                 tag: 'button',
                 id: 'btnNext',
                 text: 'Next >',
                 style: customDialogStyle?.btnNext || {},
-                navigation: true,
                 option: null,
+                navigation: true,
                 callback: (e) => {
+                    e.target.focus();
+
                     const dialogElement = e.target.closest('dialog');
-                    const title = dialogElement.querySelector('h4');
+                    const title = document.getElementById('instructionDialogTitle');
 
                     if (currentIndex < total - 1) {
                         currentIndex++;
                         updateCards();
-                        updateButtons();
 
                         title.innerText = dialogTitle + ` (${currentIndex + 1}/${total})`;
                     } else if (currentIndex === total - 1) {
@@ -971,13 +996,13 @@ class Dialog {
         // Helper functions to update the card visibility and button texts.
         function updateCards() {
             const container = document.getElementById('instructionCardContainer');
-            if (container) {
-                const cardChildrenContainer = Array.from(container.children);
+            const cardChildrenContainer = container.getElementsByClassName('instructionCard');
 
-                for (let index = 0; index < total; index++) {
-                    cardChildrenContainer[index].style.display = (index === currentIndex) ? 'block' : 'none';
-                }
+            for (let index = 0; index < total; index++) {
+                cardChildrenContainer[index].style.display = (index === currentIndex) ? 'block' : 'none';
             }
+
+            updateButtons();
         }
 
         function updateButtons() {
@@ -1001,7 +1026,6 @@ class Dialog {
 
         this.#dialogQueue = showFn();
 
-        updateButtons();
         updateCards();
 
         return await this.#dialogQueue;

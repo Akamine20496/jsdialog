@@ -118,25 +118,25 @@ customDialogStyle Object structure
     btnNext: { 'property': 'value', ... },
     eventStyles: {
         backdrop: {
-            eventName: { 'property': 'value', ... }
+            eventname: { 'property': 'value', ... }
         },
         dialog: {
-            eventName: { 'property': 'value', ... }
+            eventname: { 'property': 'value', ... }
         },
         header: {
-            eventName: { 'property': 'value', ... }
+            eventname: { 'property': 'value', ... }
         },
         content: {
-            eventName: { 'property': 'value', ... }
+            eventname: { 'property': 'value', ... }
         },
         footer: {
-            eventName: { 'property': 'value', ... }
+            eventname: { 'property': 'value', ... }
         },
         button: {
-            eventName: { 'property': 'value', ... }
+            eventname: { 'property': 'value', ... }
         },
         '<button-element-id>': {
-            eventName: { 'property': 'value', ... }
+            eventname: { 'property': 'value', ... }
         }
     }
 }

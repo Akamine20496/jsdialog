@@ -125,7 +125,7 @@ customDialogStyle Object structure
         },
         header: {
             eventName: { 'property': 'value', ... }
-        }
+        },
         content: {
             eventName: { 'property': 'value', ... }
         },
@@ -203,7 +203,7 @@ Be sure to add `!important` in your css value to override it.
 - title                 -> #instructionDialogTitle
 - header                -> #instructionDialogHeader
 - footer                -> #instructionDialogFooter
-- content               -> #instructionDialogContent
+- content               -> #instructionDialogContent, .scrollableDialogContent
 - btnOk                 -> #btnOk
 - btnPrev               -> #btnPrev
 - btnNext               -> #btnNext

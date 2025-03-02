@@ -2,11 +2,11 @@
  * JSDialog by: Akamine20496
  * 
  * This is a class with `promise-based` function where it imitates
- * native dialogs in desktop and they require waiting for user 
- * input upon invoking this functions (excluding Message Dialog and Plain Dialog).
+ * native dialogs in desktop and they require waiting for user input 
+ * upon invoking this functions (excluding Message Dialog, Plain Dialog, and Instruction Dialog).
  * 
- * Message Dialog and Plain Dialog can be used without the `await` keyword, 
- * but not Input Dialog, Confirm Dialog, and Instruction Dialog, because they require waiting for user input.
+ * Message Dialog, Plain Dialog, and Instruction Dialog can be used without the `await` keyword, 
+ * but not Input Dialog, Confirm Dialog, because they require waiting for user input.
  */
 class Dialog {
     /**
@@ -279,6 +279,7 @@ class Dialog {
                             "align-items": "center",
                             "justify-content": "flex-end"
                         }, config.header.style));
+                        applyEventStyles(header, "header");
 
                         if (config.header.closeButton) {
                             const closeBtn = document.createElement(config.header.closeButton.tag || 'button');
@@ -404,6 +405,7 @@ class Dialog {
                             "margin": "0 0 10px 0",
                             "margin-bottom": "10px"
                         }, config.header.style));
+                        applyEventStyles(header, "header");
 
                         if (config.header.title) {
                             const title = document.createElement(config.header.title.tag || 'h4');

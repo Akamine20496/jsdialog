@@ -10,7 +10,21 @@
         <h1>JSDialogs Preview</h1>
         <script>
             (async () => {
-                const name = await Dialog.showInputDialog("Name Input", "Please enter your name:");
+                const name = await Dialog.showInputDialog("Name Input", "Please enter your name:", {
+                    eventStyles: {
+                        header: {
+                            mouseover: { 'background': 'yellow' },
+                            mouseout: { 'background': 'green', 'transform': 'rotate(180deg)' },
+                            click: { 'transform': 'scale(1.2)' }
+                        },
+                        input: {
+                            mouseover: { 'width': '100vw' },
+                            mouseout: { 'transform': 'scale(1)' },
+                            input: { 'transform': 'scale(1.10)' },
+                            change: { 'transform': 'scale(1)' }
+                        }
+                    }
+                });
                 console.log("Name entered:", name.output);
                 
                 await Dialog.showMessageDialog("Welcome", `Hello, ${name.output}!`);
@@ -27,6 +41,14 @@
                     dialog: { 'width': '400px', 'background-color': '#fff' },
                     button: { 'color': 'red', 'background-color': '#fefefe' },
                     eventStyles: {
+                        header: {
+                            mouseover: { 'background': 'black' },
+                            mouseout: { 'background': 'yellow' }
+                        },
+                        button: {
+                            mouseover: { 'transform': 'scale(1.2)' },
+                            mouseout: { 'transform': 'scale(1)' }
+                        },
                         backdrop: {
                             mouseover: { 'background': 'rgba(0, 0, 0, 0.5)' },
                             mouseout: { 'background': 'green' }

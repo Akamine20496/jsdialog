@@ -118,40 +118,25 @@ customDialogStyle Object structure
     btnNext: { 'property': 'value', ... },
     eventStyles: {
         backdrop: {
-            mouseover: { 'property': 'value', ... },
-            mouseout: { 'property': 'value', ... },
-            focus: { 'property': 'value', ... },
-            blur: { 'property': 'value', ... }
+            eventName: { 'property': 'value', ... }
         },
         dialog: {
-            mouseover: { 'property': 'value', ... },
-            mouseout: { 'property': 'value', ... },
-            focus: { 'property': 'value', ... },
-            blur: { 'property': 'value', ... }
+            eventName: { 'property': 'value', ... }
         },
+        header: {
+            eventName: { 'property': 'value', ... }
+        }
         content: {
-            mouseover: { 'property': 'value', ... },
-            mouseout: { 'property': 'value', ... },
-            focus: { 'property': 'value', ... },
-            blur: { 'property': 'value', ... }
+            eventName: { 'property': 'value', ... }
         },
         footer: {
-            mouseover: { 'property': 'value', ... },
-            mouseout: { 'property': 'value', ... },
-            focus: { 'property': 'value', ... },
-            blur: { 'property': 'value', ... }
+            eventName: { 'property': 'value', ... }
         },
         button: {
-            mouseover: { 'property': 'value', ... },
-            mouseout: { 'property': 'value', ... },
-            focus: { 'property': 'value', ... },
-            blur: { 'property': 'value', ... }
+            eventName: { 'property': 'value', ... }
         },
         '<button-element-id>': {
-            mouseover: { 'property': 'value', ... },
-            mouseout: { 'property': 'value', ... },
-            focus: { 'property': 'value', ... },
-            blur: { 'property': 'value', ... }
+            eventName: { 'property': 'value', ... }
         }
     }
 }

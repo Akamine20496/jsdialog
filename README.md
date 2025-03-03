@@ -102,7 +102,7 @@ await Dialog.showInstructionDialog('Instruction Dialog', contents, {
 })
 ```
 
-customDialogStyle Object structure
+## `customDialogStyle` Object structure
 ```javascript
 {
     backdrop: { 'property': 'value', ... },

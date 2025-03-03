@@ -313,8 +313,8 @@ class Dialog {
                                 applyEventStyles(closeBtn, '#' + config.header.closeButton.id);
 
                             closeBtn.addEventListener('click', () => {
-                                dlg.style.opacity = "0";
-                                backdrop.style.opacity = "0";
+                                dlg.style.setProperty("opacity", "0", "important");
+                                backdrop.style.setProperty("opacity", "0", "important");
 
                                 setTimeout(() => { backdrop.remove(); resolve(); }, 300);
                             });
@@ -545,7 +545,8 @@ class Dialog {
                             if (btnCount === 1) {
                                 btn.style.setProperty("width", "100%", "important");
                             } else if (btnCount === 2) {
-                                btn.style.setProperty("width", "50%", "important");
+                                btn.style.setProperty("width", "48%", "important");
+                                btn.style.setProperty("margin", "1%", "important");
                             } else {
                                 btn.style.setProperty("flex", "1", "important");
                                 btn.style.setProperty("margin", "0 4px", "important");

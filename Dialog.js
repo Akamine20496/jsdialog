@@ -466,9 +466,9 @@ class Dialog {
 
                     // Optional input.
                     if (config.input) {
-                        const inputContainer = document.createElement('div');
+                        const inputForm = document.createElement('form');
 
-                        applyElementStyles(inputContainer, {
+                        applyElementStyles(inputForm, {
                             "width": "100%",
                             "height": "auto",
                             "display": "flex",
@@ -497,21 +497,24 @@ class Dialog {
                         }, config.input.style));
                         applyEventStyles(input, "input");
 
-                        inputContainer.appendChild(input);
-                        dlg.appendChild(inputContainer);
-
                         function handleSubmit(e) {
-                            if (e.key === 'Enter' && e.target === input) {
-                                const dialog = e.target.closest('dialog');
-                                const button = dialog.querySelector('#btnOk');
+                            e.preventDefault();
 
-                                button.dispatchEvent(new Event('click'));
+                            const inputData = { output: null };
+                            inputData.option = config.footer.buttons[0].option;
+                            inputData.output = input.value ? Dialog.#sanitizeInput(input.value) : null;
 
-                                document.removeEventListener('keyup', handleSubmit);
-                            }
+                            inputForm.removeEventListener('submit', handleSubmit);
+
+                            dlg.close();
+                            resolve(inputData);
+                            dlg.remove();
                         }
 
-                        document.addEventListener('keyup', handleSubmit);
+                        inputForm.addEventListener('submit', handleSubmit);
+
+                        inputForm.appendChild(input);
+                        dlg.appendChild(inputForm);
                     }
 
                     // Footer.
@@ -536,6 +539,7 @@ class Dialog {
 
                         for (const btnConf of config.footer.buttons) {
                             const btn = document.createElement(btnConf.tag || 'button');
+                            btn.type = btnConf.id === 'inputDialogBtnOk' ? 'submit' : 'button';
 
                             if (btnConf.id)
                                 btn.id = btnConf.id;
@@ -573,14 +577,15 @@ class Dialog {
                                 applyEventStyles(btn, '#' + btnConf.id);
 
                             btn.addEventListener('click', (e) => {
-                                const inputData = { output: null };
-                                
-                                if (config.input) {
-                                    const input = e.target.closest('dialog').querySelector('input');
+                                if (config.dialog.id === 'inputDialog') {
+                                    const dialog = e.target.closest('dialog'); // get the parent (dialog)
+                                    const form = dialog.querySelector('form'); // get the form element
+                                    form.dispatchEvent(new Event('submit')); // invoke submit event
 
-                                    inputData.output = input ? this.#sanitizeInput(input.value) : null;
+                                    return;
                                 }
 
+                                const inputData = { output: null };
                                 inputData.option = btnConf.option;
 
                                 if (btnConf.callback && typeof btnConf.callback === 'function')
@@ -662,14 +667,14 @@ class Dialog {
                 buttons: [
                     {
                         tag: 'button',
-                        id: 'btnOk',
+                        id: 'inputDialogBtnOk',
                         text: 'OK',
                         style: customDialogStyle?.btnOk || {},
                         option: this.OK_OPTION
                     },
                     {
                         tag: 'button',
-                        id: 'btnCancel',
+                        id: 'inputDialogBtnCancel',
                         text: 'Cancel',
                         style: customDialogStyle?.btnCancel || {},
                         option: this.CANCEL_OPTION
@@ -727,7 +732,7 @@ class Dialog {
                 buttons: [
                     {
                         tag: 'button',
-                        id: 'btnOk',
+                        id: 'messageDialogBtnOk',
                         text: 'OK',
                         style: customDialogStyle?.btnOk || {},
                         option: this.OK_OPTION
@@ -785,14 +790,14 @@ class Dialog {
                 buttons: [
                     {
                         tag: 'button',
-                        id: 'btnYes',
+                        id: 'confirmDialogBtnYes',
                         text: 'Yes',
                         style: customDialogStyle?.btnYes || {},
                         option: this.YES_OPTION
                     },
                     {
                         tag: 'button',
-                        id: 'btnNo',
+                        id: 'confirmDialogBtnNo',
                         text: 'No',
                         style: customDialogStyle?.btnNo || {},
                         option: this.NO_OPTION
@@ -835,7 +840,7 @@ class Dialog {
                 style: customDialogStyle?.header || {},
                 closeButton: {
                     tag: 'button',
-                    id: 'btnClose',
+                    id: 'plainDialogBtnClose',
                     text: '×',
                     style: customDialogStyle?.btnClose || {}
                 }
@@ -942,7 +947,7 @@ class Dialog {
         if (total === 1) {
             config.footer.buttons.push({
                 tag: 'button',
-                id: 'btnOk',
+                id: 'instructionDialogBtnOk',
                 text: 'OK',
                 style: customDialogStyle?.btnOk || {},
                 option: this.OK_OPTION,
@@ -951,7 +956,7 @@ class Dialog {
         } else {
             config.footer.buttons.push({
                 tag: 'button',
-                id: 'btnPrev',
+                id: 'instructionDialogBtnPrev',
                 text: '< Previous',
                 style: customDialogStyle?.btnPrev || {},
                 option: null,
@@ -971,7 +976,7 @@ class Dialog {
             }, 
             {
                 tag: 'button',
-                id: 'btnNext',
+                id: 'instructionDialogBtnNext',
                 text: 'Next >',
                 style: customDialogStyle?.btnNext || {},
                 option: null,
@@ -1009,8 +1014,8 @@ class Dialog {
         }
 
         function updateButtons() {
-            const btnPrev = document.getElementById('btnPrev');
-            const btnNext = document.getElementById('btnNext');
+            const btnPrev = document.getElementById('instructionDialogBtnPrev');
+            const btnNext = document.getElementById('instructionDialogBtnNext');
 
             if (btnPrev) {
                 btnPrev.style.display = (currentIndex === 0) ? 'none' : 'inline-block';

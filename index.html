@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="Dialog.js"></script>
+        <script src="Dialog.min.js"></script>
         <title>Document</title>
     </head>
     <body>
@@ -22,19 +22,47 @@
                             mouseout: { 'transform': 'scale(1)' },
                             input: { 'transform': 'scale(1.10)' },
                             change: { 'transform': 'scale(1)' }
+                        },
+                        '#inputDialogBtnOk': {
+                            mouseover: { 'color': 'violet' }
+                        },
+                        '#inputDialogBtnCancel': {
+                            mouseover: { 'color': 'yellow' }
                         }
                     }
                 });
+
+                console.log("Input Dialog Data: ", name);
                 console.log("Name entered:", name.output);
                 
-                await Dialog.showMessageDialog("Welcome", `Hello, ${name.output}!`);
+                await Dialog.showMessageDialog("Welcome", `Hello, ${name.output}!`, {
+                    eventStyles: {
+                        '#messageDialogBtnOk': {
+                            mouseover: { 'transform': 'scale(1.05)' }
+                        }
+                    }
+                });
+
+                const config = {
+                    eventStyles: {
+                        '#confirmDialogBtnYes': {
+                            mouseover: { 'background': 'green' }
+                        },
+                        '#confirmDialogBtnNo': {
+                            mouseover: { 'background': 'orange' }
+                        }
+                    }
+                };
                 
-                const confirmed = await Dialog.showConfirmDialog("Confirmation", "Do you want to continue?");
+                const confirmed = await Dialog.showConfirmDialog("Confirmation", "Do you want to continue?", config);
+
                 if (confirmed.option === Dialog.YES_OPTION) {
                     console.log("User confirmed.");
                 } else {
                     console.log("User cancelled.");
                 }
+
+                console.log("Confirm Dialog Data: ", confirmed);
 
                 await Dialog.showPlainDialog('This is a plain dialog', {
                     backdrop: { 'background-color': 'rgba(0, 0, 0, 1)' },
@@ -52,6 +80,9 @@
                         backdrop: {
                             mouseover: { 'background': 'rgba(0, 0, 0, 0.5)' },
                             mouseout: { 'background': 'green' }
+                        },
+                        '#plainDialogBtnClose': {
+                            mouseover: { 'color': 'pink' }
                         }
                     }
                 });
@@ -70,11 +101,11 @@
                     btnPrev: { 'background-color': 'red' },
                     btnNext: { 'background-color': 'green' },
                     eventStyles: {
-                        '#btnPrev': {
+                        '#instructionDialogBtnPrev': {
                             mouseover: { 'background-color': 'maroon' },
                             mouseout: { 'background-color': 'red' }
                         },
-                        '#btnNext': {
+                        '#instructionDialogBtnNext': {
                             mouseover: { 'background-color': 'darkgreen' },
                             mouseout: { 'background-color': 'green' }
                         }

@@ -89,7 +89,7 @@ Configuration of dialogs (internally)
         style: { property: value, ... },
         closeButton: {
             tag: 'button',
-            id: 'btnClose',
+            id: 'plainDialogBtnClose',
             text: '×',
             style: { property: value, ... }
         }

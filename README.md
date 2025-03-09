@@ -178,8 +178,8 @@ Be sure to add `!important` in your css value to override it.
 - footer                -> #inputDialogFooter
 - content               -> #inputDialogContent, .scrollableDialogContent
 - input                 -> #inputDialogInput
-- btnOk                 -> #btnOk
-- btnCancel             -> #btnCancel
+- btnOk                 -> #inputDialogBtnOk
+- btnCancel             -> #inputDialogBtnCancel
 
 **Message Dialog**
 - dialog                -> #messageDialog
@@ -187,7 +187,7 @@ Be sure to add `!important` in your css value to override it.
 - header                -> #messageDialogHeader
 - footer                -> #messageDialogFooter
 - content               -> #messageDialogContent, .scrollableDialogContent
-- btnOk                 -> #btnOk
+- btnOk                 -> #messageDialogBtnOk
 
 **Confirm Dialog**
 - dialog                -> #confirmDialog
@@ -195,8 +195,8 @@ Be sure to add `!important` in your css value to override it.
 - header                -> #confirmDialogHeader
 - footer                -> #confirmDialogFooter
 - content               -> #confirmDialogContent, .scrollableDialogContent
-- btnYes                -> #btnYes
-- btnNo                 -> #btnNo
+- btnYes                -> #confirmDialogBtnYes
+- btnNo                 -> #confirmDialogBtnNo
 
 **Instruction Dialog**
 - dialog                -> #instructionDialog
@@ -204,14 +204,14 @@ Be sure to add `!important` in your css value to override it.
 - header                -> #instructionDialogHeader
 - footer                -> #instructionDialogFooter
 - content               -> #instructionDialogContent, .scrollableDialogContent
-- btnOk                 -> #btnOk
-- btnPrev               -> #btnPrev
-- btnNext               -> #btnNext
+- btnOk                 -> #instructionDialogBtnOk
+- btnPrev               -> #instructionDialogBtnPrev
+- btnNext               -> #instructionDialogBtnNext
 
 **Plain Dialog**
 - backdrop              -> #plainDialogBackdrop
 - dialog                -> #plainDialog
-- button                -> #btnClose
+- button                -> #plainDialogBtnClose
 - header                -> #plainDialogHeader
 - content               -> #plainDialogContent, .scrollableDialogContent
 

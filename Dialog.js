@@ -577,7 +577,7 @@ class Dialog {
                                 applyEventStyles(btn, '#' + btnConf.id);
 
                             btn.addEventListener('click', (e) => {
-                                if (config.dialog.id === 'inputDialog') {
+                                if (config.dialog.id === 'inputDialog' && btnConf.id === 'inputDialogBtnOk') {
                                     const dialog = e.target.closest('dialog'); // get the parent (dialog)
                                     const form = dialog.querySelector('form'); // get the form element
                                     form.dispatchEvent(new Event('submit')); // invoke submit event

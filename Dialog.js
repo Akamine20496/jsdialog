@@ -993,6 +993,7 @@ class Dialog {
 
                         title.innerText = dialogTitle + ` (${currentIndex + 1}/${total})`;
                     } else if (currentIndex === total - 1) {
+                        config.footer.buttons[1].navigation = false;
                         dialogElement.close();
                         dialogElement.remove();
                     }

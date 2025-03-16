@@ -8,7 +8,7 @@
  * Message Dialog, Plain Dialog, and Instruction Dialog can be used without the `await` keyword, 
  * but not Input Dialog, Confirm Dialog, because they require waiting for user input.
  */
-class Dialog {
+export default class Dialog {
     /**
      * State of OK (0)
      */

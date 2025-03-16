@@ -1,8 +1,5 @@
 # ignore node_modules
-node_modules/
+/node_modules
 
-# ignore dist
-dist/
-
-# ignore any log files
-*.log
+# ignore dist files
+/dist

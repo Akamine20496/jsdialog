@@ -1,4 +1,4 @@
-export declare class Dialog {
+declare class Dialog {
     /**
      * State of OK (0)
      */
@@ -70,3 +70,5 @@ export declare class Dialog {
      */
     static showInstructionDialog(dialogTitle: string, dialogContents: string[], customDialogStyle?: Record<string, any>): Promise<void>;
 }
+
+export default Dialog;

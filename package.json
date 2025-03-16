@@ -1,12 +1,12 @@
 {
   "name": "@akamine20496/jsdialog",
   "version": "3.4.4",
-  "description": "Promised-based Javascript Dialog Utility",
+  "description": "Promised-based JavaScript Dialog Utility",
   "keywords": [
-    "JavaScript-Dialog",
-    "JSDialog",
-    "Promised-Based-Dialog",
-    "Dialog"
+    "javascript-dialog",
+    "jsdialog",
+    "promised-based",
+    "dialog"
   ],
   "homepage": "https://github.com/Akamine20496/jsdialog#readme",
   "bugs": {
@@ -19,14 +19,18 @@
   "license": "ISC",
   "author": "Akamine20496",
   "type": "module",
-  "main": "dist/Dialog.min.js",
-  "types": "src/Dialog.d.ts",
+  "main": "dist/dialog.min.js",
+  "types": "dist/dialog.d.ts",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild src/Dialog.js --bundle --minify --outfile=dist/Dialog.min.js",
-    "watch": "esbuild src/Dialog.js --bundle --minify --outfile=dist/Dialog.min.js --watch"
+    "build": "esbuild src/dialog.js --minify --format=esm --keep-names --outfile=dist/dialog.min.js && shx cp src/dialog.d.ts dist/",
+    "watch": "esbuild src/dialog.js --minify --format=esm --keep-names --outfile=dist/dialog.min.js && shx cp src/dialog.d.ts dist/ --watch"
   },
   "devDependencies": {
-    "esbuild": "^0.25.1"
+    "esbuild": "^0.25.1",
+    "shx": "^0.3.4"
   }
 }

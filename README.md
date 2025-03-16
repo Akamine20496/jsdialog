@@ -248,7 +248,7 @@ Here’s an example that combines the usage of all dialog types:
     await Dialog.showInstructionDialog('Instruction Dialog', contents, {
         btnPrev: { 'background-color': 'green' },
         eventStyles: {
-            '#btnPrev': {
+            '#instructionDialogBtnPrev': {
                 mouseover: {
                     'background-color': 'yellow'
                 },

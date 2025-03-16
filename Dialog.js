@@ -255,9 +255,9 @@ class Dialog {
                         "display": "flex",
                         "flex-direction": "column",
                         "opacity": "0",
-                        "overflow-y": "auto",
-                        "overflow-x": "hidden",
-                        "font-family": "Arial, sans-serif"
+                        "overflow": "hidden",
+                        "font-family": "Arial, sans-serif",
+                        "user-select": "text"
                     }, config.dialog.style));
                     applyEventStyles(dlg, "dialog");
 
@@ -271,6 +271,7 @@ class Dialog {
                         applyElementStyles(header, Object.assign({
                             "width": "auto",
                             "height": "auto",
+                            "background-color": "inherit",
                             "box-sizing": "unset",
                             "padding": "0",
                             "margin": "0",
@@ -374,17 +375,20 @@ class Dialog {
                         "border": "none",
                         "border-radius": "10px",
                         "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)",
-                        "margin": "auto",
+                        "margin": "0 auto",
+                        "align-self": "center",
                         "padding": "15px",
                         "min-width": "300px",
                         "min-height": "150px",
-                        "max-width": "50vw",
-                        "max-height": "85vh",
+                        "max-width": "45vw",
+                        "max-height": "900px",
                         "box-sizing": "border-box",
                         "font-family": "Arial, sans-serif",
+                        "user-select": "text",
                         "background-color": "#f9f9f9",
-                        "overflow-y": "auto",
-                        "overflow-x": "hidden",
+                        "position": "static",
+                        "top": "0",
+                        "overflow": "hidden",
                         "animation": "fade-in 0.3s ease",
                         "animation-fill-mode": "forwards"
                     }, config.dialog.style));
@@ -398,8 +402,9 @@ class Dialog {
                             header.id = config.header.id;
 
                         applyElementStyles(header, Object.assign({
-                            "width": "100%",
+                            "width": "auto",
                             "height": "auto",
+                            "background-color": "inherit",
                             "box-sizing": "unset",
                             "padding": "0",
                             "margin": "0 0 10px 0",
@@ -497,12 +502,12 @@ class Dialog {
                         }, config.input.style));
                         applyEventStyles(input, "input");
 
-                        function handleSubmit(e) {
+                        const handleSubmit = (e) => {
                             e.preventDefault();
 
                             const inputData = { output: null };
                             inputData.option = config.footer.buttons[0].option;
-                            inputData.output = input.value ? Dialog.#sanitizeInput(input.value) : null;
+                            inputData.output = input.value ? this.#sanitizeInput(input.value) : null;
 
                             inputForm.removeEventListener('submit', handleSubmit);
 
@@ -527,6 +532,8 @@ class Dialog {
                         applyElementStyles(footer, Object.assign({
                             "width": "100%",
                             "height": "auto",
+                            "background-color": "inherit",
+                            "overflow": "hidden",
                             "box-sizing": "unset",
                             "padding": "0",
                             "display": "flex",
@@ -882,22 +889,16 @@ class Dialog {
         }
 
         function validateContents(dialogContents) {
-            return dialogContents.every(content => typeof content !== 'object' || content === null);
+            return dialogContents.every(content => typeof content === 'string');
         }
 
-        let cardHtml = null;
+        let contents = [];
         let currentIndex = 0;
         const total = dialogContents.length;
 
         if (validateContents(dialogContents)) {
             if (total > 0) {
-                // Build card HTML – each message is wrapped in a div;
-                // only the first card is visible.
-                cardHtml = '<div id="instructionCardContainer">';
-                for (const content of dialogContents) {
-                    cardHtml += `<div class="instructionCard">${content}</div>`;
-                }
-                cardHtml += '</div>';
+                contents = dialogContents;
             } else {
                 await this.showMessageDialog('Empty content.', 'Please add content at least 1.');
     
@@ -931,7 +932,7 @@ class Dialog {
             content: {
                 tag: 'main',
                 id: 'instructionDialogContent',
-                text: cardHtml,
+                text: contents[0],
                 style: customDialogStyle?.content || {}
             },
             footer: {
@@ -968,10 +969,10 @@ class Dialog {
 
                     if (currentIndex > 0) {
                         currentIndex--;
-                        updateCards();
-                    }
+                        updateContents();
 
-                    title.innerText = dialogTitle + ` (${currentIndex + 1}/${total})`;
+                        title.innerText = dialogTitle + ` (${currentIndex + 1}/${total})`;
+                    }
                 }
             }, 
             {
@@ -983,32 +984,30 @@ class Dialog {
                 navigation: true,
                 callback: (e) => {
                     e.target.focus();
-
-                    const dialogElement = e.target.closest('dialog');
+                    
                     const title = document.getElementById('instructionDialogTitle');
 
                     if (currentIndex < total - 1) {
                         currentIndex++;
-                        updateCards();
+                        updateContents();
 
                         title.innerText = dialogTitle + ` (${currentIndex + 1}/${total})`;
                     } else if (currentIndex === total - 1) {
                         config.footer.buttons[1].navigation = false;
-                        dialogElement.close();
-                        dialogElement.remove();
                     }
                 }
             }
             );
         }
 
-        // Helper functions to update the card visibility and button texts.
-        function updateCards() {
-            const container = document.getElementById('instructionCardContainer');
-            const cardChildrenContainer = container.getElementsByClassName('instructionCard');
+        // Helper functions to update the button texts.
+        const updateContents = () => {
+            const instructionDialogContent = document.getElementById('instructionDialogContent');
 
-            for (let index = 0; index < total; index++) {
-                cardChildrenContainer[index].style.display = (index === currentIndex) ? 'block' : 'none';
+            if (this.#hasHTMLTag(contents[currentIndex])) {
+                instructionDialogContent.innerHTML = contents[currentIndex];
+            } else {
+                instructionDialogContent.innerText = contents[currentIndex];
             }
 
             updateButtons();
@@ -1035,7 +1034,7 @@ class Dialog {
 
         this.#dialogQueue = showFn();
 
-        updateCards();
+        updateContents()
 
         return await this.#dialogQueue;
     }

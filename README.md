@@ -19,7 +19,9 @@ or for the minified version:
 <script src="https://res.cloudinary.com/dy0sbkf3u/raw/upload/Dialog.min.js"></script>
 ```
 
-```text
+node package install
+
+```bash
 npm i @akamine20496/jsdialog
 ```
 

@@ -19,9 +19,13 @@ or for the minified version:
 <script src="https://res.cloudinary.com/dy0sbkf3u/raw/upload/Dialog.min.js"></script>
 ```
 
+```text
+npm i @akamine20496/jsdialog
+```
+
 ## Installation
 
-You can include the Dialog class in your project by either downloading the JavaScript file or linking to it via a CDN as shown above.
+You can include the Dialog class in your project by either downloading the JavaScript file, linking to it via a CDN, or install in node package as shown above.
 
 ## Usage
 

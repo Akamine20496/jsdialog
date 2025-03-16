@@ -3,7 +3,7 @@
 
 The `JSDialog` is a promise-based JavaScript utility that imitates native dialogs in desktop applications and provides a user-friendly way to display input dialogs, message dialogs, plain dialogs, and confirmation dialogs.
 
-Message Dialog and Plain Dialog can be used without the `await` keyword, and for Dialog and Confirm Dialog, since they require waiting for user input, `await` must be used or use `then()` to get the input data. Not using `await` will make all dialog appear at once.
+Message Dialog, Plain Dialog, and Instruction Dialog can be used without the `await` keyword, and for Input Dialog and Confirm Dialog, since they require waiting for user input, `await` must be used or use `then()` to get the input data. Not using `await` will make all dialog appear at once.
 
 ## CDN Links
 

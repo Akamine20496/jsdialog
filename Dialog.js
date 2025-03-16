@@ -533,7 +533,6 @@ class Dialog {
                             "width": "100%",
                             "height": "auto",
                             "background-color": "inherit",
-                            "overflow": "hidden",
                             "box-sizing": "unset",
                             "padding": "0",
                             "display": "flex",

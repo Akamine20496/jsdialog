@@ -10,13 +10,13 @@
     "Dialog",
     "Dialog"
   ],
-  "homepage": "https://github.com/Akamine20496/JSDialog#readme",
+  "homepage": "https://github.com/Akamine20496/jsdialog#readme",
   "bugs": {
-    "url": "https://github.com/Akamine20496/JSDialog/issues"
+    "url": "https://github.com/Akamine20496/jsdialog/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Akamine20496/JSDialog.git"
+    "url": "git+https://github.com/Akamine20496/jsdialog.git"
   },
   "license": "ISC",
   "author": "Akamine20496",

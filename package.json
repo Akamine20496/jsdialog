@@ -1,0 +1,34 @@
+{
+  "name": "@akamine20496/jsdialog",
+  "version": "3.4.4",
+  "description": "Promised-based Javascript Dialog Utility",
+  "keywords": [
+    "JavaScript",
+    "Dialog",
+    "JSDialog",
+    "Promised-Based",
+    "Dialog",
+    "Dialog"
+  ],
+  "homepage": "https://github.com/Akamine20496/JSDialog#readme",
+  "bugs": {
+    "url": "https://github.com/Akamine20496/JSDialog/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akamine20496/JSDialog.git"
+  },
+  "license": "ISC",
+  "author": "Akamine20496",
+  "type": "module",
+  "main": "dist/Dialog.min.js",
+  "types": "src/Dialog.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild src/Dialog.js --bundle --minify --outfile=dist/Dialog.min.js",
+    "watch": "esbuild src/Dialog.js --bundle --minify --outfile=dist/Dialog.min.js --watch"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.1"
+  }
+}

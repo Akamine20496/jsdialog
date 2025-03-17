@@ -53,7 +53,7 @@ export interface ElementEventStyle {
     content?: EventStyle;
     footer?: EventStyle;
     button?: EventStyle;
-    [elementNameId: string]: EventStyle;
+    [elementNameId: string]: EventStyle | undefined;
 }
 
 /**

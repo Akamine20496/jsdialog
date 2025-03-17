@@ -96,11 +96,11 @@ await Dialog.showInstructionDialog('Instruction Dialog', contents, {
     btnPrev: { 'background-color': 'red' },
     btnNext: { 'background-color': 'green' },
     eventStyles: {
-        '#btnPrev': {
+        '#instructionDialogBtnPrev': {
             mouseover: { 'background-color': 'maroon' },
             mouseout: { 'background-color': 'red' }
         },
-        '#btnNext': {
+        '#instructionDialogBtnNext': {
             mouseover: { 'background-color': 'darkgreen' },
             mouseout: { 'background-color': 'green' }
         }

@@ -1,6 +1,6 @@
 {
   "name": "@akamine96204/jsdialog",
-  "version": "3.4.4",
+  "version": "3.4.5",
   "description": "Promised-based JavaScript Dialog Utility",
   "keywords": [
     "javascript-dialog",
@@ -30,6 +30,7 @@
     "watch": "esbuild src/dialog.js --minify --format=esm --keep-names --outfile=dist/dialog.min.js && shx cp src/dialog.d.ts dist/ --watch"
   },
   "devDependencies": {
+    "csstype": "^3.1.3",
     "esbuild": "^0.25.1",
     "shx": "^0.3.4"
   }

@@ -1,3 +1,79 @@
+import * as CSS from 'csstype';
+
+// declare interface for the customDialogStyle
+
+/**
+ * CSS Styling { 'property': 'value' } with dash-case keys.
+ */
+export type CssStyle = CSS.PropertiesHyphen;
+
+/**
+ * Event Names
+ */
+export type EventName =
+  | 'click'
+  | 'dblclick'
+  | 'mousedown'
+  | 'mouseup'
+  | 'mouseenter'
+  | 'mouseleave'
+  | 'mouseover'
+  | 'mouseout'
+  | 'blur'
+  | 'focus'
+  | 'focusin'
+  | 'focusout'
+  | 'keydown'
+  | 'keyup'
+  | 'keypress'
+  | 'touchstart'
+  | 'touchmove'
+  | 'touchend'
+  | 'touchcancel'
+  | 'change'
+  | 'input';
+
+/**
+ * Event Styling { eventname: { 'property': 'value' } }.
+ * 
+ * This version provides autocompletion for common event names,
+ * marks them as optional, and allows additional event names.
+ */
+export interface EventStyle extends Partial<Record<EventName, CssStyle>> {
+    [eventname: string]: CssStyle | undefined;
+}
+
+/**
+ * Element Event Styling 
+ */
+export interface ElementEventStyle {
+    backdrop?: EventStyle;
+    dialog?: EventStyle;
+    header?: EventStyle;
+    content?: EventStyle;
+    footer?: EventStyle;
+    button?: EventStyle;
+    [elementNameId: string]: EventStyle;
+}
+
+/**
+ * Dialog Styling element: { 'property': 'value' } (except eventStyles)
+ */
+export interface CustomDialogStyle {
+    backdrop?: CssStyle;
+    dialog?: CssStyle;
+    header?: CssStyle;
+    content?: CssStyle;
+    footer?: CssStyle;
+    btnOk?: CssStyle;
+    btnCancel?: CssStyle;
+    btnYes?: CssStyle;
+    btnNo?: CssStyle;
+    btnPrev?: CssStyle;
+    btnNext?: CssStyle;
+    eventStyles?: ElementEventStyle;
+}
+
 declare class Dialog {
     /**
      * State of OK (0)
@@ -26,7 +102,7 @@ declare class Dialog {
      *   - `output`: The value of the input.
      *   - `option`: 0 for "Ok", 1 for "Cancel".
      */
-    static showInputDialog(dialogTitle: string, dialogContent: string, customDialogStyle?: Record<string, any>): Promise<{ output: string, option: number }>;
+    static showInputDialog(dialogTitle: string, dialogContent: string, customDialogStyle?: CustomDialogStyle): Promise<{ output: string, option: number }>;
 
     /**
      * Method of Dialog Class that shows an information message.
@@ -35,7 +111,7 @@ declare class Dialog {
      * @param customDialogStyle - Optional custom styles (including eventStyles).
      * @returns A promise that resolves when the dialog is closed.
      */
-    static showMessageDialog(dialogTitle: string, dialogContent: string, customDialogStyle?: Record<string, any>): Promise<void>;
+    static showMessageDialog(dialogTitle: string, dialogContent: string, customDialogStyle?: CustomDialogStyle): Promise<void>;
 
     /**
      * Method of Dialog Class that asks for a YES or NO answer.
@@ -47,7 +123,7 @@ declare class Dialog {
      *   - `output`: Always `null`.
      *   - `option`: 2 for "Yes", 3 for "No".
      */
-    static showConfirmDialog(dialogTitle: string, dialogContent: string, customDialogStyle?: Record<string, any>): Promise<{ output: null, option: number }>;
+    static showConfirmDialog(dialogTitle: string, dialogContent: string, customDialogStyle?: CustomDialogStyle): Promise<{ output: null, option: number }>;
 
     /**
      * Method of Dialog Class that shows an information message and is customizable.
@@ -55,7 +131,7 @@ declare class Dialog {
      * @param customDialogStyle - Optional custom styles (including eventStyles).
      * @returns A promise that resolves when the dialog is closed.
      */
-    static showPlainDialog(dialogContent: string, customDialogStyle?: Record<string, any>): Promise<void>;
+    static showPlainDialog(dialogContent: string, customDialogStyle?: CustomDialogStyle): Promise<void>;
 
     /**
      * Method of Dialog Class that displays multiple messages (as an array of strings)
@@ -68,7 +144,7 @@ declare class Dialog {
      * @param customDialogStyle - Optional custom styles (including eventStyles).
      * @returns A promise that resolves when the dialog is closed.
      */
-    static showInstructionDialog(dialogTitle: string, dialogContents: string[], customDialogStyle?: Record<string, any>): Promise<void>;
+    static showInstructionDialog(dialogTitle: string, dialogContents: string[], customDialogStyle?: CustomDialogStyle): Promise<void>;
 }
 
 export default Dialog;

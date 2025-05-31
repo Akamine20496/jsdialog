@@ -175,6 +175,16 @@ export default class Dialog {
     }
 
     /**
+     * Apply responsive layout for dialog
+     * @param {HTMLElement} dialog 
+     * @param {string} originalMaxWidth 
+     */
+    static #applyResponsiveDialogStyle(dialog, originalMaxWidth) {
+        const isMobile = window.innerWidth <= 768;
+        dialog.style.setProperty("max-width", isMobile ? "90vw" : originalMaxWidth, "important");
+    }
+
+    /**
      * Internal builder that creates a dialog based on the internal config.
      * The config structure is fixed (header, content, footer, eventStyles) and
      * is built internally within each public method.
@@ -238,6 +248,11 @@ export default class Dialog {
                     // dialog
                     const dlg = document.createElement('div');
 
+                    const originalMaxWidth = config.dialog.style?.['max-width'] || '50vw';
+                    const resizeHandler = () => this.#applyResponsiveDialogStyle(dlg, originalMaxWidth);
+                    window.addEventListener('resize', resizeHandler);
+                    resizeHandler(); // Initial apply
+
                     dlg.id = config.dialog.id || "modalDialog";
                     dlg.className = 'fade-in';
 
@@ -246,7 +261,6 @@ export default class Dialog {
                         "padding": "0",
                         "border-radius": "10px",
                         "box-shadow": "0 6px 12px rgba(0, 0, 0, 0.2)",
-                        "max-width": "50vw",
                         "max-height": "85vh",
                         "min-width": "300px",
                         "min-height": "150px",
@@ -317,7 +331,11 @@ export default class Dialog {
                                 dlg.style.setProperty("opacity", "0", "important");
                                 backdrop.style.setProperty("opacity", "0", "important");
 
-                                setTimeout(() => { backdrop.remove(); resolve(); }, 300);
+                                setTimeout(() => { 
+                                    window.removeEventListener('resize', resizeHandler);
+                                    backdrop.remove(); 
+                                    resolve(); 
+                                }, 300);
                             });
 
                             header.appendChild(closeBtn);
@@ -368,6 +386,11 @@ export default class Dialog {
                     // --- Modal dialog (using <dialog>) ---
                     const dlg = document.createElement('dialog');
 
+                    const originalMaxWidth = config.dialog.style?.['max-width'] || '50vw';
+                    const resizeHandler = () => this.#applyResponsiveDialogStyle(dlg, originalMaxWidth);
+                    window.addEventListener('resize', resizeHandler);
+                    resizeHandler(); // Initial apply
+
                     dlg.id = config.dialog.id || "modalDialog";
 
                     applyElementStyles(dlg, Object.assign({
@@ -375,20 +398,17 @@ export default class Dialog {
                         "border": "none",
                         "border-radius": "10px",
                         "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)",
-                        "margin": "0 auto",
-                        "align-self": "center",
+                        "margin": "auto",
                         "padding": "15px",
                         "min-width": "300px",
                         "min-height": "150px",
-                        "max-width": "45vw",
-                        "max-height": "900px",
+                        "max-height": "85vh",
                         "box-sizing": "border-box",
                         "font-family": "Arial, sans-serif",
                         "user-select": "text",
                         "background-color": "#f9f9f9",
-                        "position": "static",
-                        "top": "0",
-                        "overflow": "hidden",
+                        "overflow-y": "auto",
+                        "overflow-x": "hidden",
                         "animation": "fade-in 0.3s ease",
                         "animation-fill-mode": "forwards"
                     }, config.dialog.style));
@@ -402,7 +422,7 @@ export default class Dialog {
                             header.id = config.header.id;
 
                         applyElementStyles(header, Object.assign({
-                            "width": "auto",
+                            "width": "100%",
                             "height": "auto",
                             "background-color": "inherit",
                             "box-sizing": "unset",
@@ -600,6 +620,7 @@ export default class Dialog {
                                 // For instruction dialogs, if the button is marked as navigation, do not close.
                                 if (config.instructionDialog && btnConf.navigation === true) return;
 
+                                window.removeEventListener('resize', resizeHandler);
                                 dlg.close();
                                 resolve(inputData);
                                 dlg.remove();

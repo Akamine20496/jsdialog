@@ -53,7 +53,7 @@ export interface ElementEventStyle {
     content?: EventStyle;
     footer?: EventStyle;
     button?: EventStyle;
-    [elementNameId: string]: EventStyle | undefined;
+    [buttonId: string]: EventStyle | undefined;
 }
 
 /**
@@ -64,11 +64,13 @@ export interface CustomDialogStyle {
     dialog?: CssStyle;
     header?: CssStyle;
     content?: CssStyle;
+    input?: CssStyle;
     footer?: CssStyle;
     btnOk?: CssStyle;
     btnCancel?: CssStyle;
     btnYes?: CssStyle;
     btnNo?: CssStyle;
+    btnClose?: CssStyle;
     btnPrev?: CssStyle;
     btnNext?: CssStyle;
     eventStyles?: ElementEventStyle;

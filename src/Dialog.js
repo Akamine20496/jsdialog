@@ -1,11 +1,11 @@
 /**
  * JSDialog by: Akamine20496
- * 
+ *
  * This is a class with `promise-based` function where it imitates
- * native dialogs in desktop and they require waiting for user input 
+ * the look of native dialogs in desktop and they require waiting for user input
  * upon invoking this functions (excluding Message Dialog, Plain Dialog, and Instruction Dialog).
- * 
- * Message Dialog, Plain Dialog, and Instruction Dialog can be used without the `await` keyword, 
+ *
+ * Message Dialog, Plain Dialog, and Instruction Dialog can be used without the `await` keyword,
  * but not Input Dialog, Confirm Dialog, because they require waiting for user input.
  */
 export default class Dialog {
@@ -48,10 +48,10 @@ export default class Dialog {
                 configurable: false,
             },
         });
-
-        this.#addScrollbarStyles();
-        this.#addDialogAnimationStyle();
     }
+
+    // mobile viewport
+    static #mediaQuery = window.matchMedia('(max-width: 768px)');
 
     // Queue to avoid overlapping dialogs.
     static #dialogQueue = Promise.resolve();
@@ -59,38 +59,38 @@ export default class Dialog {
     // Predefined default event styles (can be overridden via customDialogStyle.eventStyles).
     static #defaultEventStyles = {
         dialog: {
-            mouseover: { 
-                "box-shadow": "0 6px 12px rgba(0, 0, 0, 0.3)" 
+            mouseover: {
+                "box-shadow": "0 6px 12px rgba(0, 0, 0, 0.3)"
             },
-            mouseout: { 
-                "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)" 
+            mouseout: {
+                "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)"
             },
         },
         button: {
-            mouseover: { 
+            mouseover: {
                 "background-color": "#495057",
                 "outline": "1px solid rgba(173, 181, 189, 0.5)",
                 "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)"
             },
-            mouseout: { 
+            mouseout: {
                 "background-color": "#adb5bd",
                 "outline": "none",
                 "box-shadow": "none"
             },
-            focus: { 
-                "outline": "1px solid rgba(173, 181, 189, 0.5)", 
-                "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)" 
+            focus: {
+                "outline": "1px solid rgba(173, 181, 189, 0.5)",
+                "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)"
             },
-            blur: { 
-                "outline": "none", 
-                "box-shadow": "none" 
+            blur: {
+                "outline": "none",
+                "box-shadow": "none"
             }
         }
     };
 
     /**
      * Removes all HTML elements from the string.
-     * @param {string} str 
+     * @param {string} str
      * @returns {string} The sanitized string.
      */
     static #sanitizeInput(str) {
@@ -103,84 +103,12 @@ export default class Dialog {
     }
 
     /**
-     * Injects custom scrollbar styles.
-     */
-    static #addScrollbarStyles() {
-        let styleTag = document.getElementById('dialog-scrollbar-style');
-
-        if (!styleTag) {
-            styleTag = document.createElement('style');
-            styleTag.id = 'dialog-scrollbar-style';
-            document.head.appendChild(styleTag);
-        } else { return; }
-
-        styleTag.textContent = /*css*/`
-            dialog::-webkit-scrollbar,
-            dialog .scrollableDialogContent::-webkit-scrollbar,
-            #plainDialog .scrollableDialogContent::-webkit-scrollbar {
-                width: 5px !important;
-            }
-            dialog::-webkit-scrollbar-track,
-            dialog .scrollableDialogContent::-webkit-scrollbar-track,
-            #plainDialog .scrollableDialogContent::-webkit-scrollbar-track {
-                display: none !important;
-            }
-            dialog::-webkit-scrollbar-thumb,
-            dialog .scrollableDialogContent::-webkit-scrollbar-thumb,
-            #plainDialog .scrollableDialogContent::-webkit-scrollbar-thumb {
-                background-color: #888 !important;
-                border-radius: 10px !important;
-            }
-            dialog::-webkit-scrollbar-thumb:hover,
-            dialog .scrollableDialogContent::-webkit-scrollbar-thumb:hover,
-            #plainDialog .scrollableDialogContent::-webkit-scrollbar-thumb:hover {
-                background-color: #555 !important;
-            }
-            dialog::-webkit-scrollbar-button,
-            dialog .scrollableDialogContent::-webkit-scrollbar-button,
-            #plainDialog .scrollableDialogContent::-webkit-scrollbar-button {
-                display: none !important;
-            }
-        `;
-    }
-
-    /**
-     * Injects dialog animation styles.
-     */
-    static #addDialogAnimationStyle() {
-        let styleTag = document.getElementById('dialog-animation-style');
-
-        if (!styleTag) {
-            styleTag = document.createElement('style');
-            styleTag.id = 'dialog-animation-style';
-            document.head.appendChild(styleTag);
-        } else { return; }
-
-        styleTag.textContent = /*css*/`
-            #plainDialogBackdrop.fade-in, #plainDialog.fade-in {
-                animation: fade-in 0.3s ease forwards !important;
-            }
-            #plainDialogBackdrop.fade-out, #plainDialog.fade-out {
-                animation: fade-out 0.3s ease forwards !important;
-            }
-            @keyframes fade-in {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
-            @keyframes fade-out {
-                from { opacity: 1; }
-                to { opacity: 0; }
-            }
-        `;
-    }
-
-    /**
      * Apply responsive layout for dialog
-     * @param {HTMLElement} dialog 
-     * @param {string} originalMaxWidth 
+     * @param {HTMLElement} dialog
+     * @param {string} originalMaxWidth
      */
     static #applyResponsiveDialogStyle(dialog, originalMaxWidth) {
-        const isMobile = window.innerWidth <= 768;
+        const isMobile = this.#mediaQuery.matches;
         dialog.style.setProperty("max-width", isMobile ? "90vw" : originalMaxWidth, "important");
     }
 
@@ -194,6 +122,188 @@ export default class Dialog {
      * @returns {Function} A closure that shows the dialog and returns a Promise.
      */
     static #buildDialogWrapper(config, isPlain = false) {
+        /**
+         * Injects dialog custom scrollbar styles.
+         * @param {HTMLElement} element
+         * @returns {Function}
+         */
+        function addDialogScrollbarStyleTo(element) {
+            const elementId = '#' + element.id;
+            const styleTag = document.createElement('style');
+            styleTag.id = `${element.id}-scrollbar-style`;
+
+            let cleanedUp = false;
+
+            function cleanUpScrollbarStyle() {
+              if (cleanedUp) return;
+              cleanedUp = true;
+              styleTag.remove();
+            }
+
+            styleTag.textContent = /*css*/`
+                ${elementId} .scrollableDialogContent::-webkit-scrollbar {
+                    width: 5px !important;
+                }
+                ${elementId} .scrollableDialogContent::-webkit-scrollbar-track {
+                    display: none !important;
+                }
+                ${elementId} .scrollableDialogContent::-webkit-scrollbar-thumb {
+                    background-color: #888 !important;
+                    border-radius: 10px !important;
+                }
+                ${elementId} .scrollableDialogContent::-webkit-scrollbar-thumb:hover {
+                    background-color: #555 !important;
+                }
+                ${elementId} .scrollableDialogContent::-webkit-scrollbar-button {
+                    display: none !important;
+                }
+            `;
+
+            if (element instanceof HTMLDialogElement) {
+              styleTag.textContent += /*css*/`
+                  ${elementId}::-webkit-scrollbar {
+                      width: 5px !important;
+                  }
+                  ${elementId}::-webkit-scrollbar-track {
+                      display: none !important;
+                  }
+                  ${elementId}::-webkit-scrollbar-thumb {
+                      background-color: #888 !important;
+                      border-radius: 10px !important;
+                  }
+                  ${elementId}::-webkit-scrollbar-thumb:hover {
+                      background-color: #555 !important;
+                  }
+                  ${elementId}::-webkit-scrollbar-button {
+                      display: none !important;
+                  }
+              `;
+            }
+
+            document.head.appendChild(styleTag);
+
+            return cleanUpScrollbarStyle;
+        }
+
+        /**
+         * Injects dialog animation styles.
+         * @param {HTMLElement} element
+         * @param {HTMLElement?} backdrop - backdrop element of plain dialog
+         * @returns {Function}
+         */
+        function addDialogAnimationStyleTo(element, backdrop = null) {
+            const elementId = '#' + element.id;
+            const backdropId = backdrop ? '#' + backdrop.id : null;
+            const styleTag = document.createElement('style');
+            styleTag.id = `${element.id}-animation-style`;
+
+            let cleanedUp = false;
+
+            function cleanUpAnimationStyle() {
+              if (cleanedUp) return;
+              cleanedUp = true;
+              styleTag.remove();
+            }
+
+            if (element instanceof HTMLDialogElement) {
+              styleTag.textContent = /*css*/`
+                  ${elementId}, ${elementId}::backdrop {
+                    opacity: 0 !important;
+                    transition:
+                      opacity 300ms ease,
+                      display 300ms allow-discrete,
+                      overlay 300ms allow-discrete !important;
+                  }
+
+                  ${elementId}[open], ${elementId}[open]::backdrop {
+                    opacity: 1 !important;
+
+                    @starting-style {
+                      opacity: 0 !important;
+                    }
+                  }
+
+                  @media (prefers-reduced-motion: reduce) {
+                    ${elementId} {
+                        transition-duration: 0ms;
+                    }
+                  }
+              `;
+            } else if (backdrop) {
+              styleTag.textContent = /*css*/`
+                  ${backdropId}, ${elementId} {
+                    opacity: 0 !important;
+                    transition:
+                      opacity 300ms ease,
+                      display 300ms allow-discrete !important;
+                  }
+
+                  ${backdropId}.fade-in, ${elementId}.fade-in {
+                      opacity: 1 !important;
+
+                      @starting-style {
+                        opacity: 0 !important;
+                      }
+                  }
+                  ${backdropId}.fade-out, ${elementId}.fade-out {
+                      opacity: 0 !important;
+                  }
+                  
+                  @media (prefers-reduced-motion: reduce) {
+                    ${backdropId}, ${elementId} {
+                        transition-duration: 0ms;
+                    }
+                  }
+              `;
+            }
+
+            document.head.appendChild(styleTag);
+
+            return cleanUpAnimationStyle;
+        }
+
+        /**
+         * Removes dialog after the transition
+         * @param {HTMLElement} dialog
+         * @param {Function} cleanUpScrollbarStyle
+         * @param {Function} cleanUpAnimationStyle
+         */
+        async function removeDialogAfterTransition(dialog, cleanUpScrollbarStyle, cleanUpAnimationStyle) {
+            const animations = dialog.getAnimations({ subtree: false });
+
+            await Promise.allSettled(animations.map(animation => animation.finished));
+
+            dialog.remove();
+
+            cleanUpScrollbarStyle();
+            cleanUpAnimationStyle();
+        }
+
+        function openPlainDialog(backdrop, dlg) {
+            backdrop.style.setProperty('display', 'flex', 'important');
+
+            backdrop.classList.add('fade-in');
+            dlg.classList.add('fade-in');
+            
+            dlg.focus();
+        }
+
+        async function closePlainDialog(backdrop, dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle) {
+            backdrop.classList.remove('fade-in');
+            dlg.classList.remove('fade-in');
+
+            backdrop.classList.add('fade-out');
+            dlg.classList.add('fade-out');
+
+            const animations = backdrop.getAnimations({ subtree: true });
+
+            await Promise.allSettled(animations.map(animation => animation.finished));
+
+            backdrop.remove();
+            cleanUpScrollbarStyle();
+            cleanUpAnimationStyle();
+        }
+
         // Helper to attach event styles from config.eventStyles for a given key.
         function applyEventStyles(element, key) {
             if (config.eventStyles && config.eventStyles[key]) {
@@ -221,7 +331,7 @@ export default class Dialog {
                     const backdrop = document.createElement('div');
 
                     backdrop.id = config.backdrop.id || 'backdrop';
-                    backdrop.className = 'fade-in';
+                    backdrop.tabIndex = -1;
 
                     applyElementStyles(backdrop, Object.assign({
                         "display": "none",
@@ -237,7 +347,6 @@ export default class Dialog {
                         "margin": "0",
                         "padding": "0",
                         "box-sizing": "border-box",
-                        "opacity": "0",
                         "justify-content": "center",
                         "align-items": "center"
                     }, config.backdrop.style));
@@ -250,11 +359,11 @@ export default class Dialog {
 
                     const originalMaxWidth = config.dialog.style?.['max-width'] || '50vw';
                     const resizeHandler = () => this.#applyResponsiveDialogStyle(dlg, originalMaxWidth);
-                    window.addEventListener('resize', resizeHandler);
+                    this.#mediaQuery.addEventListener('change', resizeHandler);
                     resizeHandler(); // Initial apply
 
                     dlg.id = config.dialog.id || "modalDialog";
-                    dlg.className = 'fade-in';
+                    dlg.tabIndex = -1;
 
                     applyElementStyles(dlg, Object.assign({
                         "margin": "auto",
@@ -268,18 +377,20 @@ export default class Dialog {
                         "background-color": "#f9f9f9",
                         "display": "flex",
                         "flex-direction": "column",
-                        "opacity": "0",
                         "overflow": "hidden",
                         "font-family": "Arial, sans-serif",
                         "user-select": "text"
                     }, config.dialog.style));
                     applyEventStyles(dlg, "dialog");
 
+                    const cleanUpScrollbarStyle = addDialogScrollbarStyleTo(dlg);
+                    const cleanUpAnimationStyle = addDialogAnimationStyleTo(dlg, backdrop);
+
                     // header.
                     if (config.header) {
                         const header = document.createElement(config.header.tag || 'div');
 
-                        if (config.header.id) 
+                        if (config.header.id)
                             header.id = config.header.id;
 
                         applyElementStyles(header, Object.assign({
@@ -323,20 +434,15 @@ export default class Dialog {
                             }, config.header.closeButton.style));
                             applyEventStyles(closeBtn, "button");
 
-                            // apply custom event styles
+                            // apply event style using their ID name
                             if (config.header.closeButton.id)
                                 applyEventStyles(closeBtn, '#' + config.header.closeButton.id);
 
                             closeBtn.addEventListener('click', () => {
-                                dlg.style.setProperty("opacity", "0", "important");
-                                backdrop.style.setProperty("opacity", "0", "important");
-
-                                setTimeout(() => { 
-                                    window.removeEventListener('resize', resizeHandler);
-                                    backdrop.remove(); 
-                                    resolve(); 
-                                }, 300);
-                            });
+                                this.#mediaQuery.removeEventListener('change', resizeHandler);
+                                resolve();
+                                closePlainDialog(backdrop, dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle);                                
+                            }, { once: true });
 
                             header.appendChild(closeBtn);
                         }
@@ -348,13 +454,13 @@ export default class Dialog {
                     if (config.content) {
                         const content = document.createElement(config.content.tag || 'div');
 
-                        if (config.content.id) 
+                        if (config.content.id)
                             content.id = config.content.id;
 
                         content.className = 'scrollableDialogContent';
-
+                        content.tabIndex = -1;
                         content[this.#hasHTMLTag(config.content.text) ? 'innerHTML' : 'innerText'] = config.content.text;
-                        
+
                         applyElementStyles(content, Object.assign({
                             "width": "auto",
                             "height": "auto",
@@ -376,19 +482,14 @@ export default class Dialog {
                     }
 
                     backdrop.appendChild(dlg);
-                    backdrop.style.setProperty("display", "flex", "important");
-
-                    setTimeout(() => {
-                        backdrop.style.setProperty("opacity", "1", "important");
-                        dlg.style.setProperty("opacity", "1", "important");
-                    }, 10);
+                    openPlainDialog(backdrop, dlg);
                 } else {
                     // --- Modal dialog (using <dialog>) ---
                     const dlg = document.createElement('dialog');
 
                     const originalMaxWidth = config.dialog.style?.['max-width'] || '50vw';
                     const resizeHandler = () => this.#applyResponsiveDialogStyle(dlg, originalMaxWidth);
-                    window.addEventListener('resize', resizeHandler);
+                    this.#mediaQuery.addEventListener('change', resizeHandler);
                     resizeHandler(); // Initial apply
 
                     dlg.id = config.dialog.id || "modalDialog";
@@ -408,17 +509,18 @@ export default class Dialog {
                         "user-select": "text",
                         "background-color": "#f9f9f9",
                         "overflow-y": "auto",
-                        "overflow-x": "hidden",
-                        "animation": "fade-in 0.3s ease",
-                        "animation-fill-mode": "forwards"
+                        "overflow-x": "hidden"
                     }, config.dialog.style));
                     applyEventStyles(dlg, "dialog");
+
+                    const cleanUpScrollbarStyle = addDialogScrollbarStyleTo(dlg);
+                    const cleanUpAnimationStyle = addDialogAnimationStyleTo(dlg);
 
                     // Header.
                     if (config.header) {
                         const header = document.createElement(config.header.tag || 'div');
 
-                        if (config.header.id) 
+                        if (config.header.id)
                             header.id = config.header.id;
 
                         applyElementStyles(header, Object.assign({
@@ -435,7 +537,7 @@ export default class Dialog {
                         if (config.header.title) {
                             const title = document.createElement(config.header.title.tag || 'h4');
 
-                            if (config.header.title.id) 
+                            if (config.header.title.id)
                                 title.id = config.header.title.id;
 
                             title.innerText = config.header.title.text;
@@ -461,11 +563,11 @@ export default class Dialog {
                     if (config.content) {
                         const content = document.createElement(config.content.tag || 'div');
 
-                        if (config.content.id) 
+                        if (config.content.id)
                             content.id = config.content.id;
 
                         content.className = 'scrollableDialogContent';
-
+                        content.tabIndex = -1;
                         content[this.#hasHTMLTag(config.content.text) ? 'innerHTML' : 'innerText'] = config.content.text;
 
                         applyElementStyles(content, Object.assign({
@@ -504,7 +606,7 @@ export default class Dialog {
 
                         const input = document.createElement('input');
 
-                        if (config.input.id) 
+                        if (config.input.id)
                             input.id = config.input.id;
 
                         input.type = config.input.type || "text";
@@ -522,22 +624,20 @@ export default class Dialog {
                         }, config.input.style));
                         applyEventStyles(input, "input");
 
-                        const handleSubmit = (e) => {
+                        inputForm.addEventListener('submit', (e) => {
                             e.preventDefault();
 
                             const inputData = { output: null };
                             inputData.option = config.footer.buttons[0].option;
                             inputData.output = input.value ? this.#sanitizeInput(input.value) : null;
 
-                            inputForm.removeEventListener('submit', handleSubmit);
+                            this.#mediaQuery.removeEventListener('change', resizeHandler);
 
                             dlg.close();
                             resolve(inputData);
-                            dlg.remove();
-                        }
-
-                        inputForm.addEventListener('submit', handleSubmit);
-
+                            removeDialogAfterTransition(dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle);
+                        }, { once: true });
+                        
                         inputForm.appendChild(input);
                         dlg.appendChild(inputForm);
                     }
@@ -546,9 +646,9 @@ export default class Dialog {
                     if (config.footer && Array.isArray(config.footer.buttons)) {
                         const footer = document.createElement(config.footer.tag || 'div');
 
-                        if (config.footer.id) 
+                        if (config.footer.id)
                             footer.id = config.footer.id;
-                        
+
                         applyElementStyles(footer, Object.assign({
                             "width": "100%",
                             "height": "auto",
@@ -598,7 +698,7 @@ export default class Dialog {
                             }, btnConf.style));
                             applyEventStyles(btn, "button");
 
-                            // apply custom event style
+                            // apply event style using their ID name
                             if (btnConf.id)
                                 applyEventStyles(btn, '#' + btnConf.id);
 
@@ -620,12 +720,13 @@ export default class Dialog {
                                 // For instruction dialogs, if the button is marked as navigation, do not close.
                                 if (config.instructionDialog && btnConf.navigation === true) return;
 
-                                window.removeEventListener('resize', resizeHandler);
+                                this.#mediaQuery.removeEventListener('change', resizeHandler);
+
                                 dlg.close();
                                 resolve(inputData);
-                                dlg.remove();
+                                removeDialogAfterTransition(dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle);
                             });
-                            
+
                             footer.appendChild(btn);
                         }
 
@@ -633,7 +734,10 @@ export default class Dialog {
                     }
 
                     document.body.prepend(dlg);
-                    if (!dlg.open) dlg.showModal();
+                    if (!dlg.open) {
+                        dlg.showModal();
+                        dlg.focus();
+                    }
                 }
             });
         };
@@ -643,7 +747,7 @@ export default class Dialog {
      * method of Dialog Class that allows user input
      * @param {string} dialogTitle Title of the dialog (only plain text)
      * @param {string} dialogContent Content of the dialog for user to see (allows element tags)
-     * @param {Object} customDialogStyle - Optional custom styles (including eventStyles).
+     * @param {Object?} customDialogStyle - Optional custom styles (including eventStyles).
      * @returns {Promise<Object>} Resolves when the dialog is closed. `{ output: input.value, option: 0 - Ok, 1 - Cancel }`
      */
     static async showInputDialog(dialogTitle, dialogContent, customDialogStyle = {}) {
@@ -724,7 +828,7 @@ export default class Dialog {
      * method of Dialog Class that shows information message
      * @param {string} dialogTitle Title of the dialog (only plain text)
      * @param {string} dialogContent Content of the dialog for user to see (allows element tags)
-     * @param {Object} customDialogStyle - Optional custom styles (including eventStyles).
+     * @param {Object?} customDialogStyle - Optional custom styles (including eventStyles).
      * @returns {Promise} Resolves when the dialog is closed.
      */
     static async showMessageDialog(dialogTitle, dialogContent, customDialogStyle = {}) {
@@ -782,7 +886,7 @@ export default class Dialog {
      * Method of Dialog Class that asks for YES or NO answer
      * @param {string} dialogTitle Title of the dialog (only plain text)
      * @param {string} dialogContent Content of the dialog for user to see (allows element tags)
-     * @param {Object} customDialogStyle - Optional custom styles (including eventStyles).
+     * @param {Object?} customDialogStyle - Optional custom styles (including eventStyles).
      * @returns {Promise<Object>} Resolves when the dialog is closed. `{ output: null, option: 2 - Yes, 3 - No }`
      */
     static async showConfirmDialog(dialogTitle, dialogContent, customDialogStyle = {}) {
@@ -846,7 +950,7 @@ export default class Dialog {
     /**
      * Method of Dialog Class that shows information message and this is customizable
      * @param {string} dialogContent Content of the dialog for user to see (allows element tags)
-     * @param {Object} customDialogStyle - Optional custom styles (including eventStyles).
+     * @param {Object?} customDialogStyle - Optional custom styles (including eventStyles).
      * @returns {Promise} Resolves when the dialog is closed.
      */
     static async showPlainDialog(dialogContent, customDialogStyle = {}) {
@@ -857,7 +961,7 @@ export default class Dialog {
                 id: 'plainDialogBackdrop',
                 style: customDialogStyle?.backdrop || {}
             },
-            dialog: { 
+            dialog: {
                 id: 'plainDialog',
                 style: customDialogStyle?.dialog || {}
             },
@@ -884,7 +988,7 @@ export default class Dialog {
         await this.#dialogQueue;
 
         const showFn = this.#buildDialogWrapper(config, true);
-        
+
         this.#dialogQueue = showFn();
 
         return await this.#dialogQueue;
@@ -898,7 +1002,7 @@ export default class Dialog {
      *
      * @param {string} dialogTitle - The title of the dialog.
      * @param {Array<string>} dialogContents - Array of message strings (plaintext or HTML).
-     * @param {Object} customDialogStyle - Optional custom styles (including eventStyles).
+     * @param {Object?} customDialogStyle - Optional custom styles (including eventStyles).
      * @returns {Promise} Resolves when the dialog is closed.
      */
     static async showInstructionDialog(dialogTitle, dialogContents, customDialogStyle = {}) {
@@ -921,7 +1025,7 @@ export default class Dialog {
                 contents = dialogContents;
             } else {
                 await this.showMessageDialog('Empty content.', 'Please add content at least 1.');
-    
+
                 return;
             }
         } else {
@@ -994,7 +1098,7 @@ export default class Dialog {
                         title.innerText = dialogTitle + ` (${currentIndex + 1}/${total})`;
                     }
                 }
-            }, 
+            },
             {
                 tag: 'button',
                 id: 'instructionDialogBtnNext',
@@ -1004,7 +1108,7 @@ export default class Dialog {
                 navigation: true,
                 callback: (e) => {
                     e.target.focus();
-                    
+
                     const title = document.getElementById('instructionDialogTitle');
 
                     if (currentIndex < total - 1) {
@@ -1016,8 +1120,7 @@ export default class Dialog {
                         config.footer.buttons[1].navigation = false;
                     }
                 }
-            }
-            );
+            });
         }
 
         // Helper functions to update the button texts.
@@ -1054,7 +1157,7 @@ export default class Dialog {
 
         this.#dialogQueue = showFn();
 
-        updateContents()
+        updateContents();
 
         return await this.#dialogQueue;
     }

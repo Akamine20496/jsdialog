@@ -1,7 +1,7 @@
 
 # JSDialog
 
-The `JSDialog` is a promise-based JavaScript utility that imitates native dialogs in desktop applications and provides a user-friendly way to display input dialogs, message dialogs, plain dialogs, and confirmation dialogs.
+The `JSDialog` is a promise-based JavaScript utility that imitates the look of native dialogs in desktop applications and provides a user-friendly way to display input dialogs, message dialogs, plain dialogs, and confirmation dialogs.
 
 Message Dialog, Plain Dialog, and Instruction Dialog can be used without the `await` keyword, and for Input Dialog and Confirm Dialog, since they require waiting for user input, `await` must be used or use `then()` to get the input data. Not using `await` will make all dialog appear at once.
 
@@ -22,7 +22,7 @@ or for the minified version:
 node package install
 
 ```bash
-npm i @akamine20496/jsdialog
+npm i @akamine96204/jsdialog
 ```
 
 ## Installation
@@ -115,11 +115,13 @@ await Dialog.showInstructionDialog('Instruction Dialog', contents, {
     dialog: { 'property': 'value', ... },
     header: { 'property': 'value', ... },
     content: { 'property': 'value', ... },
+    input: { 'property': 'value', ... },
     footer: { 'property': 'value', ... },
     btnOk: { 'property': 'value', ... },
     btnCancel: { 'property': 'value', ... },
     btnYes: { 'property': 'value', ... },
     btnNo: { 'property': 'value', ... },
+    btnClose: { 'property': 'value', ... },
     btnPrev: { 'property': 'value', ... },
     btnNext: { 'property': 'value', ... },
     eventStyles: {
@@ -141,7 +143,7 @@ await Dialog.showInstructionDialog('Instruction Dialog', contents, {
         button: {
             eventname: { 'property': 'value', ... }
         },
-        '<button-element-id>': {
+        '<button-id>': {
             eventname: { 'property': 'value', ... }
         }
     }
@@ -217,8 +219,8 @@ Be sure to add `!important` in your css value to override it.
 **Plain Dialog**
 - backdrop              -> #plainDialogBackdrop
 - dialog                -> #plainDialog
-- button                -> #plainDialogBtnClose
 - header                -> #plainDialogHeader
+- btnClose              -> #plainDialogBtnClose
 - content               -> #plainDialogContent, .scrollableDialogContent
 
 ## Example
@@ -248,7 +250,21 @@ Here’s an example that combines the usage of all dialog types:
     const contents = [
         'Page 1',
         `Page 2 <b>This is a bold text, using b element tag</b>`,
-        'Page 3'
+        `
+        <style>
+            #title {
+                text-align: center;
+            }
+            #imgContainer {
+                display: flex;
+                justify-content: center;
+            }
+        </style>
+        <h1 id="title">An Image</h1>
+        <div id="imgContainer">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS4sRctqgyPz_5xeO0tAcdnasFG3gI2hdgi_KHK0o_0urep5XxHIf0GyvT&s=10" alt="image">
+        </div>
+        `
     ];
 
     await Dialog.showInstructionDialog('Instruction Dialog', contents, {

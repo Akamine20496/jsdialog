@@ -167,7 +167,7 @@ If you don't want to anchor the dialog to an element, use the wrapper function w
         dialog: { ... },
         header: { ... },
         content: { ... },
-        button: { ... }
+        button: { ... },
         btnClose: { ... }
     },
     inputDialog: {
@@ -177,7 +177,7 @@ If you don't want to anchor the dialog to an element, use the wrapper function w
         content: { ... },
         input: { ... },
         footer: { ... },
-        button: { ... }
+        button: { ... },
         btnOk: { ... },
         btnCancel: { ... }
     },
@@ -206,7 +206,7 @@ If you don't want to anchor the dialog to an element, use the wrapper function w
         title: { ... },
         content: { ... },
         footer: { ... },
-        button: { ... }
+        button: { ... },
         btnOk: { ... },
         btnPrev: { ... },
         btnNext: { ... }
@@ -240,7 +240,7 @@ If you don't want to anchor the dialog to an element, use the wrapper function w
     content: { ... },
     input: { ... },
     footer: { ... },
-    button: { ... }
+    button: { ... },
     btnOk: { ... },
     btnCancel: { ... },
     btnYes: { ... },

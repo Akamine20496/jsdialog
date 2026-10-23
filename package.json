@@ -1,6 +1,6 @@
 {
   "name": "@akamine96204/jsdialog",
-  "version": "3.6.1",
+  "version": "4.0.0",
   "description": "Promised-based JavaScript Dialog Utility",
   "keywords": [
     "javascript-dialog",
@@ -26,8 +26,9 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild src/Dialog.js --minify --format=esm --keep-names --outfile=dist/Dialog.min.js && shx cp src/Dialog.d.ts dist/",
-    "watch": "esbuild src/Dialog.js --minify --format=esm --keep-names --outfile=dist/Dialog.min.js && shx cp src/Dialog.d.ts dist/ --watch"
+    "build": "shx mkdir -p dist && esbuild src/Dialog.js --minify --format=esm --outfile=dist/Dialog.min.js && shx cp src/Dialog.d.ts dist/",
+    "watch": "npm run build && esbuild src/Dialog.js --minify --format=esm --outfile=dist/Dialog.min.js --watch",
+    "clean": "shx rm -rf dist"
   },
   "devDependencies": {
     "csstype": "^3.2.3",
@@ -36,5 +37,8 @@
   },
   "allowScripts": {
     "esbuild@0.28.2": true
+  },
+  "dependencies": {
+    "@75lb/deep-merge": "^1.1.5"
   }
 }

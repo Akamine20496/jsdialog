@@ -5,35 +5,31 @@ The `JSDialog` is a promise-based JavaScript utility that imitates the look of n
 
 Message Dialog, Plain Dialog, and Instruction Dialog can be used without the `await` keyword, and for Input Dialog and Confirm Dialog, since they require waiting for user input, `await` must be used or use `then()` to get the input data. Not using `await` will make all dialog appear at once.
 
-## CDN Links
 
-To use the Dialog class in your project, include the following CDN links in your HTML:
+## Installation
 
+You can include the Dialog class in your project by either downloading the JavaScript file, linking to it via a CDN, or install in node package as shown below.
+
+base version
 ```html
 <script src="https://res.cloudinary.com/dy0sbkf3u/raw/upload/Dialog.js"></script>
 ```
 
-or for the minified version:
-
+minified version
 ```html
 <script src="https://res.cloudinary.com/dy0sbkf3u/raw/upload/Dialog.min.js"></script>
 ```
 
 node package install
-
 ```bash
 npm i @akamine96204/jsdialog
 ```
-
-## Installation
-
-You can include the Dialog class in your project by either downloading the JavaScript file, linking to it via a CDN, or install in node package as shown above.
 
 ## Usage
 
 ## Input Dialog
 
-To create an input dialog, use the `showInputDialog` method. This method returns a promise that resolves with the user input.
+To ask for user input, use the `showInputDialog` method. This method returns a promise that resolves with the user input.
 
 ```javascript
 const result = await Dialog.showInputDialog("Enter your name", "Please provide your name:");
@@ -42,7 +38,7 @@ console.log("User input:", result.output, "Option used:", result.option);
 
 ## Message Dialog
 
-To show a message dialog, use the `showMessageDialog` method. This method displays a message to the user.
+The `showMessageDialog` method displays information to the user.
 
 ```javascript
 await Dialog.showMessageDialog("Information", "This is a message dialog.");
@@ -67,14 +63,29 @@ The `showPlainDialog` method displays a customizable information dialog to the u
 
 ```javascript
 await Dialog.showPlainDialog('This is a plain dialog', {
-    backdrop: { 'background-color': 'rgba(0, 0, 0, 1)' },
-    dialog: { 'width': '400px', 'background-color': '#fff' },
-    eventStyles: {
-        button: {
-            mouseover: { 'background-color': 'green' },
-            mouseout: {
-                'color': 'violet',
-                'background-color': 'lightgray'
+    backdrop: {
+        styles: {
+            light: {
+                'background-color': 'rgba(230, 45, 100, 1)'
+            }
+        }
+    },
+    dialog: {
+        styles: {
+            light: {
+                'width': '400px', 
+                'background-color': '#fff'
+            }
+        }
+    },
+    button: {
+        eventStyles: {
+            light: {
+                mouseover: { 'background-color': 'green' },
+                mouseout: {
+                    'color': 'violet',
+                    'background-color': 'lightgray'
+                }
             }
         }
     }
@@ -93,64 +104,154 @@ const contents = [
 ];
 
 await Dialog.showInstructionDialog('Instruction Dialog', contents, {
-    btnPrev: { 'background-color': 'red' },
-    btnNext: { 'background-color': 'green' },
-    eventStyles: {
-        '#instructionDialogBtnPrev': {
-            mouseover: { 'background-color': 'maroon' },
-            mouseout: { 'background-color': 'red' }
+    btnPrev: {
+        styles: {
+            light: {
+                'background-color': 'red',
+            }
         },
-        '#instructionDialogBtnNext': {
-            mouseover: { 'background-color': 'darkgreen' },
-            mouseout: { 'background-color': 'green' }
+        eventStyles: {
+            light: {
+                mouseover: { 'background-color': 'maroon' },
+                mouseout: { 'background-color': 'red' }
+            }
+        }
+    },
+    btnNext: {
+        styles: {
+            light: {
+                'background-color': 'green',
+            }
+        },
+        eventStyles: {
+            light: {
+                mouseover: { 'background-color': 'darkgreen' },
+                mouseout: { 'background-color': 'green' }
+            }
         }
     }
 })
 ```
 
-## `customDialogStyle` Object structure
+## Positioning a Dialog Relative to an Element
+
+```javascript
+await Dialog.showPlainDialogAt(target, dialogContent, customDialogStyles);
+```
+The `target` argument allows you to position the dialog at the center of the specified element.
+`target` accepts an HTMLElement or the ID of an element. If invalid, the dialog defaults to `document.body`.
+
+If you don't want to anchor the dialog to an element, use the wrapper function which sets `target` to `null` by default.
+
+## `dialogTypesStylesConfig` Object structure
+> [!NOTE]
+> The dialog parts varies based on dialog types
+
 ```javascript
 {
-    backdrop: { 'property': 'value', ... },
-    dialog: { 'property': 'value', ... },
-    header: { 'property': 'value', ... },
-    content: { 'property': 'value', ... },
-    input: { 'property': 'value', ... },
-    footer: { 'property': 'value', ... },
-    btnOk: { 'property': 'value', ... },
-    btnCancel: { 'property': 'value', ... },
-    btnYes: { 'property': 'value', ... },
-    btnNo: { 'property': 'value', ... },
-    btnClose: { 'property': 'value', ... },
-    btnPrev: { 'property': 'value', ... },
-    btnNext: { 'property': 'value', ... },
-    eventStyles: {
+    plainDialog: {
         backdrop: {
-            eventname: { 'property': 'value', ... }
+            styles: {
+                light: { 'property': 'value', ... },
+                dark: { 'property': 'value', ... }
+            },
+            eventStyles: {
+                light: {
+                    eventname: { 'property': 'value', ... }
+                },
+                dark: {
+                    eventname: { 'property': 'value', ... }
+                }
+            }
         },
-        dialog: {
-            eventname: { 'property': 'value', ... }
-        },
-        header: {
-            eventname: { 'property': 'value', ... }
-        },
-        content: {
-            eventname: { 'property': 'value', ... }
-        },
-        footer: {
-            eventname: { 'property': 'value', ... }
-        },
-        button: {
-            eventname: { 'property': 'value', ... }
-        },
-        '<button-id>': {
-            eventname: { 'property': 'value', ... }
-        }
+        dialog: { ... },
+        header: { ... },
+        content: { ... },
+        button: { ... }
+        btnClose: { ... }
+    },
+    inputDialog: {
+        dialog: { ... },
+        header: { ... },
+        title: { ... },
+        content: { ... },
+        input: { ... },
+        footer: { ... },
+        button: { ... }
+        btnOk: { ... },
+        btnCancel: { ... }
+    },
+    messageDialog: {
+        dialog: { ... },
+        header: { ... },
+        title: { ... },
+        content: { ... },
+        footer: { ... },
+        button: { ... },
+        btnOk: { ... }
+    },
+    confirmDialog: {
+        dialog: { ... },
+        header: { ... },
+        title: { ... },
+        content: { ... },
+        footer: { ... },
+        button: { ... },
+        btnYes: { ... },
+        btnNo: { ... }
+    },
+    instructionDialog: {
+        dialog: { ... },
+        header: { ... },
+        title: { ... },
+        content: { ... },
+        footer: { ... },
+        button: { ... }
+        btnOk: { ... },
+        btnPrev: { ... },
+        btnNext: { ... }
     }
 }
 ```
 
-## Static Variables
+## `customDialogStyles` Object structure
+> [!NOTE]
+> The dialog parts varies based on dialog types (e.g. plain dialog, input dialog, etc.)
+
+```javascript
+{
+    backdrop: {
+        styles: {
+            light: { 'property': 'value', ... },
+            dark: { 'property': 'value', ... }
+        },
+        eventStyles: {
+            light: {
+                eventname: { 'property': 'value', ... }
+            },
+            dark: {
+                eventname: { 'property': 'value', ... }
+            }
+        }
+    },
+    dialog: { ... },
+    header: { ... },
+    title: { ... },
+    content: { ... },
+    input: { ... },
+    footer: { ... },
+    button: { ... }
+    btnOk: { ... },
+    btnCancel: { ... },
+    btnYes: { ... },
+    btnNo: { ... },
+    btnClose: { ... },
+    btnPrev: { ... },
+    btnNext: { ... }
+}
+```
+
+## Public Static Variables
 
 - `OK_OPTION`: State of OK (0).
 - `CANCEL_OPTION`: State of CANCEL (1).
@@ -159,11 +260,21 @@ await Dialog.showInstructionDialog('Instruction Dialog', contents, {
 
 ## Methods
 
-- `showInputDialog(dialogTitle, dialogContent, customDialogStyle)`: Displays an input dialog and returns the user input.
-- `showMessageDialog(dialogTitle, dialogContent, customDialogStyle)`: Displays a message dialog.
-- `showConfirmDialog(dialogTitle, dialogContent, customDialogStyle)`: Displays a confirmation dialog and returns the user's choice.
-- `showPlainDialog(dialogContent, customDialogStyle)`: Displays a plain dialog and can be customized.
-- `showInstructionDialog(dialogTitle, dialogContents, customDialogStyle)`: Displays a paginated dialog that has a page counter to track the current page. 
+- `setDialogTypesStyles(dialogTypesStylesConfig)`: Configures custom styles and event styles for different dialog types.
+- `setThemePreference(mode)`: Sets the theme of dialog
+- `showInputDialogAt(target, dialogTitle, dialogContent, customDialogStyles)`: Displays an input dialog and returns the user input.
+- `showMessageDialogAt(target, dialogTitle, dialogContent, customDialogStyles)`: Displays a message dialog.
+- `showConfirmDialogAt(target, dialogTitle, dialogContent, customDialogStyles)`: Displays a confirmation dialog and returns the user's choice.
+- `showPlainDialogAt(target, dialogContent, customDialogStyles)`: Displays a plain dialog and can be customized.
+- `showInstructionDialogAt(target, dialogTitle, dialogContents, customDialogStyles)`: Displays a paginated dialog that has a page counter to track the current page. 
+
+## Wrapper Methods
+
+- `showInputDialog(dialogTitle, dialogContent, customDialogStyles)`: Displays an input dialog and returns the user input.
+- `showMessageDialog(dialogTitle, dialogContent, customDialogStyles)`: Displays a message dialog.
+- `showConfirmDialog(dialogTitle, dialogContent, customDialogStyles)`: Displays a confirmation dialog and returns the user's choice.
+- `showPlainDialog(dialogContent, customDialogStyles)`: Displays a plain dialog and can be customized.
+- `showInstructionDialog(dialogTitle, dialogContents, customDialogStyles)`: Displays a paginated dialog that has a page counter to track the current page. 
 
 ### Options
 
@@ -242,9 +353,21 @@ Here’s an example that combines the usage of all dialog types:
     }
 
     await Dialog.showPlainDialog('This is a plain dialog', {
-        backdrop: { 'background-color': 'rgba(0, 0, 0, 1)' },
-        dialog: { 'width': '400px', 'background-color': '#fff' },
-        button: { 'color': 'red', 'background-color': '#fefefe' }
+        backdrop: {
+            styles: {
+                light: { 'background-color': 'rgba(0, 0, 0, 1)' }
+            }
+        },
+        dialog: {
+            styles: {
+                light: { 'width': '400px', 'background-color': '#fff' }
+            }
+        },
+        button: {
+            styles: {
+                light: { 'color': 'red', 'background-color': '#fefefe' }
+            }
+        }
     });
 
     const contents = [
@@ -268,14 +391,14 @@ Here’s an example that combines the usage of all dialog types:
     ];
 
     await Dialog.showInstructionDialog('Instruction Dialog', contents, {
-        btnPrev: { 'background-color': 'green' },
-        eventStyles: {
-            '#instructionDialogBtnPrev': {
-                mouseover: {
-                    'background-color': 'yellow'
-                },
-                mouseout: {
-                    'background-color': 'blue'
+        btnPrev: {
+            styles: {
+                light: { 'background-color': 'green' }
+            }
+            eventStyles: {
+                light: {
+                    mouseover: { 'background-color': 'yellow' },
+                    mouseout: { 'background-color': 'blue' }
                 }
             }
         }

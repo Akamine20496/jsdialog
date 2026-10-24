@@ -544,8 +544,8 @@ export default class Dialog {
     ];
 
     static #coreDialogParts = {
-        plain: [ ...Object.keys(this.#coreDialogStyles.plain) ],
-        native: [ ...Object.keys(this.#coreDialogStyles.native) ]
+        plain: Object.keys(this.#coreDialogStyles.plain),
+        native: Object.keys(this.#coreDialogStyles.native)
     };
 
     static #dialogConfigs = {
@@ -567,14 +567,14 @@ export default class Dialog {
         [this.#dialogTypes[2]]: {
             dialogMode: 'native',
             dialogParts: [
-                ...this.#coreDialogParts.native.filter(part => 'input' !== part),
+                ...this.#coreDialogParts.native.filter(part => part !== 'input'),
                 'btnOk'
             ]
         },
         [this.#dialogTypes[3]]: {
             dialogMode: 'native',
             dialogParts: [
-                ...this.#coreDialogParts.native.filter(part => 'input' !== part),
+                ...this.#coreDialogParts.native.filter(part => part !== 'input'),
                 'btnYes',
                 'btnNo'
             ]
@@ -582,7 +582,7 @@ export default class Dialog {
         [this.#dialogTypes[4]]: {
             dialogMode: 'native',
             dialogParts: [
-                ...this.#coreDialogParts.native.filter(part => 'input' !== part),
+                ...this.#coreDialogParts.native.filter(part => part !== 'input'),
                 'btnOk',
                 'btnPrev',
                 'btnNext'
@@ -2399,40 +2399,38 @@ export default class Dialog {
                 callback: (e) => {
                     e.target.focus();
 
-                    const title = document.getElementById('instructionDialogTitle');
-
                     if (currentIndex > 0) {
                         currentIndex--;
                         updateContents();
 
-                        title.innerText = dialogTitle + ` (${currentIndex + 1}/${totalContents})`;
+                        document.getElementById('instructionDialogTitle')
+                            .innerText = dialogTitle + ` (${currentIndex + 1}/${totalContents})`;
                     }
                 }
             },
-                {
-                    tag: 'button',
-                    id: 'instructionDialogBtnNext',
-                    type: 'button',
-                    text: 'Next >',
-                    styles: { ...styles.button, ...styles.btnNext },
-                    eventStyles: { ...eventStyles.button, ...eventStyles.btnNext },
-                    option: null,
-                    navigation: true,
-                    callback: (e) => {
-                        e.target.focus();
+            {
+                tag: 'button',
+                id: 'instructionDialogBtnNext',
+                type: 'button',
+                text: 'Next >',
+                styles: { ...styles.button, ...styles.btnNext },
+                eventStyles: { ...eventStyles.button, ...eventStyles.btnNext },
+                option: null,
+                navigation: true,
+                callback: (e) => {
+                    e.target.focus();
+                    
+                    if (currentIndex < totalContents - 1) {
+                        currentIndex++;
+                        updateContents();
 
-                        const title = document.getElementById('instructionDialogTitle');
-
-                        if (currentIndex < totalContents - 1) {
-                            currentIndex++;
-                            updateContents();
-
-                            title.innerText = dialogTitle + ` (${currentIndex + 1}/${totalContents})`;
-                        } else if (currentIndex === totalContents - 1) {
-                            config.footer.buttons[1].navigation = false;
-                        }
+                        document.getElementById('instructionDialogTitle')
+                            .innerText = dialogTitle + ` (${currentIndex + 1}/${totalContents})`;
+                    } else if (currentIndex === totalContents - 1) {
+                        config.footer.buttons[1].navigation = false;
                     }
-                });
+                }
+            });
         }
 
         // Helper functions to update the button texts.

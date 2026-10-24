@@ -5,38 +5,14 @@ import * as CSS from 'csstype';
  */
 export type CssStyle = CSS.PropertiesHyphen;
 
-/**
- * Event Names
- */
-export type EventName =
-  | 'click'
-  | 'dblclick'
-  | 'mousedown'
-  | 'mouseup'
-  | 'mouseenter'
-  | 'mouseleave'
-  | 'mouseover'
-  | 'mouseout'
-  | 'blur'
-  | 'focus'
-  | 'focusin'
-  | 'focusout'
-  | 'keydown'
-  | 'keyup'
-  | 'keypress'
-  | 'touchstart'
-  | 'touchmove'
-  | 'touchend'
-  | 'touchcancel'
-  | 'change'
-  | 'input';
+type EventName = keyof HTMLElementEventMap;
 
 /**
- * Event Styling { eventName: { 'property': 'value' } }.
+ * Event Styling { eventname: { 'property': 'value' } }.
  */
-export interface EventStyle {
-    [eventName: EventName]: CssStyle;
-}
+export type EventStyle = {
+    [K in EventName]?: CssStyle;
+};
 
 /**
  * Styles for Light and Dark mode.

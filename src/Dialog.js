@@ -1029,6 +1029,7 @@ export default class Dialog {
 
             // Apply the calculated positions
             this.#applyElementStyles(dialog, {
+                'position': 'fixed',
                 'left': `${Math.max(0, left)}px`,
                 'top': `${Math.max(0, top)}px`
             });
@@ -1150,8 +1151,6 @@ export default class Dialog {
                     if (config.dialog.target) {
                         activeDialog = dlg;
                         activeTarget = config.dialog.target;
-
-                        dlg.style.setProperty('position', 'fixed', 'important');
                     }
 
                     const cleanUpScrollbarStyle = addDialogScrollbarStyleTo(dlg);
@@ -1251,8 +1250,6 @@ export default class Dialog {
                     if (config.dialog.target) {
                         activeDialog = dlg;
                         activeTarget = config.dialog.target;
-
-                        dlg.style.setProperty('position', 'fixed', 'important');
                     }
 
                     if (typeof config.reapplyTheme === 'function') {

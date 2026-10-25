@@ -1406,19 +1406,19 @@ export default class Dialog {
                                 if (config.dialog.id === 'inputDialog' && btnConf.id === 'inputDialogBtnOk') {
                                     const dialog = e.target.closest('dialog'); // get the parent (dialog)
                                     const form = dialog.querySelector('form'); // get the form element
-                                    form.dispatchEvent(new Event('submit')); // invoke submit event
+                                    form.requestSubmit(); // invoke submit event
 
                                     return;
                                 }
-
-                                const inputData = { output: null };
-                                inputData.option = btnConf.option;
 
                                 if (btnConf.callback && typeof btnConf.callback === 'function')
                                     btnConf.callback(e);
 
                                 // For instruction dialogs, if the button is marked as navigation, do not close.
-                                if (config.instructionDialog && btnConf.navigation === true) return;
+                                if (config.dialog.id === 'instructionDialog' && btnConf.navigation === true) return;
+
+                                const inputData = { output: null };
+                                inputData.option = btnConf.option;
 
                                 this.#mobileViewMedia.removeEventListener('change', resizeHandler);
 
@@ -1834,7 +1834,7 @@ export default class Dialog {
      * @returns {Promise<Object>} Resolves when the dialog is closed. `{ output: input.value, option: 0 - Ok, 1 - Cancel }`.
      */
     static async showInputDialog(dialogTitle, dialogContent, customDialogStyles = {}) {
-        await this.showInputDialogAt(null, dialogTitle, dialogContent, customDialogStyles);
+        return await this.showInputDialogAt(null, dialogTitle, dialogContent, customDialogStyles);
     }
 
     /**
@@ -2110,7 +2110,7 @@ export default class Dialog {
      * @returns {Promise<Object>} Resolves when the dialog is closed. `{ output: null, option: 2 - Yes, 3 - No }`.
      */
     static async showConfirmDialog(dialogTitle, dialogContent, customDialogStyles = {}) {
-        await this.showConfirmDialogAt(null, dialogTitle, dialogContent, customDialogStyles);
+        return await this.showConfirmDialogAt(null, dialogTitle, dialogContent, customDialogStyles);
     }
 
     /**
@@ -2286,7 +2286,6 @@ export default class Dialog {
         const { styles, eventStyles } = this.#getDialogPartsStyles('instructionDialog');
 
         const config = {
-            instructionDialog: true,
             dialog: {
                 id: 'instructionDialog',
                 target: target,

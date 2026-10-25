@@ -1753,7 +1753,7 @@ export default class Dialog {
                         type: 'submit',
                         text: 'OK',
                         styles: { ...styles.button, ...styles.btnOk },
-                        eventStyles: { ...eventStyles.button, ...eventStyles.btnOk },
+                        eventStyles: deepMerge(eventStyles.button, eventStyles.btnOk),
                         option: this.OK_OPTION
                     },
                     {
@@ -1762,7 +1762,7 @@ export default class Dialog {
                         type: 'button',
                         text: 'Cancel',
                         styles: { ...styles.button, ...styles.btnCancel },
-                        eventStyles: { ...eventStyles.button, ...eventStyles.btnCancel },
+                        eventStyles: deepMerge(eventStyles.button, eventStyles.btnCancel),
                         option: this.CANCEL_OPTION
                     }
                 ]
@@ -1804,12 +1804,12 @@ export default class Dialog {
                     {
                         element: elements.button[0],
                         styles: { ...styles.button, ...styles.btnOk },
-                        eventStyles: { ...eventStyles.button, ...eventStyles.btnOk }
+                        eventStyles: deepMerge(eventStyles.button, eventStyles.btnOk)
                     },
                     {
                         element: elements.button[1],
                         styles: { ...styles.button, ...styles.btnCancel },
-                        eventStyles: { ...eventStyles.button, ...eventStyles.btnCancel }
+                        eventStyles: deepMerge(eventStyles.button, eventStyles.btnCancel)
                     }
                 ]);
             }
@@ -1903,7 +1903,7 @@ export default class Dialog {
                         type: 'button',
                         text: 'OK',
                         styles: { ...styles.button, ...styles.btnOk },
-                        eventStyles: { ...eventStyles.button, ...eventStyles.btnOk },
+                        eventStyles: deepMerge(eventStyles.button, eventStyles.btnOk),
                         option: this.OK_OPTION
                     }
                 ]
@@ -1940,7 +1940,7 @@ export default class Dialog {
                     {
                         element: elements.button[0],
                         styles: { ...styles.button, ...styles.btnOk },
-                        eventStyles: { ...eventStyles.button, ...eventStyles.btnOk }
+                        eventStyles: deepMerge(eventStyles.button, eventStyles.btnOk)
                     }
                 ]);
             }
@@ -2034,7 +2034,7 @@ export default class Dialog {
                         type: 'button',
                         text: 'Yes',
                         styles: { ...styles.button, ...styles.btnYes },
-                        eventStyles: { ...eventStyles.button, ...eventStyles.btnYes },
+                        eventStyles: deepMerge(eventStyles.button, eventStyles.btnYes),
                         option: this.YES_OPTION
                     },
                     {
@@ -2043,7 +2043,7 @@ export default class Dialog {
                         type: 'button',
                         text: 'No',
                         styles: { ...styles.button, ...styles.btnNo },
-                        eventStyles: { ...eventStyles.button, ...eventStyles.btnNo },
+                        eventStyles: deepMerge(eventStyles.button, eventStyles.btnNo),
                         option: this.NO_OPTION
                     }
                 ]
@@ -2080,12 +2080,12 @@ export default class Dialog {
                     {
                         element: elements.button[0],
                         styles: { ...styles.button, ...styles.btnYes },
-                        eventStyles: { ...eventStyles.button, ...eventStyles.btnYes }
+                        eventStyles: deepMerge(eventStyles.button, eventStyles.btnYes)
                     },
                     {
                         element: elements.button[1],
                         styles: { ...styles.button, ...styles.btnNo },
-                        eventStyles: { ...eventStyles.button, ...eventStyles.btnNo }
+                        eventStyles: deepMerge(eventStyles.button, eventStyles.btnNo)
                     }
                 ]);
             }
@@ -2163,7 +2163,7 @@ export default class Dialog {
                     type: 'button',
                     text: '×',
                     styles: { ...styles.button, ...styles.btnClose },
-                    eventStyles: { ...eventStyles.button, ...eventStyles.btnClose }
+                    eventStyles: deepMerge(eventStyles.button, eventStyles.btnClose)
                 }
             },
             content: {
@@ -2195,7 +2195,7 @@ export default class Dialog {
                     {
                         element: elements.button,
                         styles: { ...styles.button, ...styles.btnClose },
-                        eventStyles: { ...eventStyles.button, ...eventStyles.btnClose }
+                        eventStyles: deepMerge(eventStyles.button, eventStyles.btnClose)
                     },
                     {
                         element: elements.content,
@@ -2355,19 +2355,19 @@ export default class Dialog {
                     this.#applyStyles({
                         element: elements.button[0],
                         styles: { ...styles.button, ...styles.btnOk },
-                        eventStyles: { ...eventStyles.button, ...eventStyles.btnOk }
+                        eventStyles: deepMerge(eventStyles.button, eventStyles.btnOk)
                     });
                 } else {
                     this.#applyStyles([
                         {
                             element: elements.button[0],
                             styles: { ...styles.button, ...styles.btnPrev },
-                            eventStyles: { ...eventStyles.button, ...eventStyles.btnPrev }
+                            eventStyles: deepMerge(eventStyles.button, eventStyles.btnPrev)
                         },
                         {
                             element: elements.button[1],
                             styles: { ...styles.button, ...styles.btnNext },
-                            eventStyles: { ...eventStyles.button, ...eventStyles.btnNext }
+                            eventStyles: deepMerge(eventStyles.button, eventStyles.btnNext)
                         }
                     ]);
                 }
@@ -2382,7 +2382,7 @@ export default class Dialog {
                 type: 'button',
                 text: 'OK',
                 styles: { ...styles.button, ...styles.btnOk },
-                eventStyles: { ...eventStyles.button, ...eventStyles.btnOk },
+                eventStyles: deepMerge(eventStyles.button, eventStyles.btnOk),
                 option: this.OK_OPTION,
                 navigation: false
             });
@@ -2393,7 +2393,7 @@ export default class Dialog {
                 type: 'button',
                 text: '< Previous',
                 styles: { ...styles.button, ...styles.btnPrev },
-                eventStyles: { ...eventStyles.button, ...eventStyles.btnPrev },
+                eventStyles: deepMerge(eventStyles.button, eventStyles.btnPrev),
                 option: null,
                 navigation: true,
                 callback: (e) => {
@@ -2414,7 +2414,7 @@ export default class Dialog {
                 type: 'button',
                 text: 'Next >',
                 styles: { ...styles.button, ...styles.btnNext },
-                eventStyles: { ...eventStyles.button, ...eventStyles.btnNext },
+                eventStyles: deepMerge(eventStyles.button, eventStyles.btnNext),
                 option: null,
                 navigation: true,
                 callback: (e) => {

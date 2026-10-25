@@ -394,7 +394,7 @@ Here’s an example that combines the usage of all dialog types:
         btnPrev: {
             styles: {
                 light: { 'background-color': 'green' }
-            }
+            },
             eventStyles: {
                 light: {
                     mouseover: { 'background-color': 'yellow' },

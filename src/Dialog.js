@@ -64,7 +64,7 @@ export default class Dialog {
                 "width": "100vw",
                 "height": "100vh",
                 "background-color": "rgba(0, 0, 0, 0.1)",
-                "z-index": "9998",
+                "z-index": "9999",
                 "overflow-y": "auto",
                 "overflow-x": "hidden",
                 "margin": "0",
@@ -821,23 +821,23 @@ export default class Dialog {
 
             if (element instanceof HTMLDialogElement) {
                 styleTag.textContent += /*css*/`
-                  ${elementId}::-webkit-scrollbar {
-                      width: 5px !important;
-                  }
-                  ${elementId}::-webkit-scrollbar-track {
-                      display: none !important;
-                  }
-                  ${elementId}::-webkit-scrollbar-thumb {
-                      background-color: #888 !important;
-                      border-radius: 10px !important;
-                  }
-                  ${elementId}::-webkit-scrollbar-thumb:hover {
-                      background-color: #555 !important;
-                  }
-                  ${elementId}::-webkit-scrollbar-button {
-                      display: none !important;
-                  }
-              `;
+                    ${elementId}::-webkit-scrollbar {
+                        width: 5px !important;
+                    }
+                    ${elementId}::-webkit-scrollbar-track {
+                        display: none !important;
+                    }
+                    ${elementId}::-webkit-scrollbar-thumb {
+                        background-color: #888 !important;
+                        border-radius: 10px !important;
+                    }
+                    ${elementId}::-webkit-scrollbar-thumb:hover {
+                        background-color: #555 !important;
+                    }
+                    ${elementId}::-webkit-scrollbar-button {
+                        display: none !important;
+                    }
+                `;
             }
 
             document.head.appendChild(styleTag);
@@ -866,55 +866,73 @@ export default class Dialog {
             }
 
             if (element instanceof HTMLDialogElement) {
-                styleTag.textContent = /*css*/`
-                  ${elementId}, ${elementId}::backdrop {
-                    opacity: 0 !important;
-                    transition:
-                      opacity 300ms ease,
-                      display 300ms allow-discrete,
-                      overlay 300ms allow-discrete !important;
-                  }
+                if (activeDialog && activeTarget) {
+                    styleTag.textContent = /*css*/`
+                        ${elementId} {
+                            --position-transition: top 0ms, left 0ms;
+                        }
 
-                  ${elementId}[open], ${elementId}[open]::backdrop {
-                    opacity: 1 !important;
+                        ${elementId}.position-transition {
+                            --position-transition: top 200ms ease, left 200ms ease;
+                        }
+                    `;
+                }
 
-                    @starting-style {
-                      opacity: 0 !important;
+                styleTag.textContent += /*css*/`
+                    ${elementId}, ${elementId}::backdrop {
+                        opacity: 0 !important;
+                        transition:
+                            opacity 300ms ease,
+                            display 300ms allow-discrete,
+                            overlay 300ms allow-discrete${
+                                activeDialog && activeTarget ? 
+                                ', var(--position-transition)' : ''
+                            } !important;
                     }
-                  }
 
-                  @media (prefers-reduced-motion: reduce) {
-                    ${elementId} {
-                        transition-duration: 0ms;
+                    ${elementId}[open], ${elementId}[open]::backdrop {
+                        opacity: 1 !important;
+
+                        @starting-style {
+                            opacity: 0 !important;
+                        }
                     }
-                  }
-              `;
+
+                    @media (prefers-reduced-motion: reduce) {
+                        ${elementId} {
+                            transition-duration: 0ms;
+                        }
+                    }
+                `;
             } else if (backdrop) {
                 styleTag.textContent = /*css*/`
-                  ${backdropId}, ${elementId} {
-                    opacity: 0 !important;
-                    transition:
-                      opacity 300ms ease,
-                      display 300ms allow-discrete !important;
-                  }
-
-                  ${backdropId}.fade-in, ${elementId}.fade-in {
-                      opacity: 1 !important;
-
-                      @starting-style {
-                        opacity: 0 !important;
-                      }
-                  }
-                  ${backdropId}.fade-out, ${elementId}.fade-out {
-                      opacity: 0 !important;
-                  }
-                  
-                  @media (prefers-reduced-motion: reduce) {
                     ${backdropId}, ${elementId} {
-                        transition-duration: 0ms;
+                        opacity: 0 !important;
+                        transition:
+                            opacity 300ms ease,
+                            display 300ms allow-discrete${
+                                activeDialog && activeTarget ? 
+                                ', top 200ms ease, left 200ms ease' : ''
+                            } !important;
                     }
-                  }
-              `;
+
+                    ${backdropId}.fade-in, ${elementId}.fade-in {
+                        opacity: 1 !important;
+
+                        @starting-style {
+                            opacity: 0 !important;
+                        }
+                    }
+                    ${backdropId}.fade-out, ${elementId}.fade-out {
+                        opacity: 0 !important;
+                    }
+                    
+                    @media (prefers-reduced-motion: reduce) {
+                        ${backdropId}, ${elementId} {
+                            transition-duration: 0ms;
+                        }
+                    }
+                `;
             }
 
             document.head.appendChild(styleTag);
@@ -975,19 +993,36 @@ export default class Dialog {
         // Keep track of the currently open dialog and its anchor
         let activeDialog = null;
         let activeTarget = null;
-        let ticking = false;
 
-        const handleViewportChange = () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    if (activeDialog && activeTarget) {
-                        positionDialogTo(activeDialog, activeTarget);
-                    }
-                    ticking = false; // Unlock for the next frame
-                });
-                ticking = true;
-            }
+        function throttle(callback, delay = 1000) {
+            let shouldWait = false;
+            let waitingArgs;
+            const timeoutFn = () => {
+                if (waitingArgs == null) {
+                    shouldWait = false;
+                } else {
+                    callback(...waitingArgs);
+                    waitingArgs = null;
+                    setTimeout(timeoutFn, delay);
+                }
+            };
+
+            return (...args) => {
+                if (shouldWait) {
+                    waitingArgs = args;
+                    return;
+                }
+
+                callback(...args);
+                shouldWait = true;
+
+                setTimeout(timeoutFn, delay);
+            };
         }
+
+        const handleViewportChange = throttle(() => {
+            positionDialogTo(activeDialog, activeTarget);
+        }, 150);
 
         /**
          * Positions a dialog centered relative to an anchor element.
@@ -1042,6 +1077,8 @@ export default class Dialog {
          * @param {Function} cleanUpAnimationStyle
          */
         const removeDialogAfterTransition = async (dialog, cleanUpScrollbarStyle, cleanUpAnimationStyle) => {
+            dialog.classList.remove('position-transition');
+            
             const animations = dialog.getAnimations({ subtree: false });
 
             await Promise.allSettled(animations.map(animation => animation.finished));
@@ -1069,20 +1106,19 @@ export default class Dialog {
 
             dlg.focus();
 
-            positionDialogTo(activeDialog, activeTarget);
-            window.addEventListener('resize', handleViewportChange);
-            window.addEventListener('scroll', handleViewportChange, true);
+            if (activeDialog && activeTarget) {
+                positionDialogTo(activeDialog, activeTarget);
+                window.addEventListener('resize', handleViewportChange);
+                window.addEventListener('scroll', handleViewportChange, true);
+            }
         }
 
         const closePlainDialog = async (backdrop, dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle, releaseFocusTrap) => {
+            backdrop.style.setProperty('display', 'none', 'important');
+
             backdrop.classList.remove('fade-in');
             dlg.classList.remove('fade-in');
             
-            backdrop.classList.add('fade-out');
-            dlg.classList.add('fade-out');
-
-            backdrop.style.setProperty('display', 'none', 'important');
-
             const animations = backdrop.getAnimations({ subtree: true });
 
             await Promise.allSettled(animations.map(animation => animation.finished));
@@ -1252,6 +1288,10 @@ export default class Dialog {
                         activeTarget = config.dialog.target;
                     }
 
+                    dlg.addEventListener('transitionend', (e) => {
+                        if (e.target === dlg) dlg.classList.add('position-transition');
+                    }, { once: true });
+
                     if (typeof config.reapplyTheme === 'function') {
                         this.#openDialogs.set(dlg, () => config.reapplyTheme(elements));
                     }
@@ -1346,8 +1386,8 @@ export default class Dialog {
                             e.preventDefault();
 
                             const inputData = { output: null };
-                            inputData.option = config.footer.buttons[0].option;
                             inputData.output = input.value ? this.#sanitizeInput(input.value) : null;
+                            inputData.option = config.footer.buttons[0].option;
 
                             this.#mobileViewMedia.removeEventListener('change', resizeHandler);
 
@@ -1411,11 +1451,15 @@ export default class Dialog {
                                     return;
                                 }
 
-                                if (btnConf.callback && typeof btnConf.callback === 'function')
-                                    btnConf.callback(e);
+                                // For instruction dialog
+                                if (config.dialog.id === 'instructionDialog') {
+                                    if (btnConf.callback && typeof btnConf.callback === 'function') {
+                                        btnConf.callback(e);
+                                    }
 
-                                // For instruction dialogs, if the button is marked as navigation, do not close.
-                                if (config.dialog.id === 'instructionDialog' && btnConf.navigation === true) return;
+                                    // If the button is marked as navigation, do not close.
+                                    if (btnConf.navigation) return;
+                                }
 
                                 const inputData = { output: null };
                                 inputData.option = btnConf.option;
@@ -1438,9 +1482,11 @@ export default class Dialog {
                         dlg.showModal();
                         dlg.focus();
 
-                        positionDialogTo(activeDialog, activeTarget);
-                        window.addEventListener('resize', handleViewportChange);
-                        window.addEventListener('scroll', handleViewportChange, true);
+                        if (activeDialog && activeTarget) {
+                            positionDialogTo(activeDialog, activeTarget);
+                            window.addEventListener('resize', handleViewportChange);
+                            window.addEventListener('scroll', handleViewportChange, true);
+                        }
                     }
                 }
             });
@@ -2114,7 +2160,7 @@ export default class Dialog {
     }
 
     /**
-     * Method of Dialog Class that shows information message and this is customizable.
+     * Method of Dialog Class that shows a text message.
      * 
      * @param {HTMLElement|string|null} target The target element or its ID. Defaults to `document.body` if `null` or equivalent.
      * @param {string} dialogContent Content of the dialog for user to see (plaintext or HTML).
@@ -2216,7 +2262,7 @@ export default class Dialog {
     }
 
     /**
-     * Method of Dialog Class that shows information message and this is customizable.
+     * Method of Dialog Class that shows a text message.
      * Wrapper function of {@link Dialog.showPlainDialogAt}
      * 
      * @param {string} dialogContent Content of the dialog for user to see (plaintext or HTML).

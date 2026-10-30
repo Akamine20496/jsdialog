@@ -216,7 +216,7 @@ declare class Dialog {
     static showConfirmDialog(dialogTitle: string, dialogContent: string, customDialogStyles?: ConfirmDialogParts): Promise<{ output: null, option: number }>;
 
     /**
-     * Method of Dialog Class that shows an information message and is customizable.
+     * Method of Dialog Class that shows a text message.
      * 
      * @param target - The target element or its ID. Defaults to `document.body` if `null` or equivalent.
      * @param dialogContent - Content of the dialog for the user to see (plaintext or HTML).
@@ -226,7 +226,7 @@ declare class Dialog {
     static showPlainDialogAt(target: HTMLElement|string|null, dialogContent: string, customDialogStyles?: PlainDialogParts): Promise<void>;
 
     /**
-     * Method of Dialog Class that shows an information message and is customizable.
+     * Method of Dialog Class that shows a text message.
      * Wrapper function of {@link Dialog.showPlainDialogAt}
      * 
      * @param dialogContent - Content of the dialog for the user to see (plaintext or HTML).

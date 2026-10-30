@@ -59,7 +59,7 @@ if (userChoice.option === Dialog.YES_OPTION) {
 
 ## Plain Dialog
 
-The `showPlainDialog` method displays a customizable information dialog to the user.
+The `showPlainDialog` method displays text message to the user.
 
 ```javascript
 await Dialog.showPlainDialog('This is a plain dialog', {
@@ -262,18 +262,18 @@ If you don't want to anchor the dialog to an element, use the wrapper function w
 
 - `setDialogTypesStyles(dialogTypesStylesConfig)`: Configures custom styles and event styles for different dialog types.
 - `setThemePreference(mode)`: Sets the theme of dialog
-- `showInputDialogAt(target, dialogTitle, dialogContent, customDialogStyles)`: Displays an input dialog and returns the user input.
-- `showMessageDialogAt(target, dialogTitle, dialogContent, customDialogStyles)`: Displays a message dialog.
-- `showConfirmDialogAt(target, dialogTitle, dialogContent, customDialogStyles)`: Displays a confirmation dialog and returns the user's choice.
-- `showPlainDialogAt(target, dialogContent, customDialogStyles)`: Displays a plain dialog and can be customized.
+- `showInputDialogAt(target, dialogTitle, dialogContent, customDialogStyles)`: Displays dialog to ask for user input.
+- `showMessageDialogAt(target, dialogTitle, dialogContent, customDialogStyles)`: Displays information message dialog to the user.
+- `showConfirmDialogAt(target, dialogTitle, dialogContent, customDialogStyles)`: Displays dialog to ask for user's choice.
+- `showPlainDialogAt(target, dialogContent, customDialogStyles)`: Displays text message to the user.
 - `showInstructionDialogAt(target, dialogTitle, dialogContents, customDialogStyles)`: Displays a paginated dialog that has a page counter to track the current page. 
 
 ## Wrapper Methods
 
-- `showInputDialog(dialogTitle, dialogContent, customDialogStyles)`: Displays an input dialog and returns the user input.
-- `showMessageDialog(dialogTitle, dialogContent, customDialogStyles)`: Displays a message dialog.
-- `showConfirmDialog(dialogTitle, dialogContent, customDialogStyles)`: Displays a confirmation dialog and returns the user's choice.
-- `showPlainDialog(dialogContent, customDialogStyles)`: Displays a plain dialog and can be customized.
+- `showInputDialog(dialogTitle, dialogContent, customDialogStyles)`: Displays dialog to ask for user input.
+- `showMessageDialog(dialogTitle, dialogContent, customDialogStyles)`: Displays information message dialog to the user.
+- `showConfirmDialog(dialogTitle, dialogContent, customDialogStyles)`: Displays dialog to ask for user's choice.
+- `showPlainDialog(dialogContent, customDialogStyles)`: Displays text message to the user.
 - `showInstructionDialog(dialogTitle, dialogContents, customDialogStyles)`: Displays a paginated dialog that has a page counter to track the current page. 
 
 ### Options

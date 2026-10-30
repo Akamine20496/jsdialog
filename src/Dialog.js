@@ -923,9 +923,6 @@ export default class Dialog {
                             opacity: 0 !important;
                         }
                     }
-                    ${backdropId}.fade-out, ${elementId}.fade-out {
-                        opacity: 0 !important;
-                    }
                     
                     @media (prefers-reduced-motion: reduce) {
                         ${backdropId}, ${elementId} {

@@ -77,7 +77,7 @@ export default class Dialog {
                 "margin": "auto",
                 "padding": "0",
                 "border-radius": "10px",
-                "box-shadow": "0 6px 12px rgba(0, 0, 0, 0.2)",
+                "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)",
                 "max-height": "85vh",
                 "min-width": "300px",
                 "min-height": "150px",
@@ -148,7 +148,7 @@ export default class Dialog {
                 "display": "block",
                 "border": "none",
                 "border-radius": "10px",
-                "box-shadow": "0 6px 12px rgba(0, 0, 0, 0.2)",
+                "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)",
                 "margin": "auto",
                 "padding": "15px",
                 "min-width": "300px",
@@ -157,7 +157,7 @@ export default class Dialog {
                 "box-sizing": "border-box",
                 "font-family": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
                 "user-select": "text",
-                "background-color": "#e9e8e8",
+                "background-color": "#f9f9f9",
                 "overflow-y": "auto",
                 "overflow-x": "hidden",
             },
@@ -265,11 +265,12 @@ export default class Dialog {
             dialog: {
                 styles: {
                     light: {
-                        "box-shadow": "0 6px 12px rgba(0, 0, 0, 0.2)",
+                        "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)",
                         "background-color": "#f9f9f9",
                         'border-color': '#D1D5DB'
                     },
                     dark: {
+                        "box-shadow": "0 4px 8px rgba(71, 71, 71, 0.2)",
                         'background-color': '#1e1e1e',
                         'border-color': '#444444'
                     }
@@ -280,8 +281,8 @@ export default class Dialog {
                         mouseout: { "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)" }
                     },
                     dark: {
-                        mouseover: { "box-shadow": "0 6px 16px rgba(0, 0, 0, 0.6)" },
-                        mouseout: { "box-shadow": "0 4px 10px rgba(0, 0, 0, 0.4)" }
+                        mouseover: { "box-shadow": "0 6px 12px rgba(71, 71, 71, 0.6)" },
+                        mouseout: { "box-shadow": "0 4px 8px rgba(71, 71, 71, 0.4)" }
                     }
                 }
             },
@@ -332,8 +333,8 @@ export default class Dialog {
                     dark: {
                         mouseover: {
                             "background-color": "#495563",
-                            "outline": "1px solid rgba(173, 181, 189, 0.65)",
-                            "box-shadow": "0 4px 10px rgba(0, 0, 0, 0.45)"
+                            "outline": "1px solid rgba(138, 180, 248, 0.65)",
+                            "box-shadow": "0 4px 8px rgba(71, 71, 71, 0.4)"
                         },
                         mouseout: {
                             "background-color": "#343a40",
@@ -341,8 +342,8 @@ export default class Dialog {
                             "box-shadow": "none"
                         },
                         focus: {
-                            "outline": "1px solid #8ab4f8",
-                            "box-shadow": "0 0 0 3px rgba(138, 180, 248, 0.2)"
+                            "outline": "1px solid rgba(138, 180, 248, 0.65)",
+                            "box-shadow": "0 4px 8px rgba(71, 71, 71, 0.4)"
                         },
                         blur: {
                             "outline": "none",
@@ -372,11 +373,12 @@ export default class Dialog {
             dialog: {
                 styles: {
                     light: {
-                        "box-shadow": "0 6px 12px rgba(0, 0, 0, 0.2)",
-                        "background-color": "#e9e8e8",
+                        "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)",
+                        "background-color": "#f9f9f9",
                         'border-color': '#D1D5DB'
                     },
                     dark: {
+                        "box-shadow": "0 4px 8px rgba(71, 71, 71, 0.2)",
                         'background-color': '#1e1e1e',
                         'border-color': '#444444'
                     }
@@ -387,8 +389,8 @@ export default class Dialog {
                         mouseout: { "box-shadow": "0 4px 8px rgba(0, 0, 0, 0.2)" }
                     },
                     dark: {
-                        mouseover: { "box-shadow": "0 6px 16px rgba(0, 0, 0, 0.6)" },
-                        mouseout: { "box-shadow": "0 4px 10px rgba(0, 0, 0, 0.4)" }
+                        mouseover: { "box-shadow": "0 6px 12px rgba(71, 71, 71, 0.6)" },
+                        mouseout: { "box-shadow": "0 4px 8px rgba(71, 71, 71, 0.4)" }
                     }
                 }
             },
@@ -456,8 +458,8 @@ export default class Dialog {
                     },
                     dark: {
                         focus: {
-                            "outline": "2px solid rgba(138, 180, 248, 0.7)",
-                            "box-shadow": "0 4px 10px rgba(0, 0, 0, 0.45)"
+                            "outline": "2px solid rgba(122, 164, 232, 0.7)",
+                            "box-shadow": "0 4px 8px rgba(71, 71, 71, 0.4)"
                         },
                         blur: {
                             "outline": "none",
@@ -513,8 +515,8 @@ export default class Dialog {
                     dark: {
                         mouseover: {
                             "background-color": "#495563",
-                            "outline": "1px solid rgba(173, 181, 189, 0.65)",
-                            "box-shadow": "0 4px 10px rgba(0, 0, 0, 0.45)"
+                            "outline": "1px solid rgba(138, 180, 248, 0.65)",
+                            "box-shadow": "0 4px 8px rgba(71, 71, 71, 0.4)"
                         },
                         mouseout: {
                             "background-color": "#343a40",
@@ -522,8 +524,8 @@ export default class Dialog {
                             "box-shadow": "none"
                         },
                         focus: {
-                            "outline": "1px solid #8ab4f8",
-                            "box-shadow": "0 0 0 3px rgba(138, 180, 248, 0.2)"
+                            "outline": "1px solid rgba(138, 180, 248, 0.65)",
+                            "box-shadow": "0 4px 8px rgba(71, 71, 71, 0.4)"
                         },
                         blur: {
                             "outline": "none",
@@ -923,6 +925,10 @@ export default class Dialog {
                             opacity: 0 !important;
                         }
                     }
+
+                    ${backdropId}.fade-out, ${elementId}.fade-out {
+                        opacity: 0 !important;
+                    }
                     
                     @media (prefers-reduced-motion: reduce) {
                         ${backdropId}, ${elementId} {
@@ -938,53 +944,68 @@ export default class Dialog {
         }
 
         /**
-         * trap the focus only to the dialog (as div element) until closed
-         * @param {HTMLElement} dialog 
+         * trap the focus only to the element until closed
+         * @param {HTMLElement} element 
          * @returns {Function} function to remove the listener
          */
-        function trapDialogFocus(dialog) {
+        function trapFocus(element) {
             const selector = [
                 'a[href]',
                 'button:not(:disabled)',
                 'input:not(:disabled)',
                 'select:not(:disabled)',
                 'textarea:not(:disabled)',
-                '[tabindex]:not([tabindex="-1"])'
+                '[tabindex]:not([tabindex="-1"])',
+                '[contenteditable]:not([contenteditable="false"])'
             ].join(',');
 
             const getFocusableElements = () =>
-                [...dialog.querySelectorAll(selector)]
-                    .filter(element => element.getClientRects().length > 0);
+                [...element.querySelectorAll(selector)]
+                    .filter(el => el.getClientRects().length > 0);
 
-            const handleKeydown = event => {
-                if (event.key !== 'Tab') return;
+            const handleKeydown = (e) => {
+                if (e.key !== 'Tab') return;
 
                 const elements = getFocusableElements();
 
                 if (elements.length === 0) {
-                    event.preventDefault();
-                    dialog.focus();
+                    e.preventDefault();
+                    element.focus();
                     return;
                 }
 
                 const first = elements[0];
                 const last = elements[elements.length - 1];
 
-                if (event.shiftKey && document.activeElement === first) {
-                    event.preventDefault();
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
                     last.focus();
-                } else if (!event.shiftKey && document.activeElement === last) {
-                    event.preventDefault();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
                     first.focus();
                 }
             };
 
-            dialog.addEventListener('keydown', handleKeydown);
+            element.addEventListener('keydown', handleKeydown);
 
             const firstFocusable = getFocusableElements()[0];
-            (firstFocusable || dialog).focus();
+            (firstFocusable || element).focus();
 
-            return () => dialog.removeEventListener('keydown', handleKeydown);
+            // Watch the parent node (or document.documentElement as fallback) for node removals
+            const parentContainer = element.parentNode || document.documentElement;
+
+            const domObserver = new MutationObserver(() => {
+                // Check if the element is no longer connected to the DOM
+                if (!element.isConnected) {
+                    element.removeEventListener('keydown', handleKeydown);
+                    domObserver.disconnect();
+                }
+            });
+
+            domObserver.observe(parentContainer, {
+                childList: true,
+                subtree: true
+            });
         }
 
         // Keep track of the currently open dialog and its anchor
@@ -1068,14 +1089,30 @@ export default class Dialog {
         }
 
         /**
-         * Removes dialog after the transition
+         * Shows the native dialog to the viewport
+         * @param {HTMLDialogElement} dialog 
+         */
+        function openNativeDialog(dialog) {
+            dialog.showModal();
+            dialog.focus();
+
+            if (activeDialog && activeTarget) {
+                positionDialogTo(activeDialog, activeTarget);
+                window.addEventListener('resize', handleViewportChange);
+                window.addEventListener('scroll', handleViewportChange, true);
+            }
+        }
+
+        /**
+         * Hides the native dialog to the viewport and removes it to the dom
          * @param {HTMLDialogElement} dialog
          * @param {Function} cleanUpScrollbarStyle
          * @param {Function} cleanUpAnimationStyle
          */
-        const removeDialogAfterTransition = async (dialog, cleanUpScrollbarStyle, cleanUpAnimationStyle) => {
+        const closeNativeDialog = async (dialog, cleanUpScrollbarStyle, cleanUpAnimationStyle) => {
+            dialog.close();
             dialog.classList.remove('position-transition');
-            
+
             const animations = dialog.getAnimations({ subtree: false });
 
             await Promise.allSettled(animations.map(animation => animation.finished));
@@ -1110,22 +1147,23 @@ export default class Dialog {
             }
         }
 
-        const closePlainDialog = async (backdrop, dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle, releaseFocusTrap) => {
-            backdrop.style.setProperty('display', 'none', 'important');
-
+        const closePlainDialog = async (backdrop, dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle) => {
             backdrop.classList.remove('fade-in');
             dlg.classList.remove('fade-in');
+
+            backdrop.classList.add('fade-out');
+            dlg.classList.add('fade-out');
             
             const animations = backdrop.getAnimations({ subtree: true });
-
+            
             await Promise.allSettled(animations.map(animation => animation.finished));
-
+            
+            backdrop.style.setProperty('display', 'none', 'important');
             this.#openDialogs.delete(backdrop);
 
             backdrop.remove();
             cleanUpScrollbarStyle();
             cleanUpAnimationStyle();
-            releaseFocusTrap();
 
             if (activeDialog && activeTarget) {
                 window.removeEventListener('resize', handleViewportChange);
@@ -1186,9 +1224,10 @@ export default class Dialog {
                         activeTarget = config.dialog.target;
                     }
 
+                    trapFocus(dlg);
+
                     const cleanUpScrollbarStyle = addDialogScrollbarStyleTo(dlg);
                     const cleanUpAnimationStyle = addDialogAnimationStyleTo(dlg, backdrop);
-                    const releaseFocusTrap = trapDialogFocus(dlg);
 
                     // header.
                     if (config.header) {
@@ -1222,9 +1261,13 @@ export default class Dialog {
                             });
 
                             closeBtn.addEventListener('click', () => {
+                                // disable button
+                                closeBtn.style.setProperty('pointer-events', 'none', 'important');
+                                closeBtn.disabled = true;
+
                                 this.#mobileViewMedia.removeEventListener('change', resizeHandler);
                                 resolve();
-                                closePlainDialog(backdrop, dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle, releaseFocusTrap);
+                                closePlainDialog(backdrop, dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle);
                             }, { once: true });
 
                             header.appendChild(closeBtn);
@@ -1250,6 +1293,8 @@ export default class Dialog {
                             styles: { ...this.#coreDialogStyles.plain.content, ...config.content.styles },
                             eventStyles: config.content.eventStyles
                         });
+
+                        trapFocus(content);
 
                         dlg.appendChild(content);
                     }
@@ -1382,15 +1427,27 @@ export default class Dialog {
                         inputForm.addEventListener('submit', (e) => {
                             e.preventDefault();
 
-                            const inputData = { output: null };
+                            // disable the interactive element
+                            input.style.setProperty('pointer-events', 'none', 'important');
+                            input.disabled = true;
+
+                            const footerChildren = e.currentTarget.nextElementSibling.children;
+
+                            // btnOk
+                            footerChildren[0].style.setProperty('pointer-events', 'none', 'important');
+                            footerChildren[0].disabled = true;
+                            // btnCancel
+                            footerChildren[1].style.setProperty('pointer-events', 'none', 'important');
+                            footerChildren[1].disabled = true;
+
+                            const inputData = {};
                             inputData.output = input.value ? this.#sanitizeInput(input.value) : null;
                             inputData.option = config.footer.buttons[0].option;
 
                             this.#mobileViewMedia.removeEventListener('change', resizeHandler);
 
-                            dlg.close();
                             resolve(inputData);
-                            removeDialogAfterTransition(dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle);
+                            closeNativeDialog(dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle);
                         }, { once: true });
 
                         inputForm.appendChild(input);
@@ -1440,12 +1497,32 @@ export default class Dialog {
                             });
 
                             btn.addEventListener('click', (e) => {
-                                if (config.dialog.id === 'inputDialog' && btnConf.id === 'inputDialogBtnOk') {
-                                    const dialog = e.target.closest('dialog'); // get the parent (dialog)
-                                    const form = dialog.querySelector('form'); // get the form element
-                                    form.requestSubmit(); // invoke submit event
+                                // disable the interactive element and resolve the promise
 
-                                    return;
+                                // For input dialog
+                                if (config.dialog.id === 'inputDialog') {
+                                    if (btnConf.id === 'inputDialogBtnOk') {
+                                        const form = dlg.querySelector('form'); // get the form element
+                                        form.requestSubmit(); // invoke submit event
+                                        return;
+                                    } else if (btnConf.id === 'inputDialogBtnCancel') {
+                                        // input
+                                        const input = dlg.querySelector(`#${config.input.id}`);
+                                        input.style.setProperty('pointer-events', 'none', 'important');
+                                        input.disabled = true;
+                                        // // btnOk
+                                        const btnOk = e.currentTarget.previousElementSibling;
+                                        btnOk.style.setProperty('pointer-events', 'none', 'important');
+                                        btnOk.disabled = true;
+                                    }
+                                }
+
+                                // For confirm dialog
+                                if (config.dialog.id === 'confirmDialog') {
+                                    // either btnYes or btnNo depending on the current element invoked
+                                    const button = e.currentTarget.previousElementSibling || e.currentTarget.nextElementSibling;
+                                    button.style.setProperty('pointer-events', 'none', 'important');
+                                    button.disabled = true;
                                 }
 
                                 // For instruction dialog
@@ -1456,16 +1533,26 @@ export default class Dialog {
 
                                     // If the button is marked as navigation, do not close.
                                     if (btnConf.navigation) return;
+
+                                    if (btnCount === 2) {
+                                        // disable btnPrev
+                                        const button = e.currentTarget.previousElementSibling;
+                                        button.style.setProperty('pointer-events', 'none', 'important');
+                                        button.disabled = true;
+                                    }
                                 }
+
+                                // current button
+                                btn.style.setProperty('pointer-events', 'none', 'important');
+                                btn.disabled = true;
 
                                 const inputData = { output: null };
                                 inputData.option = btnConf.option;
 
                                 this.#mobileViewMedia.removeEventListener('change', resizeHandler);
 
-                                dlg.close();
                                 resolve(inputData);
-                                removeDialogAfterTransition(dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle);
+                                closeNativeDialog(dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle);
                             });
 
                             footer.appendChild(btn);
@@ -1475,16 +1562,7 @@ export default class Dialog {
                     }
 
                     (activeTarget || document.body).prepend(dlg);
-                    if (!dlg.open) {
-                        dlg.showModal();
-                        dlg.focus();
-
-                        if (activeDialog && activeTarget) {
-                            positionDialogTo(activeDialog, activeTarget);
-                            window.addEventListener('resize', handleViewportChange);
-                            window.addEventListener('scroll', handleViewportChange, true);
-                        }
-                    }
+                    if (!dlg.open) openNativeDialog(dlg);
                 }
             });
         };

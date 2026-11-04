@@ -1,4 +1,4 @@
-import deepMerge from '../node_modules/@75lb/deep-merge/dist/index.mjs'
+import deepMerge from '@75lb/deep-merge';
 
 /**
  * JSDialog by: Akamine20496
@@ -1111,7 +1111,6 @@ export default class Dialog {
          */
         const closeNativeDialog = async (dialog, cleanUpScrollbarStyle, cleanUpAnimationStyle) => {
             dialog.close();
-            dialog.classList.remove('position-transition');
 
             const animations = dialog.getAnimations({ subtree: false });
 
@@ -1213,6 +1212,9 @@ export default class Dialog {
                     dlg.ariaModal = true;
                     dlg.tabIndex = -1;
 
+                    const cleanUpScrollbarStyle = addDialogScrollbarStyleTo(dlg);
+                    const cleanUpAnimationStyle = addDialogAnimationStyleTo(dlg, backdrop);
+
                     this.#applyStyles({
                         element: dlg,
                         styles: { ...this.#coreDialogStyles.plain.dialog, ...config.dialog.styles },
@@ -1224,10 +1226,17 @@ export default class Dialog {
                         activeTarget = config.dialog.target;
                     }
 
-                    trapFocus(dlg);
+                    backdrop.addEventListener('keydown', function handleEscape(e) {
+                        if (e.key === 'Escape') {
+                            resolve();
+                            closePlainDialog(backdrop, dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle);
 
-                    const cleanUpScrollbarStyle = addDialogScrollbarStyleTo(dlg);
-                    const cleanUpAnimationStyle = addDialogAnimationStyleTo(dlg, backdrop);
+                            // remove event listener
+                            backdrop.removeEventListener('keydown', handleEscape);
+                        }
+                    });
+
+                    trapFocus(dlg);
 
                     // header.
                     if (config.header) {
@@ -1318,6 +1327,9 @@ export default class Dialog {
                     resizeHandler(); // Initial apply
 
                     dlg.id = config.dialog.id || "modalDialog";
+                    
+                    const cleanUpScrollbarStyle = addDialogScrollbarStyleTo(dlg);
+                    const cleanUpAnimationStyle = addDialogAnimationStyleTo(dlg);
 
                     this.#applyStyles({
                         element: dlg,
@@ -1330,16 +1342,18 @@ export default class Dialog {
                         activeTarget = config.dialog.target;
                     }
 
+                    if (typeof config.reapplyTheme === 'function') {
+                        this.#openDialogs.set(dlg, () => config.reapplyTheme(elements));
+                    }
+                    
                     dlg.addEventListener('transitionend', (e) => {
                         if (e.target === dlg) dlg.classList.add('position-transition');
                     }, { once: true });
 
-                    if (typeof config.reapplyTheme === 'function') {
-                        this.#openDialogs.set(dlg, () => config.reapplyTheme(elements));
-                    }
-
-                    const cleanUpScrollbarStyle = addDialogScrollbarStyleTo(dlg);
-                    const cleanUpAnimationStyle = addDialogAnimationStyleTo(dlg);
+                    dlg.addEventListener('cancel', () => {
+                        resolve();
+                        closeNativeDialog(dlg, cleanUpScrollbarStyle, cleanUpAnimationStyle);
+                    });
 
                     // Header.
                     if (config.header) {

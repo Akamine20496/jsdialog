@@ -149,7 +149,7 @@ declare class Dialog {
      *   - `output`: The value of the input.
      *   - `option`: 0 for "Ok", 1 for "Cancel".
      */
-    static showInputDialogAt(target: HTMLElement|string|null, dialogTitle: string, dialogContent: string, customDialogStyles?: InputDialogParts): Promise<{ output: string, option: number }>;
+    static showInputDialogAt(target: HTMLElement|string|null, dialogTitle: string, dialogContent: string, customDialogStyles?: InputDialogParts): Promise<{ output: string, option: number }|void>;
 
     /**
      * Method of Dialog Class that allows user input.
@@ -163,7 +163,7 @@ declare class Dialog {
      *   - `output`: The value of the input.
      *   - `option`: 0 for "Ok", 1 for "Cancel".
      */
-    static showInputDialog(dialogTitle: string, dialogContent: string, customDialogStyles?: InputDialogParts): Promise<{ output: string, option: number }>;
+    static showInputDialog(dialogTitle: string, dialogContent: string, customDialogStyles?: InputDialogParts): Promise<{ output: string, option: number }|void>;
 
     /**
      * Method of Dialog Class that shows an information message.
@@ -199,7 +199,7 @@ declare class Dialog {
      *   - `output`: Always `null`.
      *   - `option`: 2 for "Yes", 3 for "No".
      */
-    static showConfirmDialogAt(target: HTMLElement|string|null, dialogTitle: string, dialogContent: string, customDialogStyles?: ConfirmDialogParts): Promise<{ output: null, option: number }>;
+    static showConfirmDialogAt(target: HTMLElement|string|null, dialogTitle: string, dialogContent: string, customDialogStyles?: ConfirmDialogParts): Promise<{ output: null, option: number }|void>;
 
     /**
      * Method of Dialog Class that asks for a YES or NO answer.
@@ -213,7 +213,7 @@ declare class Dialog {
      *   - `output`: Always `null`.
      *   - `option`: 2 for "Yes", 3 for "No".
      */
-    static showConfirmDialog(dialogTitle: string, dialogContent: string, customDialogStyles?: ConfirmDialogParts): Promise<{ output: null, option: number }>;
+    static showConfirmDialog(dialogTitle: string, dialogContent: string, customDialogStyles?: ConfirmDialogParts): Promise<{ output: null, option: number }|void>;
 
     /**
      * Method of Dialog Class that shows a text message.

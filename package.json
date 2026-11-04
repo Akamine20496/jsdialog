@@ -1,6 +1,6 @@
 {
   "name": "@akamine96204/jsdialog",
-  "version": "4.0.7",
+  "version": "4.0.8",
   "description": "Promised-based JavaScript Dialog Utility",
   "keywords": [
     "javascript-dialog",
@@ -21,6 +21,12 @@
   "type": "module",
   "main": "dist/Dialog.min.js",
   "types": "dist/Dialog.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/Dialog.d.ts",
+      "import": "./dist/Dialog.min.js"
+    }
+  },
   "files": [
     "dist/"
   ],
